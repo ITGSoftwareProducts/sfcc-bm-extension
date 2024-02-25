@@ -1,0 +1,48 @@
+<isdecorate template="common/frame/page">
+    <isinclude template="/common/util/modules"/>
+    <isscript>
+        var assets = require('*/cartridge/scripts/assets');
+        assets.addJs('/js/couponReplicator.js');
+    </isscript>
+    <div class="section__wrapper search-coupon-form bg-surface-white rounded-4 mb-2">
+        <div class="d-flex">
+            <div class="section__img coupon-img">
+                <img src="${URLUtils.staticURL('/images/replicate-coupons.png')}" class="replicate-coupons-img img-fluid" alt="replicate coupons"/>
+            </div>
+            <div class="section__text">
+                <h1 class="t-h5 mb-0">${Resource.msg('page.label', 'couponReplicator', null)}</h1>
+                <p class="text-sm section__msg mt-3 mb-0">${Resource.msg('page.message1', 'couponReplicator', null)}</p>
+                <form class="search-coupon form-content d-flex align-items-center search-wrapper" action="${pdict.actionUrl}">
+                    <div class="input-group me-3 form-group position-relative">
+                        <input type="text" id="coupon-search-term" aria-required="true" class="form-control search-input rounded-3 ps-9 inputfield_en not_disabled" name="couponSearchTerm" placeholder="${Resource.msg('coupon.id.placeholder', 'couponReplicator', null)}"/>
+                        <issvgimg name="${'search'}" color="${'#11181C'}" />
+                    </div>
+                    <button type="submit" id="searchFocus" class="btn btn-primary search-btn">${Resource.msg('search.cta', 'couponReplicator', null)}</button>
+                </form>
+                 <p class="text-sm section__msg input-desc mt-2 mb-0">${Resource.msg('page.message2', 'couponReplicator', null)}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="tabs-content bg-surface-white rounded-4">
+        <nav>
+            <div class="nav nav-tabs d-flex justify-content-center border-0" id="nav-tab" role="tablist">
+                <div class="btn-action rounded-2 bg-slate-3 d-flex justify-content-between">
+                    <button class="nav-link active d-block slate-11 border-0" id="nav-coupons-tab" data-bs-toggle="tab" data-bs-target="#nav-coupons" type="button" role="tab" aria-controls="nav-coupons" aria-selected="true">${Resource.msg('coupon.label', 'couponReplicator', null)}</button>
+                    <button class="nav-link d-block slate-11 border-0" id="nav-replications-tab" data-bs-toggle="tab" data-bs-target="#nav-replications" type="button" role="tab" aria-controls="nav-replications" aria-selected="false">${Resource.msg('replications.label', 'couponReplicator', null)}</button>
+                </div>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-coupons" role="tabpanel" aria-labelledby="nav-coupons-tab" tabindex="0">
+                <div class="coupon-list-table result-table">
+                    <isinclude template="couponReplicator/couponsSearchResults" />
+                </div>
+            </div>
+            <div class="tab-pane fade" id="nav-replications" role="tabpanel" aria-labelledby="nav-replications-tab" tabindex="0">
+                <isinclude template="executionHistory/executionList" />
+            </div>
+        </div>
+    </div>
+    <div class="results"></div>
+</isdecorate>

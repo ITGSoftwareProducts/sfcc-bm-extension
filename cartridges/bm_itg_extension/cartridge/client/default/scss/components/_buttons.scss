@@ -1,0 +1,220 @@
+.btn {
+    padding: $unit * 1.125 $unit-md;
+    border-radius: $unit-md;
+    border: 1px solid;
+    font-size: $fs-xxs;
+    line-height: $lh-xs;
+    text-transform: capitalize;
+    font-family: $font-inter-semi-bold;
+    height: 44px;
+
+    &.disabled,
+    &:disabled {
+        background-color: $slate-3;
+        border-color: $slate-4;
+        color: $slate-8;
+    }
+
+    &.small {
+        padding: $sub-unit $unit * 0.75;
+        font-size: $fs-df;
+        line-height: $lh-df;
+        border-radius: $unit;
+        font-family: $font-inter-medium;
+        height: 32px;
+    }
+
+    &.large {
+        padding: $unit-lg;
+        height: 48px;
+    }
+}
+
+.btn-primary {
+    background-color: $blue-9;
+    color: $surface-white;
+    border-color: $blue-10;
+
+    &:not(:disabled):not(.disabled):hover {
+        background-color: $blue-10;
+        border-color: $blue-11;
+    }
+
+    &:not(:disabled):not(.disabled):active {
+        background-color: $blue-11;
+        border-color: $blue-11;
+    }
+
+    &:not(:disabled):not(.disabled):focus {
+        box-shadow: 0 0 0 $sub-unit * 0.5 $blue-11, 0 0 0 $sub-unit * 0.5 $surface-white;
+        border-color: $surface-white;
+        border-width: $sub-unit * 0.5;
+        padding: $sub-unit * 2  $unit-md;
+    }
+}
+
+.btn-secondary {
+    background-color: $surface-white;
+    border-color: $slate-6;
+    color: $slate-12;
+
+    &:not(:disabled):not(.disabled):hover,
+    &:not(:disabled):not(.disabled):focus {
+        background-color: $slate-4;
+        color: $slate-12;
+        border-color: $slate-6;
+    }
+
+    &:not(:disabled):not(.disabled):active {
+        background-color: $slate-5;
+        color: $slate-12;
+        border-color: $slate-6;
+    }
+}
+
+.btn-link {
+    display: flex;
+    align-items: center;
+    color: $blue-11;
+    text-decoration: none;
+    background-color: transparent;
+    font-size: $fs-xxs;
+    text-transform: capitalize;
+    border: 1px solid transparent;
+    border-radius: $unit-md;
+    font-weight: $fw-bold;
+
+    &:not(:disabled):not(.disabled):hover {
+        color: $blue-9;
+
+        svg {
+            path {
+                stroke: $blue-9;
+            }
+        }
+    }
+
+    &:not(:disabled):not(.disabled):focus {
+        color: $blue-12;
+        background-color: $blue-4;
+    }
+
+    &.disabled,
+    &:disabled {
+        color: $slate-8;
+
+        svg {
+            path {
+                stroke: $slate-8;
+            }
+        }
+    }
+
+    &.small {
+        border-radius: $unit;
+        font-size: $fs-df;
+        line-height: $lh-df;
+        font-weight: $fw-medium;
+    }
+
+    &.white {
+        background-color: rgba($surface-white, 0.12);
+        color: $surface-white;
+
+        &:not(:disabled):not(.disabled):hover {
+            background-color: rgba($surface-white, 0.08);
+            color: $surface-white;
+        }
+
+        &.disabled,
+        &:disabled {
+            background-color: transparent;
+            color: rgba($surface-white, 0.25);
+        }
+    }
+}
+
+.btn-error {
+    background-color: $red-9;
+    color: $surface-white;
+    border-color: $red-10;
+
+    &:not(:disabled):not(.disabled):hover {
+        background-color: $red-10;
+        border-color: $red-11;
+    }
+
+    &:not(:disabled):not(.disabled):active {
+        background-color: $red-11;
+        border-color: $red-11;
+    }
+
+    &:not(:disabled):not(.disabled):focus {
+        box-shadow: 0 0 0 $sub-unit * 0.5 $red-9, 0 0 0 $sub-unit * 0.5 $surface-white;
+        border-color: $surface-white;
+        border-width: $sub-unit * 0.5;
+        padding: $sub-unit * 2  $unit-md;
+    }
+}
+
+.btn-success {
+    background-color: $green-9;
+    color: $surface-white;
+    border-color: $green-10;
+
+    &:not(:disabled):not(.disabled):hover {
+        background-color: $green-10;
+        border-color: $green-11;
+    }
+
+    &:not(:disabled):not(.disabled):active {
+        background-color: $green-11;
+        border-color: $green-11;
+    }
+
+    &:not(:disabled):not(.disabled):focus {
+        box-shadow: 0 0 0 $sub-unit * 0.5 $green-9, 0 0 0 $sub-unit * 0.5 $surface-white;
+        border-color: $surface-white;
+        border-width: $sub-unit * 0.5;
+        padding: $sub-unit * 2  $unit-md;
+    }
+}
+
+.selector-button {
+    display: inline-block;
+    padding: $unit * 1.25;
+    font-size: $fs-xxs;
+    border: 1px solid $slate-7;
+    background-color: $surface-white;
+    border-radius: $unit * 1.25;
+    color: $slate-12;
+    cursor: pointer;
+    line-height: $lh-xs;
+    text-transform: capitalize;
+    height: 44px;
+
+    &.small {
+        padding-block: $unit;
+        height: 32px;
+    }
+
+    &.large {
+        padding-block: $unit-md;
+        height: 48px;
+    }
+
+    &:hover {
+        background-color: $slate-2;
+    }
+
+    &.selected {
+        background-color: $slate-12;
+        color: $surface-white;
+
+        svg {
+            path {
+                stroke: $surface-white;
+            }
+        }
+    }
+}

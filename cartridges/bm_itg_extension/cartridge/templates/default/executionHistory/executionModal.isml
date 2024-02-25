@@ -1,0 +1,42 @@
+<isinclude template="/common/util/modules"/>
+<div id="executionModal" class="modal right fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content text-left">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-sm">
+                <isprint value="${Resource.msg('modal.title.export', 'common', null)}" />
+                </h5>
+                <button type="button" class="btn btn-secondary close-icon small" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="top-section d-flex gap-4 px-9 pt-8 pb-6 border-bottom border-1">
+                    <div class="image flex-shrink-0"></div>
+                    <div class="name-wrapper text-ellipsis">
+                        <div class="file-name text-left mb-1 text-lg slate-12 font-inter-medium text-ellipsis"></div>
+                        <div class="status"></div>
+                    </div>
+                </div>
+                <div class="download-section border-bottom border-1 text-left px-7 py-4 ${!pdict.showDownloadFile ? 'd-none' : ''}">
+                    <a class="btn-link small" href="">
+                        <span class="me-1"><issvgimg name="${'download'}" color="${'#006adc'}" /></span>
+                        <span><isprint value="${Resource.msg('modal.download.' + pdict.downloadFileType, 'common', null)}" /></span>
+                    </a>
+                </div>
+                <div class="time-section text-left d-flex px-9 pt-9">
+                    <issvgimg name="${'info'}" color="${'#889096'}" />
+                    <p class="pb-6 text-sm ps-2 border-bottom border-1 slate-12 time-message"></p>
+                </div>
+
+                <div class="log-file-section px-9">
+                    <div class="title text-lg font-inter-medium slate-12"><isprint value="${Resource.msg('log.file', 'common', null)}" /></div>
+                    <p class="log-file-desc text-sm slate-11"><isprint value="${Resource.msg('modal.log.message', 'common', null)}" /></p>
+                    <div class="log-messages p-4 d-none overflow-y-auto text-break border border-1 rounded-4"></div>
+                    <div class="d-flex justify-content-between align-items-baseline log-footer mt-4">
+                        <a class="btn btn-secondary small download-log" href=""><isprint value="${Resource.msg('modal.download.log', 'common', null)}" /></a>
+                        <button class="btn btn-secondary small copy" data-bs-toggle="tooltip" data-bs-placement="top" title="Copied!"><isprint value="${Resource.msg('modal.copy', 'common', null)}" /></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

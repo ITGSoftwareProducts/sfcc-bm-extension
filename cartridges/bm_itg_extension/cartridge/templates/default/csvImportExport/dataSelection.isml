@@ -1,0 +1,52 @@
+<div class="data-selection d-flex align-items-baseline gap-6 justify-content-start">
+    <div class="data-select-wrapper">
+        <isif condition="${pdict.selectedMenuItem === 'customers'}">
+            <div class="form-label">${Resource.msg('import.export.data.type', 'csvImportExport', null)}</div>
+            <select class="data-type-select form-select" name="dataType">
+                <option value="" disabled selected hidden>
+                    ${Resource.msg('import.export.object.select.type.placeholder', 'csvImportExport', null)}
+                </option>
+
+                <option value="customer">${Resource.msg('import.export.customer', 'csvImportExport', null)}</option>
+                <option value="customerGroup">${Resource.msg('import.export.customer.group', 'csvImportExport', null)}</option>
+            </select>
+        <iselseif condition="${pdict.selectedMenuItem === 'prod-cat'}"/>
+            <div class="form-label">${Resource.msg('import.export.data.type', 'csvImportExport', null)}</div>
+            <select class="data-type-select form-select" name="dataType">
+                <option value="" disabled selected hidden>
+                    ${Resource.msg('import.export.object.select.type.placeholder', 'csvImportExport', null)}
+                </option>
+                <isif condition="${!pdict.isOciInventoryIntegrationMode}">
+                    <option value="inventory">${Resource.msg('import.export.product.inventory', 'csvImportExport', null)}</option>
+                </isif>
+                <option value="priceBook">${Resource.msg('import.export.product.price.book', 'csvImportExport', null)}</option>
+            </select>
+        </isif>
+    </div>
+    <isif condition="${pdict.allPriceBooks}">
+        <div class="select-price-book-id select-ids d-none">
+            <div class="form-label">${Resource.msg('import.export.price.books.id', 'csvImportExport', null)}</div>
+            <select class="select-price-type form-select select-ids-list text-ellipsis pe-8" name="priceBookId">
+                <option value="" disabled selected hidden>
+                    ${Resource.msg('import.export.object.select.id.placeholder', 'csvImportExport', null)}
+                </option>
+                <isloop items="${pdict.allPriceBooks}" var="price">
+                    <option value="${price.ID}">${price.ID}</option>
+                </isloop>
+            </select>
+        </div>
+    </isif>
+    <isif condition="${pdict.inventoryListIds}">
+        <div class="select-inventory-list-ids select-ids d-none">
+            <div class="form-label">${Resource.msg('import.export.inventory.id', 'csvImportExport', null)}</div>
+            <select class="select-inventory-list form-select select-ids-list text-ellipsis pe-8" name="inventoryId">
+                <option value="" disabled selected hidden>
+                    ${Resource.msg('import.export.object.select.id.placeholder', 'csvImportExport', null)}
+                </option>
+                <isloop items="${pdict.inventoryListIds}" var="inventory">
+                    <option value="${inventory.id}">${inventory.id}</option>
+                </isloop>
+            </select>
+        </div>
+    </isif>
+</div>

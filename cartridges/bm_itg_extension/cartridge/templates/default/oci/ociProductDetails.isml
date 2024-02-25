@@ -1,0 +1,68 @@
+<isinclude template="/common/util/modules" />
+<isif condition="${pdict.record}">
+    <div class="product-content-info" data-product-id="${pdict.record.sku}" data-record-json="${JSON.stringify(pdict.record)}">
+        <div class="d-flex justify-content-end mt-2">
+            <button type="button" class="btn btn-link edit-icon oci-edit-btn" aria-label="Edit" data-bs-toggle="modal"
+                data-bs-target="#ociEditRecordModal">
+                <span>
+                    <issvgimg name="${'edit'}" color="${'#006ADC'}" /></span>
+                <span>
+                    <isprint value="${Resource.msg('button.edit', 'common', null)}" /></span>
+            </button>
+        </div>
+        <div class="on-hand-qty mt-5 d-flex">
+            <span class="text-md w-50">
+                <isprint value="${Resource.msg('inventory.on.hand.qty', 'oci', null)}" /></span>
+            <span class="value text-md">${pdict.record.onHand}</span>
+        </div>
+        <div class="safety mt-5 d-flex">
+            <span class="text-md w-50">
+                <isprint value="${Resource.msg('inventory.safety', 'oci', null)}" /></span>
+            <span class="value text-md">${pdict.record.safetyStockCount}</span>
+        </div>
+        <div class="effective-date mt-5 d-flex">
+            <span class="text-md w-50">
+                <isprint value="${Resource.msg('inventory.effective.date', 'oci', null)}" /></span>
+            <span class="value text-md">${pdict.record.effectiveDate ? pdict.record.effectiveDate : '-'}</span>
+        </div>
+        <isif condition="${pdict.record.futures && pdict.record.futures.length > 0}">
+            <div class="future-qty1 mt-5 d-flex">
+                <span class="text-md w-50">
+                    <isprint value="${Resource.msg('inventory.future.qty1', 'oci', null)}" /></span>
+                <span class="value text-md">${pdict.record.futures[0].quantity}</span>
+            </div>
+            <div class="future-qty-date1 mt-5 d-flex">
+                <span class="text-md w-50">
+                    <isprint value="${Resource.msg('inventory.future.qty.date1', 'oci', null)}" /></span>
+                <span class="value text-md">${pdict.record.futures[0].expectedDate}</span>
+            </div>
+            <isif condition="${pdict.record.futures.length > 1}">
+                <div class="future-qty2 mt-5 d-flex">
+                    <span class="text-md w-50">
+                        <isprint value="${Resource.msg('inventory.future.qty2', 'oci', null)}" /></span>
+                    <span class="value text-md">${pdict.record.futures[1].quantity}</span>
+                </div>
+                <div class="future-qty-date2 mt-5 d-flex">
+                    <span class="text-md w-50">
+                        <isprint value="${Resource.msg('inventory.future.qty.date2', 'oci', null)}" /></span>
+                    <span class="value text-md">${pdict.record.futures[1].expectedDate}</span>
+                </div>
+            </isif>
+        </isif>
+        <div class="atf mt-5 d-flex">
+            <span class="text-md w-50">
+                <isprint value="${Resource.msg('inventory.atf', 'oci', null)}" /></span>
+            <span class="value text-md">${pdict.record.atf}</span>
+        </div>
+        <div class="ato mt-5 d-flex">
+            <span class="text-md w-50">
+                <isprint value="${Resource.msg('inventory.ato', 'oci', null)}" /></span>
+            <span class="value text-md">${pdict.record.ato}</span>
+        </div>
+        <div class="reservations mt-5 d-flex">
+            <span class="text-md w-50">
+                <isprint value="${Resource.msg('inventory.reservations', 'oci', null)}" /></span>
+            <span class="value text-md">${pdict.record.reserved}</span>
+        </div>
+    </div>
+</isif>

@@ -1,0 +1,89 @@
+<isset name="settingObj" scope="page" value="${pdict.failedOrderAlert}" />
+<isinclude template="/common/util/modules"/>
+<div class="notification-system">
+    <div class="section__wrapper mt-2">
+    <div class="custom-container">
+        <form action="${settingObj.saveDataUrl}" class="failed-order-alert" method="POST" novalidate>
+            <div class="row justify-content-between">
+                <div class="d-flex col-lg-6">
+                    <div class="icon-wrapper d-flex justify-content-center">
+                        <div class="icon-bg d-flex justify-content-center align-items-center">
+                            <issvgimg name="${'alertf'}" color="${'#889096'}" />
+                        </div>
+                    </div>
+                    <div class="msg-wrapper">
+                        <h1 class="t-h6">${Resource.msg('ordering.failed.label', 'automaticNotifications', null)}</h1>
+                        <p class="text-sm text-msg slate-11">${Resource.msg('ordering.failed.message', 'automaticNotifications', null)}</p>
+                    </div>
+                    <div class="form-check form-switch automatic-notification-toggle me-7">
+                        <input class="form-check-input" type="checkbox" role="switch" id="enableFailedOrderAlert" name="enableFeature" data-pref-id="bmExtFailedOrderAlertEnabled" ${settingObj.enabled ? 'checked' : ''} />
+                    </div>
+                </div>
+                <div class="notification-form col-lg-6 ${settingObj.enabled ? '' : 'disabled'}">
+                    <div class="notification-system__right-section rounded-5 p-4">
+                        <div class="recipient-emails-form form-group">
+                            <label for="failedRecipientEmails" class="form-label"><isprint value="${Resource.msg('field.recipientemails.label', 'automaticNotifications', null)}" /></label>
+                            <input type="text" id="failedRecipientEmails" class="recipient-emails-input form-control inputfield_en not_disabled" ${settingObj.enabled ? '' : 'disabled'} name="recipientEmails" value="" placeholder="${Resource.msg('field.recipientemails.placholder', 'automaticNotifications', null)}" />
+                            <span class="text-sm recipient-emails-msg"><isprint value="${Resource.msg('field.emails.hint', 'automaticNotifications', null)}" /></span>
+                            <div class="invalid-feedback text-sm"><isprint value="${Resource.msg('field.recipientemails.error.message', 'automaticNotifications', null)}" /></div>
+                            <div class="list-container emails-list">
+                                <div class="list">
+                                    <isloop items="${settingObj.recipientEmails}" status="status" var="email">
+                                        <div class="list-item bg-slate-3 rounded-2 d-inline-flex justify-content-center align-items-center mt-2 me-2 ${status.index >= 3 ? 'd-none' : ''}" data-value="${email}">
+                                            <span class="value text-sm">${email}</span>
+                                            <span class="remove-item"></span>
+                                        </div>
+                                    </isloop>
+                                </div>
+                                <isif condition="${settingObj.recipientEmails.length > 3}">
+                                    <button type="button" class="btn btn-link btn-more text-lowercase small ${settingObj.enabled ? '' : 'disabled'}" data-bs-toggle="modal" data-bs-target="#recipientEmailsModal"><span class="list-count pe-1">${(settingObj.recipientEmails.length - 3).toFixed()}</span>${Resource.msg('literal.more', 'automaticNotifications', null)}</button>
+                                </isif>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="notification-system__right-section rounded-5 p-4 mt-4">
+                        <label class="form-label"><isprint value="${Resource.msg('literal.time.interval', 'automaticNotifications', null)}" /></label>
+                        <div class="d-flex justify-content-between align-items-end">
+                        <div class="d-flex failed-interval-alert">
+                            <div class="failed-order-alert-days me-2">
+                                <input type="text" id="failedDays" aria-required="true" class="form-control inputfield_en not_disabled" ${settingObj.enabled ? '' : 'disabled'} name="days" required value="${settingObj.interval && settingObj.interval.days ? settingObj.interval.days : ''}" />
+                                <label for="failedDays" class=" slate-11 text-sm mt-1"><isprint value="${Resource.msg('literal.interval.days', 'automaticNotifications', null)}" /></label>
+                            </div>
+
+                            <div class="failed-order-alert-hours me-2">
+                                <input type="text" id="failedHours" aria-required="true" class="form-control inputfield_en not_disabled" ${settingObj.enabled ? '' : 'disabled'} name="hours" required value="${settingObj.interval && settingObj.interval.hours ? settingObj.interval.hours : ''}" />
+                                <label for="failedHours" class="slate-11 text-sm mt-1"><isprint value="${Resource.msg('literal.interval.hours', 'automaticNotifications', null)}" /></label>
+                            </div>
+
+                            <div class="failed-order-alert-minutes">
+                                <input type="text" id="failedMinutes" aria-required="true" class="form-control inputfield_en not_disabled" ${settingObj.enabled ? '' : 'disabled'} name="minutes" required value="${settingObj.interval && settingObj.interval.minutes ? settingObj.interval.minutes : ''}" />
+                                <label for="failedMinutes" class="slate-11 text-sm mt-1"><isprint value="${Resource.msg('literal.interval.minutes', 'automaticNotifications', null)}" /></label>
+                            </div>
+                        </div>
+                            <div class="order-interval-alert text-sm mb-2">
+                                <isif condition="${!empty(settingObj.orderIntervalValue)}">
+                                    <span class="order-interval-value d-flex align-items-center"><isprint value="${settingObj.orderIntervalValue}" /></span>
+                                </isif>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="notification-system__right-section rounded-5 p-4 mt-4">
+                            <div class="failed-order-alert-threshold">
+                                <label for="countThreshold" class="form-label"><isprint value="${Resource.msg('field.failed.threshold.label', 'automaticNotifications', null)}" /></label>
+                                <input type="text" id="countThreshold" aria-required="true" class="form-control inputfield_en not_disabled" placeholder="${Resource.msg('field.failed.threshold.hint', 'automaticNotifications', null)}" name="countThreshold" required value="${settingObj.countThreshold || ''}" />
+                             <div class="invalid-feedback text-sm mt-2" bis_skin_checked="1">${Resource.msg('field.failed.threshold.error', 'automaticNotifications', null)}</div>
+                            </div>
+                        </div>
+
+                        <div class="failed-order-error-msg"></div>
+                    </div>
+                    <div class="failed-order-alert d-flex justify-content-end mt-4">
+                        <button type="submit" id="saveFailedOrderAlertSettings" class="btn btn-primary ${settingObj.enabled ? '' : 'disabled'}">${Resource.msg('button.save', 'common', null)}</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>

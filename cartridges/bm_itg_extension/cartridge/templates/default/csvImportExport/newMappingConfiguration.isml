@@ -1,0 +1,59 @@
+<isinclude template="/common/util/modules"/>
+<form action="${pdict.actionUrl}" class="form-content new-configuration-map-form mt-0" novalidate>
+    <div class="px-4">
+        <div class="badge error-badge px-1 py-3 mb-4 d-flex w-100 d-none"></div>
+    </div>
+    <div class="px-9">
+        <input type="hidden" class="process-type" name="processType" value="${pdict.processType}" />
+        <input type="hidden" class="mapping-type" name="mappingId" value="" />
+        <input type="hidden" class="edit-mode" name="editMode" value="${pdict.editMode || ''}" />
+        <div class="mapping-name form-group input">
+            <label for="mappingName" class="form-label">${Resource.msg('import.export.map.id', 'csvImportExport', null)}</label>
+            <input type="text" id="mappingName"
+                required
+                value="${pdict.editMode ? pdict.savedMappingId : ''}"
+                aria-required="true"
+                data-missing-error="${Resource.msg('import.export.map.id.error.message', 'csvImportExport', null)}"
+                name="mappingName"
+                maxlength="40"
+                class="form-control new-mapping-name inputfield_en ${pdict.editMode ? 'edit-mode': 'not_disabled'}"
+                placeholder="${Resource.msg('import.export.map.id.placeholder', 'csvImportExport', null)}" />
+            <div class="invalid-feedback text-sm mt-2" bis_skin_checked="1"></div>
+        </div>
+        <div class="mapping-table" data-object-attributes="${pdict.systemAttribute}">
+            <div class="info-msg p-3 my-6 text-sm d-flex bg-slate-2 rounded-4">
+                <span class="pe-3"><issvgimg name="${'info'}" color="${'#889096'}" /></span>
+                <p class="mb-0">${Resource.msg('import.export.info.message', 'csvImportExport', null)}</p>
+            </div>
+            <div class="mapping-table-labels border-bottom border-1 row">
+                <p class="text-sm mb-2 ps-10 table-label slate-12 font-inter-medium col-6"><isprint value="${Resource.msg('import.export.csv.column', 'csvImportExport', null)}" /></p>
+                <p class="object-attribute-label ps-9 text-sm mb-2 table-label slate-12 font-inter-medium col-6"><isprint value="${Resource.msg('import.export.object.attribute', 'csvImportExport', null)}" /></p>
+            </div>
+            <div id="mappingTable" class="mapping-table-content d-flex flex-column ps-0 overflow-auto mt-5">
+                <isif condition="${pdict.editMode}">
+                    <isloop items="${pdict.keyValueArray}" status="status" var="map">
+                        <div class="group">
+                            <isinclude template="/csvImportExport/newDataMappingRow" />
+                        </div>
+                    </isloop>
+                <iselse/>
+                    <div class="group">
+                        <isinclude template="/csvImportExport/newDataMappingRow" />
+                    </div>
+                </isif>
+            </div>
+            <button class="btn btn-link small add-button mt-5 d-flex align-items-baseline ${pdict.disableAddition ? 'disabled' : ''}" type="button">
+                <span><issvgimg name="${'add'}" color="${'#006adc'}" /></span>
+                <span><isprint value="${Resource.msg('import.export.new.column', 'csvImportExport', null)}" /></span>
+            </button>
+        </div>
+    </div>
+    <div class="action-buttons-wrapper mt-7">
+        <div class="action-buttons d-flex justify-content-end px-9  pt-7">
+            <button type="button" class="cancel btn btn-link me-1" data-bs-target="#dataMapping" data-bs-toggle="modal"
+                aria-label="Close">${Resource.msg('import.export.cancel', 'csvImportExport', null)}</button>
+            <button type="submit" class="btn btn-primary create-new-mapping">${pdict.editMode ? Resource.msg('import.export.save.map.button', 'csvImportExport', null) : Resource.msg('import.export.create.new.map.button', 'csvImportExport', null)}</button>
+        </div>
+    </div>
+
+</form>

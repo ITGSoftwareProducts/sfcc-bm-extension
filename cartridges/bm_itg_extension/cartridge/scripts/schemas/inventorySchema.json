@@ -1,0 +1,84 @@
+{
+    "primaryKey": {
+        "value": "productId"
+    },
+    "header": {
+        "attributes": {
+            "list-id": {
+                "mappingAttributeId": "ID"
+            }
+        },
+        "elements": {
+            "default-instock": {
+                "value": {
+                    "mappingAttributeId": "defaultInStockFlag"
+                },
+                "dataType": "boolean"
+            },
+            "description": {
+                "value": {
+                    "mappingAttributeId": "description"
+                }
+            }
+        }
+    },
+    "elements": {
+        "record": {
+            "attributes": {
+                "product-id": {
+                    "mappingAttributeId": "productId"
+                }
+            },
+            "elements": {
+                "allocation": {
+                    "value": {
+                        "mappingAttributeId": "allocation"
+                    }
+                },
+                "allocation-timestamp": {
+                    "value": {
+                        "mappingAttributeId": "allocationTimeStamp"
+                    },
+                    "dataType": "dateTime"
+                },
+                "perpetual": {
+                   "value": {
+                        "mappingAttributeId": "perpetual"
+                    },
+                    "dataType": "boolean"
+                },
+				"preorder-backorder-handling": {
+                   "value": {
+                        "mappingAttributeId": "preorderBackorderHandling"
+                    }
+                },
+				"preorder-backorder-allocation": {
+                   "value": {
+                        "mappingAttributeId": "preorderBackorderAllocation"
+                    }
+                },
+                "in-stock-date": {
+                    "value": {
+                         "mappingAttributeId": "inStockDatetime"
+                     },
+                     "dataType": "date"
+                 },
+				"ats": {
+                   "value": {
+                        "mappingAttributeId": "ats"
+                    }
+                },
+				"on-order": {
+                   "value": {
+                        "mappingAttributeId": "onOrder"
+                    }
+                },
+				"turnover": {
+                   "value": {
+                        "mappingAttributeId": "turnover"
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,39 @@
+<isinclude template="/common/util/modules"/>
+<div id="execution_history" class="mt-6" data-running-process-error="${Resource.msg('process.running.error.message', 'common', null)}" data-export-details-url="${pdict.exportDetailsURL}" data-job-logs-url="${URLUtils.url('ViewOperationsImpex-Monitor')}" data-show-download-file="${pdict.showDownloadFile}" data-download-file-type="${pdict.downloadFileType}" data-impex-path="${pdict.impexPath}">
+    <div class="invalid-feedback d-block text-sm mt-2"></div>
+    <div class="table-responsive">
+        <table width="100%" class="table fixed custom-table table-striped table-hover caption-top">
+            <div class="d-flex align-items-center mb-4">
+                <isif condition="${pdict.serviceType ===  Resource.msg('service.type', 'couponReplicator', null)}">
+                    <span class="table-caption me-5"><isprint value="${Resource.msg('coupon.replications.caption', 'couponReplicator', null)}" /></span>
+                <iselseif condition="${pdict.serviceType ===  Resource.msg('service.type', 'pageDesignerExport', null)}" />
+                    <span class="table-caption me-5"><isprint value="${Resource.msg('pagedesigner.export.caption', 'pageDesignerExport', null)}" /></span>
+                <iselse/>
+                    <span class="table-caption me-5"><isprint value="${Resource.msg('execution.list.caption', 'common', null)}" /></span>
+                </isif>
+
+
+                <button class="btn btn-secondary d-flex justify-content-center align-items-center rounded-2 refresh-execution-list" title="${Resource.msg('execution.list.refresh', 'common', null)}">
+                    <span class="btn-text mb-1"><issvgimg name="${'refresh'}" color="${'#11181C'}" /></span>
+                </button>
+            </div>
+            <thead>
+                <tr>
+                    <th class="table_header">${Resource.msg('column.process', 'common', null)}</th>
+                    <th class="table_header" >${Resource.msg('column.start', 'common', null)}</th>
+                    <th class="table_header">${Resource.msg('column.duration', 'common', null)}</th>
+                    <th class="table_header">${Resource.msg('column.status', 'common', null)}</th>
+                    <th class="table_header">${Resource.msg('column.actions', 'common', null)}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <isif condition="${!empty(pdict.executionList)}">
+                    <isloop items="${pdict.executionList}" var="execution">
+                        <isinclude template="executionHistory/executionRow" />
+                    </isloop>
+                </isif>
+            </tbody>
+        </table>
+    </div>
+</div>
+<isinclude template="executionHistory/executionModal" />

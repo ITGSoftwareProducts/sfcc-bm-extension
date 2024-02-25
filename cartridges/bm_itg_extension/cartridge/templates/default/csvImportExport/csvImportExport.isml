@@ -1,0 +1,105 @@
+<isdecorate template="common/frame/page">
+    <isinclude template="/common/util/modules" />
+    <isscript>
+        var assets = require('*/cartridge/scripts/assets');
+        assets.addJs('/js/csvImportExport.js');
+        assets.addJs('/js/dataMappingConfig.js');
+    </isscript>
+    <isset name="constants" value="${require('*/cartridge/scripts/helpers/constants')}" scope="page" />
+    <div data-select-menu-item="${pdict.selectedMenuItem}"  data-object-attributes="${pdict.systemAttribute}"
+        data-auth-token-url="${pdict.getAuthTokenURL}" class="import-export-container">
+        <div id="ImportExportGroup" class="import-export-wrapper">
+            <div class="section__wrapper">
+                <div class="d-flex flex-md-row">
+                    <div class="section__img">
+                        <img src="${URLUtils.staticURL('/images/csv-import-export.png')}" class="img-fluid"
+                            alt="${Resource.msg('breadcrumb.csv.import.export.title', 'csvImportExport', null)}" />
+                    </div>
+                    <div class="section__text">
+                        <h1 class="t-h5 mb-0">${Resource.msg('import.export.title', 'csvImportExport', null)}</h1>
+                        <p class="text-sm section__msg mt-3 mb-0">
+                            ${Resource.msg('import.export.description', 'csvImportExport', null)}
+                        </p>
+                        <div class="import-export-buttons mt-4 d-flex">
+                            <button
+                                class="selector-button import-button d-flex gap-2 align-items-center justify-content-center"
+                                data-bs-toggle="collapse" data-bs-target="#importSection" aria-expanded="false"
+                                aria-controls="importSection">
+                                <issvgimg name="${'import'}" color="${'#11181C'}" />
+                                ${Resource.msg('import.button', 'csvImportExport', null)}
+                            </button>
+                            <button
+                                class="selector-button export-button ms-3 d-flex gap-2 align-items-center justify-content-center"
+                                data-bs-toggle="collapse" data-bs-target="#exportSection" aria-expanded="false"
+                                aria-controls="exportSection">
+                                <issvgimg name="${'export'}" color="${'#11181C'}" />
+                                ${Resource.msg('export.button', 'csvImportExport', null)}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="collapse csv-section" id="importSection" data-bs-parent="#ImportExportGroup" data-define="${Resource.msg('import.export.define', 'csvImportExport', null)}">
+                <div class="section__wrapper mid-section mt-2">
+                    <form class="csv-import-form execute-import-export" action="${pdict.actionUrl}" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="dataMappingName" />
+                        <div class="import-section d-flex align-items-baseline justify-content-start gap-6">
+                            <isinclude template="/csvImportExport/dataSelection" />
+                            <div class="position-relative">
+                                <label for="csvfile" class="form-label">${Resource.msg('import.export.csv.file', 'csvImportExport', null)}</label>
+                                <input type="file" id="csvfile" accept=".csv" capture class="form-control csv-file-input" aria-required="true" name="csvfile" data-csv-placeholder="${Resource.msg('import.export.upload', 'csvImportExport', null)}"/>
+                                <label for="csvfile" class="LableWithFile d-flex gap-2 w-100">
+                                    <span class="csv-icon"><issvgimg name="${'upload'}" color="${'#11181C'}"/></span>
+                                    <p class="file-name text-ellipsis mb-0">
+                                        <span class="file-name-placeholder"><isprint value="${Resource.msg('import.export.upload', 'csvImportExport', null)}" /></span>
+                                    </p>
+                                </label>
+                            </div>
+                            <input type="hidden" name="processType" value="Import"/>
+                            <div class="define-btn-wrapper">
+                                <div class="form-label">${Resource.msg('import.export.data.mapping', 'csvImportExport', null)}
+                                </div>
+                                <button class="btn btn-secondary data-mapping-button disabled d-flex justify-content-center align-items-center" data-data-map-url="${pdict.dataMapURL}"
+                                    data-bs-toggle="modal" data-bs-target="#dataMapping">
+                                    <span><issvgimg name="${'configure'}" color="${'#11181C'}" /></span>
+                                    <span class="btn-text ps-1 text-ellipsis">${Resource.msg('import.export.define', 'csvImportExport', null)}</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="error-message badge error-badge p-3 mt-4 d-flex d-none" data-error-message="${pdict.invalidFileType}"></div>
+                        <button class="btn btn-primary submit-import-button mt-7 px-8 disabled" type="submit">${Resource.msg('import.button', 'csvImportExport', null)}</button>
+                    </form>
+                </div>
+            </div>
+            <div class="collapse csv-section" id="exportSection" data-bs-parent="#ImportExportGroup" data-define="${Resource.msg('import.export.define', 'csvImportExport', null)}">
+                <div class="section__wrapper mid-section mt-2">
+                <form class="csv-export-form execute-import-export" action="${pdict.actionUrl}">
+                    <input type="hidden" name="dataMappingName" />
+                    <div class="export-section d-flex align-items-baseline justify-content-start gap-6">
+                        <isinclude template="/csvImportExport/dataSelection" />
+                        <input type="hidden" name="processType" value="Export"/>
+                        <div class="data-mapping-wrapper">
+                            <div class="form-label">${Resource.msg('import.export.data.mapping', 'csvImportExport', null)}
+                            </div>
+                            <button class="btn btn-secondary data-mapping-button disabled d-flex justify-content-center align-items-center" data-data-map-url="${pdict.dataMapURL}"
+                                data-bs-toggle="modal" data-bs-target="#dataMapping">
+                                <span> <issvgimg name="${'configure'}" color="${'#11181C'}" /></span>
+                                <span class="btn-text ps-1 text-ellipsis">${Resource.msg('import.export.define', 'csvImportExport', null)}</span>
+                            </button>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary export-button mt-7 px-8 disabled" type="submit">${Resource.msg('export.button', 'csvImportExport', null)}</button>
+                </form>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-section status">
+        </div>
+
+        <div class="section__wrapper mt-2 pt-8">
+            <isinclude template="executionHistory/executionList" />
+        </div>
+        <isinclude template="/csvImportExport/csvImportExportModals" />
+    </div>
+</isdecorate>

@@ -1,0 +1,4 @@
+<div class="order-Alerts">
+    <isinclude template="automaticNotificationSettings/orderIntervalAlert"/>
+    <isinclude template="automaticNotificationSettings/failedOrderAlert"/>
+</div>

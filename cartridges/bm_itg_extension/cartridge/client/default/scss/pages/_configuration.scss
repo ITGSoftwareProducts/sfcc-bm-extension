@@ -1,0 +1,59 @@
+.configuration {
+    &__badge {
+        width: 100%;
+        border: 1px solid $slate-5;
+        box-shadow: 0 1px 3px 0 rgba(17, 24, 29, 0.08);
+
+        @include media-breakpoint-up(xxl) {
+            width: 50%;
+        }
+
+        .data-mapping-section {
+            button {
+                min-width: 200px;
+            }
+        }
+    }
+
+    .data-mapping-container {
+        .saved-mapping-config {
+            .form-check {
+                padding-right: $unit-xlg;
+                min-height: 50px;
+
+                &:nth-child(odd) {
+                    background-color: $blue-3;
+                }
+            }
+        }
+
+        .delete-map-wrapper {
+            background-color: $red-9;
+            padding: $unit-md $unit;
+            transition: left 0.5s ease;
+            width: 0;
+            left: 0;
+            height: 100%;
+            overflow: hidden;
+
+            span,
+            svg,
+            .actions {
+                opacity: 0;
+                transition: opacity 1s ease;
+            }
+
+            &.shown {
+                span,
+                svg,
+                .actions {
+                    opacity: 1;
+                }
+            }
+
+            .delete-map-wrapper-content {
+                height: 26px;
+            }
+        }
+    }
+}

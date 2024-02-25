@@ -1,0 +1,39 @@
+<isset name="settingObj" scope="page" value="${pdict.campaignManagementNotification}" />
+<isinclude template="/common/util/modules"/>
+<isset name="validationResult" scope="page" value="${pdict.validationresult}" />
+<isset name="isInvalid" scope="page" value="${validationResult && validationResult.valid === false && !empty(validationResult.faultyCampaigns) && !empty(validationResult.faultyCampaigns[pdict.campaignobj.campaignId])}" />
+<div class="campaign position-relative d-flex justify-content-between mt-2">
+    <div class="d-flex">
+        <div class="content-notification-campaign position-relative">
+            <input type="text" id="campaignId" aria-required="true" class="form-control inputfield_en not_disabled" name="campaignId" required value="${pdict.campaignobj ? pdict.campaignobj.campaignId : ''}" ${settingObj.enabled ? '' : 'disabled'}/>
+            <ul class="suggestion-list  bg-surface-white  position-absolute rounded-3 p-0"></ul>
+            <div class="invalid-feedback text-sm ${isInvalid ? 'display-error-msg' : ''}">
+                <isif condition="${isInvalid}">
+                    <isprint value="${validationResult.faultyCampaigns[pdict.campaignobj.campaignId]}" />
+                <iselse/>
+                    <isprint value="${Resource.msg('field.campaignid.missing.error', 'automaticNotifications', null)}" />
+                </isif>
+            </div>
+        </div>
+        <div class="linked-icon mx-2">
+            <issvgimg name="${'linked'}" color="${'#d7dbdf'}" />
+        </div>
+        <div class="content-notification-days me-2">
+            <input type="number" id="days" aria-required="true" class="form-control inputfield_en not_disabled" name="days" required value="${pdict.campaignobj && pdict.campaignobj.days ? pdict.campaignobj.days : ''}" ${settingObj.enabled ? '' : 'disabled'}/>
+            <label for="days" class="slate-11 text-sm mt-1"><isprint value="${Resource.msg('literal.interval.days', 'automaticNotifications', null)}" /></label>
+        </div>
+
+        <div class="content-notification-hours me-2">
+            <input type="number" id="hours" aria-required="true" class="form-control inputfield_en not_disabled" name="hours" required value="${pdict.campaignobj && pdict.campaignobj.hours ? pdict.campaignobj.hours : ''}" ${settingObj.enabled ? '' : 'disabled'}/>
+            <label for="hours" class="slate-11 text-sm mt-1"><isprint value="${Resource.msg('literal.interval.hours', 'automaticNotifications', null)}" /></label>
+        </div>
+
+        <div class="content-notification-minutes">
+            <input type="number" id="minutes" aria-required="true" class="form-control inputfield_en not_disabled" name="minutes" required value="${pdict.campaignobj && pdict.campaignobj.minutes ? pdict.campaignobj.minutes : ''}" ${settingObj.enabled ? '' : 'disabled'}/>
+            <label for="minutes" class="slate-11 text-sm mt-1"><isprint value="${Resource.msg('literal.interval.minutes', 'automaticNotifications', null)}" /></label>
+        </div>
+    </div>
+    <button class="remove-button btn btn-link mb-4 align-self-center p-0 ${settingObj.enabled ? '' : 'disabled'}" type="button" >
+        <issvgimg name="${'removeIcon'}" />
+    </button>
+</div>

@@ -1,0 +1,278 @@
+.job-execution-container {
+    .job-execution-img {
+        object-fit: cover;
+    }
+
+    .section__msg {
+        max-width: unset;
+    }
+
+    .job-execution-action {
+        margin-top: $unit-xlg * 2.6;
+    }
+
+    .job-execution-buttons {
+        .job-execution-generate {
+            padding: $unit * 1.125 $unit-xlg * 0.95;
+
+            &:focus {
+                padding: $unit $unit-xlg * 0.9;
+            }
+        }
+    }
+}
+
+.job-execution-content {
+    max-width: 1440px;
+}
+
+.chart-area-wrapper {
+    overflow-x: scroll;
+    width: 1300px;
+    margin-bottom: $unit-xlg * 5;
+
+    @media (max-width: 1499px) {
+        width: 1100px;
+    }
+
+    @media (max-width: 1300px) {
+        width: 900px;
+    }
+
+    @media (max-width: 1100px) {
+        width: 700px;
+    }
+
+    &::-webkit-scrollbar {
+        width: 5px;
+        height: 10px;
+        background: $slate-1;
+        border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+        border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background: $slate-8;
+    }
+}
+
+.chart-area-wrapper > canvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+}
+
+.chart-area-wrapper2 {
+    width: 5000px;
+}
+
+#axis-test {
+    left: 0;
+    top: 0;
+}
+
+#chartjs-tooltip {
+    z-index: 10;
+}
+
+.custom-tooltip {
+    border: 0.5px solid $slate-7;
+    border-radius: 20px;
+    padding: $unit-xlg;
+
+    .executor {
+        border-top: 1px solid $slate-4;
+    }
+
+    .status {
+        border-top: 1px solid $slate-4;
+
+        &.ok {
+            color: $mint-11;
+        }
+
+        &.error {
+            color: $orange-11;
+        }
+
+        &.aborted {
+            color: $yellow-11;
+        }
+
+        &.pending,
+        &.running {
+            color: $violet-11;
+        }
+    }
+
+    .badge {
+        border-radius: 100px;
+
+        &:not(.in-progress-badge)::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            margin-right: $unit;
+            border-radius: 50%;
+        }
+
+        &.success-badge {
+            border: 1px solid $mint-5;
+
+            &::before {
+                background-color: $mint-8;
+            }
+        }
+
+        &.error-badge {
+            border: 1px solid $red-5;
+            color: $orange-11;
+
+            &::before {
+                background-color: $red-8;
+            }
+        }
+
+        &.back-order-badge {
+            border: 1px solid $yellow-5;
+
+            &::before {
+                background-color: $yellow-8;
+            }
+        }
+
+        &.in-progress-badge {
+            &::before {
+                animation: rotate 2s linear infinite;
+            }
+        }
+    }
+}
+
+.job-execution-wrapper {
+    padding: $unit * 4.5 $unit-xlg * 2.2 $unit-xlg * 1.4;
+    border-radius: $section-border-radius;
+
+    .empty-search-result {
+        margin-top: $unit-xlg * 3.8;
+        margin-bottom: $unit-xlg * 5.6;
+    }
+
+    .job-execution {
+        object-fit: cover;
+    }
+
+    .empty-job-execution-msg1,
+    .empty-job-execution-msg2 {
+        max-width: 250px;
+    }
+}
+
+#jobRatioModal {
+    .top-section {
+        border-bottom: 1px solid $slate-5;
+
+        .form-group {
+            .calendar-icon {
+                top: $sub-unit * 5.5;
+            }
+
+            &.has-error {
+                svg {
+                    path {
+                        stroke: $red-9;
+                    }
+                }
+            }
+        }
+    }
+
+    .job-ratio-date {
+        background-image: url("../icons/calendar.svg");
+        background-repeat: no-repeat;
+        background-position: right 8px top 9px;
+    }
+
+    .result-section {
+        .warning-message {
+            background-color: $yellow-2;
+            border: 1px solid $yellow-5;
+        }
+
+        .safe-message {
+            background-color: $green-2;
+            border: 1px solid $green-5;
+        }
+
+        .result-message {
+            display: flex;
+            font-size: $fs-xxxs;
+            font-weight: $fw-medium;
+        }
+    }
+}
+
+.calendar-wrapper {
+    padding: $unit-md;
+    border: 0.5px solid $slate-7;
+    z-index: 10;
+    width: min-content;
+
+    .time-inputs-wrapper {
+        border-top: 1px solid $slate-4;
+
+        .time-inputs {
+            padding-block-end: $unit * 2.125;
+        }
+
+        .form-control {
+            min-width: $unit * 5;
+            width: $unit * 5;
+            height: 40px;
+        }
+
+        .toggle-time {
+            cursor: pointer;
+        }
+    }
+
+    .ui-datepicker {
+        border: none;
+        padding: 0;
+    }
+
+    .actions {
+        border-top: 1px solid $slate-4;
+
+        .save {
+            padding-left: $unit * 5.5;
+            padding-right: $unit * 5.5;
+
+            &:focus {
+                padding-left: $unit * 5.375;
+                padding-right: $unit * 5.375;
+            }
+        }
+    }
+}
+
+.last-four-hour {
+    &.selector-button {
+        min-width: 153px;
+    }
+}
+
+@include media-breakpoint-down(xl) {
+    .job-execution-buttons {
+        flex-direction: column !important;
+    }
+
+    .job-execution-ratio {
+        margin-top: $unit-xlg;
+    }
+}

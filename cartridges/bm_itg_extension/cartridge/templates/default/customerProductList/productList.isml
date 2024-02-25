@@ -1,0 +1,85 @@
+<div class="customer-productlist" data-search-term="${pdict.searchTerm}">
+    <isif condition="${!empty(pdict.productLists) && pdict.productLists.length > 1}">
+        <div class="d-flex justify-content-start">
+            <div class="product-list-filter text-right">
+                <label for="filterList" class="form-label me-3">
+                    <isprint value="${Resource.msg('productlist.filter.label', 'customerProductLists', null)}" />
+                </label>
+                <select id="filterList" class="product-list-name form-select d-inline-block w-auto">
+                    <isloop items="${pdict.productLists}" var="productList" status="loopstatus">
+                        <option value="${productList.ID}" ${productList.ID === pdict.selectedListId ? 'selected' : ''}>${productList.name}</option>
+                    </isloop>
+                </select>
+            </div>
+        </div>
+    </isif>
+    <isif condition="${!empty(pdict.paginationModel) && pdict.paginationModel.totalCount > 0}">
+        <div class="d-flex justify-content-between align-items-center mb-4 ms-1">
+            <div class="total-count text-sm slate-11">
+                <span class="total-count-number"><isprint value="${pdict.paginationModel.totalCount || ''}"/></span>
+                <span>${pdict.paginationModel.totalCount === 1 ? Resource.msg('productlist.one.item', 'customerProductLists', null) : Resource.msg('productlist.item', 'customerProductLists', null)}</span>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table width="100%" class="table fixed custom-table table-striped table-hover caption-top product-list-table">
+                <thead>
+                    <tr>
+                        <th class="table_header productlist-item-column">${Resource.msg('productlist.items', 'customerProductLists', null)}</th>
+                        <th class="table_header productlist-product-name-column">${Resource.msg('productlist.product.name', 'customerProductLists', null)}</th>
+                        <th class="table_header productlist-quantity-column">${Resource.msg('productlist.quantity.value', 'customerProductLists', null)}</th>
+                        <th class="table_header productlist-purchased-quantity-column">
+                            ${Resource.msg('productlist.purchased.quantity.value', 'customerProductLists', null)}</th>
+                        <th class="table_header productlist-priority-column">${Resource.msg('productlist.priority', 'customerProductLists', null)}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <isloop items="${pdict.paginationModel.pageElements}" var="productList">
+                        <tr data-coupon-id="${productList.productID}">
+                            <td class="table_detail">
+                                <isprint value="${productList.productID}" />
+                            </td>
+                            <td class="table_detail">
+                                <isprint value="${productList.product.name}" />
+                            </td>
+                            <td class="table_detail">
+                                <isprint value="${productList.quantityValue}" />
+                            </td>
+                            <td class="table_detail">
+                                <isprint value="${productList.purchasedQuantityValue}" />
+                            </td>
+                            <td class="table_detail">
+                                <isprint value="${productList.priority}" />
+                            </td>
+                        </tr>
+                    </isloop>
+                </tbody>
+            </table>
+        </div>
+        <isinclude template="/common/components/pagination" />
+    <iselse>
+        <div class="empty-search-result empty-list">
+            <div class="d-flex align-items-center flex-column gap-3">
+                <img src="${URLUtils.staticURL('/icons/product-lists-empty.svg')}" class="img-fluid"
+                    alt="product lists" />
+                <isif condition="${!empty(pdict.productLists) && pdict.productLists.length > 1}">
+                    <isprint value="${Resource.msg('no.product.found.in.the.list', 'customerProductLists', null)}" />
+                <iselse>
+                    <div class="empty-msg">
+                        <isif condition="${pdict.message}">
+                            <p class="empty-search-msg text-center mb-1 slate-11">
+                                <isprint value="${pdict.message}" />
+                            </p>
+                        <iselse/>
+                            <p class="empty-search-msg text-center mb-1 slate-11">
+                                <isprint value="${Resource.msg('result.empty.copy1', 'customerProductLists', null)}" />
+                            </p>
+                            <p class="empty-search-msg result-msg text-center mb-0 font-inter-medium slate-11">
+                                <isprint value="${Resource.msg('result.empty.copy2', 'customerProductLists', null)}" />
+                            </p>
+                        </isif>
+                    </div>
+                </isif>
+            </div>
+        </div>
+    </isif>
+</div>

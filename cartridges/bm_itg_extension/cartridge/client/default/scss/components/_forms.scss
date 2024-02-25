@@ -1,0 +1,191 @@
+
+.main {
+    .form-label {
+        font-family: $font-inter-semi-bold;
+        font-size: $fs-xxs;
+        line-height: $lh-xs;
+        color: $black;
+    }
+
+    input[type='file'] {
+        cursor: pointer;
+        opacity: 0;
+        max-width: 100%;
+        z-index: 1;
+        position: relative;
+
+        + label {
+            margin-block-start: $unit * 4;
+            position: absolute;
+            top: 0;
+        }
+    }
+
+    input[type='file'] + label,
+    input[type='text'],
+    input[type='date'],
+    input[type='email'],
+    input[type='number'],
+    input[type='password'],
+    input[type='tel'],
+    textarea,
+    .form-select,
+    .form-control {
+        height: 44px;
+        padding: $sub-unit * 2.5;
+        min-width: 200px;
+        font-size: $fs-xxs;
+        line-height: $lh-xs;
+        font-family: $font-inter;
+        color: $black;
+        border: 1px solid $slate-7;
+        border-radius: 10px;
+
+        &:hover {
+            border: 1px solid $slate-8;
+            color: $slate-12;
+            background-color: $slate-2;
+        }
+
+        &:focus,
+        &:active {
+            border: 1px solid $slate-7;
+            box-shadow: 0 0 0 4px $slate-3;
+
+            ~ svg {
+                path {
+                    stroke: $blue-11;
+                }
+            }
+        }
+
+        &.selected {
+            border: 1px solid $slate-8;
+            background-color: $slate-2;
+        }
+
+        &::placeholder {
+            color: $slate-9;
+            font-weight: $fw-regular;
+        }
+    }
+
+    .form-group {
+        &.has-error {
+            input[type='text'],
+            input[type='date'],
+            input[type='email'],
+            input[type='number'],
+            input[type='password'],
+            input[type='tel'],
+            textarea,
+            .form-control {
+                border-color: $red-9;
+                color: $red-11;
+
+                &::placeholder {
+                    color: $red-9;
+                }
+            }
+        }
+    }
+
+    .form-control {
+        &.is-invalid {
+            border-color: $red-9;
+            color: $red-11;
+
+            &::placeholder {
+                color: $red-9;
+            }
+        }
+    }
+
+    .form-check {
+        &.form-switch {
+            .form-check-input {
+                background-image: url("../icons/switch.svg");
+                width: $unit * 5.75;
+                height: $unit * 3.5;
+                background-color: $slate-6;
+                border-radius: $sub-unit * 4;
+
+                &:checked {
+                    background-image: url("../icons/switch.svg");
+                    background-size: auto;
+                }
+            }
+        }
+
+        input[type="checkbox"],
+        input[type="radio"] {
+            cursor: pointer;
+            border-color: $slate-7;
+
+            &:hover {
+                border-color: $slate-8;
+            }
+
+            &:focus {
+                box-shadow: none;
+                border-color: $slate-9;
+            }
+
+            &:checked {
+                background-color: $blue-9;
+                border-color: $blue-9;
+            }
+        }
+
+        input[type="radio"] {
+            width: $unit-xlg;
+            height: $unit-xlg;
+        }
+
+        input[type="checkbox"] {
+            width: $unit-xlg;
+            height: $unit-xlg;
+            border-radius: $sub-unit;
+
+            &.circular {
+                border-radius: 50%;
+                width: $unit * 3;
+                height: $unit * 3;
+
+                &:disabled,
+                &.disable {
+                    background-image: url("../icons/check.svg");
+                    background-size: $unit * 3;
+                    background-color: $slate-7;
+                }
+            }
+
+            &:checked {
+                background-image: url("../icons/tick.svg");
+                background-size: $unit * 1.25;
+
+                &.circular {
+                    background-image: url("../icons/check.svg");
+                    background-size: $unit * 3;
+                }
+            }
+        }
+    }
+
+    .form-select {
+        appearance: none;
+        -webkit-appearance: none;
+
+        &.is-invalid {
+            background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem) !important;
+
+            option {
+                color: $black;
+            }
+
+            option:checked {
+                color: $red-11;
+            }
+        }
+    }
+}

@@ -1,0 +1,29 @@
+<isdecorate template="common/frame/page">
+    <div class="error-page section__wrapper">
+        <div class="error-page-wrapper d-flex justify-content-between align-items-center m-auto gap-7">
+            <div class="left-section">
+                <h3 class="font-inter-tight">
+                    <isprint value="${Resource.msg('error.title', 'error', null)}" />
+                </h3>
+                <p class="text-lg mt-1 mb-0 font-inter-medium">
+                    <isprint value="${pdict.message}" />
+                </p>
+                <p class="text-lg mb-0 font-inter-medium">
+                    <isprint value="${Resource.msg('error.copy2', 'error', null)}" />
+                </p>
+                <div class="buttons-wrapper mt-7 d-flex gap-3">
+                    <a class="btn btn-primary back-button" href="${URLUtils.url('ViewApplication-DisplayWelcomePage')}"
+                        role="button">
+                        <isprint value="${Resource.msg('error.btn.back', 'error', null)}" /></a>
+                    <isif condition="${pdict.currentUrl}">
+                        <a class="btn btn-secondary refresh-button" href="${pdict.currentUrl}" role="button">
+                            <isprint value="${Resource.msg('error.btn.refresh', 'error', null)}" />
+                        </a>
+                    </isif>
+                </div>
+            </div>
+            <div class="right-section"></div>
+
+        </div>
+    </div>
+</isdecorate>

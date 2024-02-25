@@ -1,0 +1,35 @@
+<div id="ociEditRecordModal" class="modal oci-modal oci-edit-record-modal right fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="${pdict.updateRecordActionUrl}" class="oci-record-edit" method="POST" name="record-form" novalidate>
+                <div class="modal-header border-0 position-fixed top-0 z-2">
+                    <h1 class="modal-title text-sm" id="recipientEmailsModalLabel">
+                        <isprint value="${Resource.msg('inventory.edit.record', 'oci', null)}" />
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-left">
+                    <div class="top-section pt-8">
+                        <div class="product-info d-flex align-items-center">
+                            <img src="${URLUtils.staticURL('/images/product.png')}" class="img-fluid" alt="product" />
+                            <div class="name-wrapper ms-7">
+                                <div class="file-name text-lg oci-edit-modal-product-id"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="productId" />
+                    <input type="hidden" name="location" />
+                    <isinclude template="/oci/ociRecordForm" />
+                </div>
+                <div class="modal-footer position-fixed bottom-0 z-2 px-9 py-7">
+                    <button type="button" class="btn btn-link m-0 me-4" data-bs-dismiss="modal" aria-label="Cancel">
+                        <isprint value="${Resource.msg('button.cancel', 'common', null)}" />
+                    </button>
+                    <button type="submit" class="btn btn-primary update-record add-btn m-0" aria-label="Add">
+                        <isprint value="${Resource.msg('button.save', 'common', null)}" />
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

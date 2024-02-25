@@ -1,0 +1,81 @@
+<isset name="constants" value="${require('*/cartridge/scripts/helpers/constants')}" scope="page" />
+<div data-action-url="${pdict.actionUrl}" class="coupon-list-form">
+    <isif condition="${!empty(pdict.couponList)}">
+        <table  width="100%" class="fixed table custom-table table-striped table-hover caption-top mt-6 coupon-table ${pdict.sortRule ? 'sorting' : ''}" data-sort-rule="${pdict.sortRule}" data-coupon-id="${pdict.couponId}">
+            <thead>
+                <tr>
+                    <th class="table_header coupon-id-column ${pdict.sortBy === 'coupon_id' ? 'sort-' + pdict.sortRule : ''}" data-sort-type="coupon_id">${Resource.msg('column.id.label', 'couponReplicator', null)}</th>
+                    <th class="table_header coupon-description-column ${pdict.sortBy === 'description' ? 'sort-' + pdict.sortRule : ''}" data-sort-type="description">${Resource.msg('column.description.label', 'couponReplicator', null)}</th>
+                    <th class="table_header coupon-type-column ${pdict.sortBy === 'type' ? 'sort-' + pdict.sortRule : ''}" data-sort-type="type">${Resource.msg('column.coupontype.label', 'couponReplicator', null)}</th>
+                    <th class="table_header">${Resource.msg('column.codescount.label', 'couponReplicator', null)}</th>
+                    <th class="table_header coupon-enable-column ${pdict.sortBy === 'enabled' ? 'sort-' + pdict.sortRule : ''}" data-sort-type="enabled">${Resource.msg('column.enabled.label', 'couponReplicator', null)}</th>
+                    <th class="table_header action">${Resource.msg('column.actions', 'common', null)}</th>
+                </tr>
+            </thead>
+            <div class="total-count slate-11 text-sm mt-6">
+                <span class="total-count-number"><isprint value="${pdict.totalCount}"/></span>
+                <span class="ps-1">${Resource.msg('coupon.label', 'couponReplicator', null)}</span>
+            </div>
+                <tbody>
+                <isloop items="${pdict.couponList}" var="coupon">
+                    <tr class="coupon-item" data-coupon-json="${JSON.stringify(coupon)}">
+                        <td class="table_detail">
+                            <isprint value="${coupon.coupon_id}" /> &nbsp;
+                        </td>
+                        <td class="table_detail">
+                            <isprint value="${coupon.description}" /> &nbsp;
+                        </td>
+                        <td class="table_detail">
+                            <isif condition="${coupon.type === 'multiple_codes'}" >
+                                <isprint value="${constants.COUPON_REPLICATOR.COUPON_TYPES.MULTIPLE_CODE}" /> &nbsp;
+                            <iselseif condition="${coupon.type === 'system_codes'}" />
+                                <isprint value="${constants.COUPON_REPLICATOR.COUPON_TYPES.SYSTEM_CODE}" /> &nbsp;
+                            </isif>
+                        </td>
+                        <td class="table_detail">
+                            <isprint value="${coupon.total_codes_count}" /> &nbsp;
+                        </td>
+                        <td class="table_detail">
+                            <isprint value="${coupon.enabled ? Resource.msg('literal.yes', 'couponReplicator', null) : Resource.msg('literal.no', 'couponReplicator', null)}" /> &nbsp;
+                        </td>
+                        <td class="table_details actions" nowrap="nowrap">
+                            <button type="submit" class="btn btn-secondary small replicate-btn select-coupon" data-bs-toggle="modal" data-bs-target="#replicate-coupon-modal" data-case-insensitive="${coupon.case_insensitive}" data-multiple-codes="${coupon.multiple_codes_per_basket}">${Resource.msg('replicate.cta', 'couponReplicator', null)}</button>
+                        </td>
+                    </tr>
+                </isloop>
+            </tbody>
+        </table>
+
+        <div id="replicate-coupon-modal" class="replicate-coupon-modal modal right fade" data-coupon-id="${pdict.couponId}">
+            <div class="modal-dialog">
+                <div class="modal-content text-left">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title slate-11 text-sm">${Resource.msg('replicate.coupon.label', 'couponReplicator', null)}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body"></div>
+                </div>
+            </div>
+        </div>
+        <isinclude template="/common/components/pagination" />
+    <iselse>
+        <div class="empty-search-result d-flex align-items-center flex-column">
+            <img src="${URLUtils.staticURL('/images/coupon.png')}" class="coupon-img img-fluid" alt="coupons" />
+            <div class="empty-msg mt-6">
+                <isif condition="${pdict.totalCount === 0}">
+                    <p class="empty-search-msg slate-11 text-center mb-1">
+                        <isprint value="${Resource.msg('coupon.no.search.result', 'couponReplicator', null)}" />
+                    </p>
+                <iselse/>
+                    <p class="empty-search-msg slate-11 text-center mb-1">
+                        <isprint value="${Resource.msg('coupon.search.empty1', 'couponReplicator', null)}" />
+                    </p>
+                    <p class="empty-search-msg slate-11 result-msg font-inter-medium text-center mb-0">
+                        <isprint value="${Resource.msg('coupon.search.empty2', 'couponReplicator', null)}" />
+                    </p>
+                </isif>
+            </div>
+        </div>
+    </isif>
+</div>

@@ -1,0 +1,10 @@
+{
+  "caches": [
+    {
+      "id": "ocapiDataAuthToken"
+    },
+    {
+      "id": "ociCommerceApiAuthToken"
+    }
+  ]
+}
