@@ -1,0 +1,29 @@
+<iscontent type="text/html" charset="UTF-8" compact="true"/>
+
+<!DOCTYPE html>
+<html lang="${require('dw/util/Locale').getLocale(request.getLocale()).getLanguage()}">
+    <head>
+        <isinclude template="/common/frame/htmlHead" />
+        <script src="${URLUtils.staticURL('/js/scriptInjectionStopper.js')}"></script>
+    </head>
+    <body>
+
+        <div class="page" data-action="${pdict.action}" data-querystring="${pdict.queryString}" >
+            <isinclude url="${URLUtils.url('SiteNavigationBar-IncludeFrameTop','SelectedMenuItem',pdict.SelectedMenuItem,'CurrentMenuItemId',pdict.CurrentMenuItemId)}">
+            <div role="main" id="maincontent">
+                <isinclude template="/common/components/pageBreadcrumbs"/>
+                <isreplace/>
+            </div>
+            <isinclude url="${URLUtils.url('SiteNavigationBar-IncludeFrameBottom')}">
+            <!--[if gt IE 9]><!-->
+                <isinclude sf-toolkit="off" template="/common/frame/scripts" />
+            <!--<![endif]-->
+        </div>
+        <div class="error-messaging"></div>
+         <div class="toast-messaging toast-container position-fixed"></div>
+         <!--[if lt IE 10]>
+            <isinclude sf-toolkit="off" template="/common/frame/scripts" />
+        <![endif]-->
+    </body>
+    <isinclude template="/common/components/footer"/>
+</html>

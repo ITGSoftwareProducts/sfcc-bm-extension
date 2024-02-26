@@ -1,0 +1,188 @@
+// style guide colors
+$min-contrast-ratio: 2.5;
+
+$black: #11181c;
+$white :#fbfcfd;
+
+$surface-white: #fff;
+
+$slate-1: #fbfcfd;
+$slate-2: #f8f9fa;
+$slate-3: #f1f3f5;
+$slate-4: #eceef0;
+$slate-5: #e6e8eb;
+$slate-6: #dfe3e6;
+$slate-7: #d7dbdf;
+$slate-8: #c1c8cd;
+$slate-9: #889096;
+$slate-10: #7e868c;
+$slate-11: #687076;
+$slate-12: #11181c;
+
+$blue-1: #fbfdff;
+$blue-2: #f5faff;
+$blue-3: #edf6ff;
+$blue-4: #e1f0ff;
+$blue-5: #cee7fe;
+$blue-6: #b7d9f8;
+$blue-7: #96c7f2;
+$blue-8: #5eb0ef;
+$blue-9: #0091ff;
+$blue-10: #0081f1;
+$blue-11: #006adc;
+$blue-12: #00254d;
+
+$violet-1: #fdfcfe;
+$violet-2: #fbfaff;
+$violet-3: #f5f2ff;
+$violet-4: #ede9fe;
+$violet-5: #e4defc;
+$violet-6: #d7cff9;
+$violet-7: #c4b8f3;
+$violet-8: #aa99ec;
+$violet-9: #6e56cf;
+$violet-10: #644fc1;
+$violet-11: #5746af;
+$violet-12: #20134b;
+
+$green-1: #fbfefc;
+$green-2: #f2fcf5;
+$green-3: #e9f9ee;
+$green-4: #ddf3e4;
+$green-5: #ccebd7;
+$green-6: #b4dfc4;
+$green-7: #92ceac;
+$green-8: #5bb98c;
+$green-9: #30a46c;
+$green-10: #299764;
+$green-11: #18794e;
+$green-12: #153226;
+
+$mint-1: #f9fefd;
+$mint-2: #effefa;
+$mint-3: #e1fbf4;
+$mint-4: #d2f7ed;
+$mint-5: #c0efe3;
+$mint-6: #a5e4d4;
+$mint-7: #7dd4c0;
+$mint-8: #40c4aa;
+$mint-9: #70e1c8;
+$mint-10: #69d9c1;
+$mint-11: #147d6f;
+$mint-12: #09342e;
+
+$yellow-1: #fdfdf9;
+$yellow-2: #fffce8;
+$yellow-3: #fffbd1;
+$yellow-4: #fff8bb;
+$yellow-5: #fef2a4;
+$yellow-6: #f9e68c;
+$yellow-7: #efd36c;
+$yellow-8: #ebbc00;
+$yellow-9: #f5d90a;
+$yellow-10: #f7ce00;
+$yellow-11: #946800;
+$yellow-12: #35290f;
+
+$red-1: #fffcfc;
+$red-2: #fff8f8;
+$red-3: #ffefef;
+$red-4: #ffe5e5;
+$red-5: #fdd8d8;
+$red-6: #f9c6c6;
+$red-7: #f3aeaf;
+$red-8: #eb9091;
+$red-9: #e5484d;
+$red-10: #dc3d43;
+$red-11: #cd2b31;
+$red-12: #381316;
+
+$amber-1: #fefdfb;
+$amber-2: #fff9ed;
+$amber-3: #fff4d5;
+$amber-4: #ffecbc;
+$amber-5: #ffe3a2;
+$amber-6: #ffd386;
+$amber-7: #f3ba63;
+$amber-8: #ee9d2b;
+$amber-9: #ffb224;
+$amber-10: #ffa01c;
+$amber-11: #ad5700;
+$amber-12: #4e2009;
+
+$orange-1: #fefcfb;
+$orange-2: #fef8f4;
+$orange-3: #fff1e7;
+$orange-4: #ffe8d7;
+$orange-5: #ffdcc3;
+$orange-6: #ffcca7;
+$orange-7: #ffb381;
+$orange-8: #fa934e;
+$orange-9: #f76808;
+$orange-10: #ed5f00;
+$orange-11: #bd4b00;
+$orange-12: #451e11;
+
+// spacing
+$sub-unit: 4px !default;
+$unit: 8px !default;
+$unit-md: $unit * 1.5 !default; // 12px
+$unit-lg: $unit * 2 !default; //16px
+$unit-xlg: $sub-unit * 5 !default; //20px
+
+/* define font family variables */
+
+$font-inter: "Inter", sans-serif;
+$font-inter-medium: "Inter-medium" , sans-serif;
+$font-inter-semi-bold: "Inter-Semi-Bold" , sans-serif;
+$font-inter-tight: "Inter-tight" , sans-serif;
+
+$fs-xxxxs: 10px;
+$fs-xxxs: 12px;
+$fs-df: 14px;
+$fs-xxs: 16px;
+$fs-xs: 18px;
+$fs-sm: 20px;
+$fs-md: 24px;
+$fs-lg: 32px;
+$fs-xl: 40px;
+$fs-xxl: 52px;
+$fs-xxxl: 64px;
+
+/* line heights */
+$lh-xxxs: 14px;
+$lh-xxs: 16px;
+$lh-df: 20px;
+$lh-xs: 24px;
+$lh-sm: 28px;
+$lh-md: 32px;
+$lh-lg: 40px;
+$lh-xl: 48px;
+$lh-xxl: 62px;
+$lh-xxxl: 72px;
+
+/* font weights */
+$fw-regular: 400;
+$fw-medium: 500;
+$fw-bold: 600;
+
+$spacers: (
+    0: 0,
+    1: 0.25rem, // 4px
+    2: 0.5rem,  // 8px
+    3: 0.75rem, // 12px
+    4: 1rem,  //16px
+    5: 1.25rem, //20px
+    6: 1.5rem, //24px
+    7: 1.75rem, //28px
+    8: 2rem, //32px
+    9: 2.5rem, //40px
+    10: 3rem //48px
+);
+
+$badge-border-radius: 4px;
+$section-border-radius: 12px;
+
+$form-select-color: $slate-12;
+$form-select-bg: $surface-white;
+$form-select-disabled-color: $slate-9;

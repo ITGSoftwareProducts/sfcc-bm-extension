@@ -1,0 +1,59 @@
+.pagination-bar-wrapper {
+    .items-label {
+        color: $slate-12;
+    }
+
+    .item-per-page {
+        color: $slate-11;
+    }
+
+    .page-size {
+        color: $slate-12;
+        font-size: $fs-xxs;
+        line-height: $lh-xs;
+        border-radius: 10px;
+        border: 1px solid $slate-7;
+        min-width: unset;
+        width: 74px;
+        height: 40px;
+    }
+
+    .pagination-bar {
+        margin-top: $unit * 8;
+
+        .pagination-button {
+            background-color: $surface-white;
+            border-radius: 8px;
+            border: 1px solid $slate-6;
+            color: $slate-12;
+            font-family: $font-inter-medium;
+            font-size: $fs-df;
+            line-height: $lh-df;
+            min-width: 32px;
+            height: 32px;
+
+            &.active,
+            &:hover {
+                background-color: $slate-4;
+            }
+        }
+
+        .start,
+        .previous,
+        .next,
+        .last {
+            cursor: pointer;
+        }
+    }
+
+    .page-label {
+        color: $slate-11;
+
+        .page-input {
+            color: $slate-12;
+            min-width: unset;
+            width: 40px;
+            height: 40px;
+        }
+    }
+}

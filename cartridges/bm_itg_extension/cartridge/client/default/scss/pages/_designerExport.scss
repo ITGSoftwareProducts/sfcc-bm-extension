@@ -1,0 +1,121 @@
+#executionModal {
+    --bs-modal-width: 630px;
+
+    .top-section {
+        border-color: $slate-5;
+
+        .image {
+            background-image: url("../icons/export-file.svg");
+            width: $unit * 7.5;
+            height: $unit * 9.75;
+            background-repeat: no-repeat;
+        }
+    }
+
+    .download-section {
+        border-color: $slate-5;
+
+        a {
+            text-transform: none;
+        }
+    }
+
+    .time-section {
+        p {
+            border-color: $slate-5;
+        }
+    }
+
+    .log-file-section {
+        .log-messages {
+            border-color: $slate-5;
+            max-height: 232px;
+            white-space: pre-wrap;
+        }
+
+        .btn-secondary {
+            height: 32px;
+        }
+
+        .copy {
+            &::before {
+                content: url("../icons/copy.svg");
+                width: $unit * 3;
+                height: $unit * 3;
+                vertical-align: middle;
+                display: inline-block;
+                margin-inline-end: $unit * 0.75;
+            }
+        }
+
+        .log-footer {
+            padding-bottom: $sub-unit * 25;
+        }
+    }
+}
+
+#exportModal {
+    &.fade {
+        .modal-dialog {
+            transform: translate(0, 50px);
+        }
+    }
+
+    &.show {
+        .modal-dialog {
+            transform: none;
+        }
+    }
+
+    .modal-content {
+        padding: $unit * 4.5;
+        box-shadow: 0 4px 37px 0 rgba(43, 50, 54, 0.1);
+        border-color: $slate-5;
+    }
+
+    .wrapper {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+}
+
+.page-designer {
+    .main-form {
+        .form-group {
+            &.has-error {
+                svg {
+                    path {
+                        stroke: $red-9;
+                    }
+                }
+            }
+        }
+    }
+
+    .page-designer-label {
+        margin-top: $unit-xlg * 2.6;
+    }
+
+    .form-content {
+        .input-field {
+            min-width: 502px;
+        }
+
+        @include media-breakpoint-down(lg) {
+            flex-direction: column;
+        }
+    }
+
+    .export-btn {
+        padding: $unit * 1.125 $unit-xlg * 0.95;
+
+        &:focus {
+            padding: $unit $unit-xlg * 0.9 !important;
+        }
+    }
+}
+
+.pd-results {
+    padding: $unit * 4.5 $unit * 5.5;
+}

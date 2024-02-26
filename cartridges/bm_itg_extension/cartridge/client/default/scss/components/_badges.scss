@@ -1,0 +1,84 @@
+// style of badges
+
+.badge {
+    font-size: $fs-df;
+    line-height: $lh-df;
+    border-radius: $badge-border-radius;
+    text-transform: capitalize;
+    font-family: $font-inter;
+    font-weight: $fw-medium;
+    padding: 4px 8px;
+
+    &.in-stock-badge {
+        color: $mint-11;
+        background-color: $mint-3;
+    }
+
+    &.out-of-stock-badge {
+        color: $red-11;
+        background-color: $red-3;
+    }
+
+    &.pre-order-badge {
+        color: $blue-11;
+        background-color: $blue-3;
+    }
+
+    &.back-order-badge {
+        color: $amber-11;
+        background-color: $amber-3;
+    }
+
+    &.not-available-badge {
+        color: $red-11;
+        background-color: $red-3;
+    }
+
+    &.success-badge {
+        color: $mint-11;
+        background-color: $mint-3;
+        display: flex;
+        align-items: center;
+        width: fit-content;
+        padding: 2px 8px;
+
+        &::before {
+            content: url('../icons/success-2.svg');
+            width: 24px;
+            height: 24px;
+            margin-right: 2px;
+        }
+    }
+
+    &.in-progress-badge {
+        color: $violet-11;
+        background-color: $violet-3;
+        display: flex;
+        align-items: center;
+        width: fit-content;
+        padding: 2px 8px;
+
+        &::before {
+            content: url('../icons/in-progress2.svg');
+            width: 24px;
+            height: 24px;
+            margin-right: 2px;
+        }
+    }
+
+    &.error-badge {
+        color: $red-11;
+        background-color: $red-3;
+        display: flex;
+        align-items: center;
+        width: fit-content;
+        padding: 2px 8px;
+
+        &::before {
+            content: url('../icons/errors-2.svg');
+            width: 24px;
+            height: 24px;
+            margin-right: 2px;
+        }
+    }
+}

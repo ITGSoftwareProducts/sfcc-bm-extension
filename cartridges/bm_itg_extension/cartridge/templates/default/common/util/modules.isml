@@ -1,0 +1,11 @@
+<ismodule template="automaticNotificationSettings/campaignRecord"
+    name="campaignrecord"
+    attribute="campaignobj"
+    attribute="validationresult"
+/>
+
+<ismodule template="common/util/svg"
+    name="svgimg"
+    attribute="name"
+    attribute="color"
+/>

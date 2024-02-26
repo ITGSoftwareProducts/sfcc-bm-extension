@@ -1,0 +1,12 @@
+<isdecorate template="common/frame/page">
+
+    <isscript>
+        var assets = require('*/cartridge/scripts/assets');
+        assets.addJs('/js/automaticNotifications.js');
+    </isscript>
+
+    <input type="hidden" id="enablementURL" value="${pdict.EnablementURL}"/>
+
+    <isinclude template="${pdict.template}"/>
+    <isinclude template="automaticNotificationSettings/notificationSettingsModal" />
+</isdecorate>

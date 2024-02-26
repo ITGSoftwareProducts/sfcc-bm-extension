@@ -1,0 +1,94 @@
+
+<isdecorate template="common/frame/page"> 
+    <isscript>
+        var assets = require('*/cartridge/scripts/assets');
+        assets.addJs('/js/pageDesignerExport.js');
+    </isscript>
+    <isinclude template="/common/util/modules"/>
+    <div class="pagedesigner-form">
+        <div class="page-designer">
+            <div class="section__wrapper mb-2">
+                <div class="d-flex flex-md-row">
+                    <div class="section__img">
+                        <img alt="export" src="${URLUtils.staticURL('/icons/page-export.svg')}" class="img-fluid" />
+                    </div>
+                    <div class="section__text">
+                        <h1 class="t-h5 mb-0">
+                            <isprint value="${Resource.msg('pagedesigner.export', 'pageDesignerExport', null)}" />
+                        </h1>
+                        <p class="text-sm section__msg mt-3 mb-0">
+                            <isprint value="${Resource.msg('pagedesigner.export.copy1', 'pageDesignerExport', null)}" />
+                        </p>
+                        <form class="main-form select-page-form" novalidate>
+                            <label for="pageDesignerSearchTerm" class="form-label page-designer-label">
+                                <isprint value="${Resource.msg('pagedesigner.export.input.label', 'pageDesignerExport', null)}" />
+                            </label>
+                            <div class="form-content d-flex search-wrapper mt-0">
+                                <div class="position-relative w-100 me-3 form-group">
+                                    <textarea type="text" id="pageDesignerSearchTerm"
+                                        required
+                                        aria-required="true"
+                                        class="form-control w-100 inputfield_en not_disabled input-field"
+                                        name="pageDesignerSearchTerm"
+                                        data-missing-error="${Resource.msg('pagedesigner.export.error1', 'pageDesignerExport', null)}"
+                                        placeholder="${Resource.msg('pagedesigner.export.input.placeholder', 'pageDesignerExport', null)}"></textarea>
+                                    <issvgimg name="${'page'}" color="${'#11181C'}" />
+                                    <div class="invalid-feedback text-sm mt-2" bis_skin_checked="1"></div>
+                                </div>
+                                <button id="exportButton" type="submit" class="btn btn-primary export-btn mt-4 mt-lg-0">
+                                    <isprint value="${Resource.msg('button.export', 'common', null)}" /></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="exportModal" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered m-auto" role="document">
+                <div class="modal-content text-left rounded-5">
+                    <div class="modal-header border-0 align-items-start gap-3 justify-content-start p-0">
+                        <div class="icon mt-1"><issvgimg name="${'newFile'}" color="${'#11181C'}" /></div>
+                        <div class="wrapper">
+                            <h6 class="modal-title t-h6 mb-2 d-inline-block">
+                                <isprint value="${Resource.msg('modal.export.title', 'pageDesignerExport', null)}" />
+                            </h6>
+                            <span class="files-name t-h6"></span>
+                            <p class="text-md slate-11">
+                                <isprint value="${Resource.msg('modal.export.copy', 'pageDesignerExport', null)}" />
+                            </p>
+                        </div>
+                    </div>
+                    <form class="export-file-form" action="${pdict.actionUrl}" method="POST" novalidate>
+                        <div class="modal-body form-group">
+                            <label class="text-md mb-1 slate-12 d-block font-inter-semi-bold">
+                                <isprint value="${Resource.msg('modal.label.filename', 'pageDesignerExport', null)}" />
+                            </label>
+                            <input type="text" id="exportFileName"
+                            aria-required="true"
+                            required
+                            pattern="^[a-zA-Z0-9\-_]+$"
+                            data-missing-error="${Resource.msg('pagedesigner.export.error2', 'pageDesignerExport', null)}"
+                            class="form-control inputfield_en not_disabled w-100" value="" name="exportFileName"/>
+                            <div class="invalid-feedback text-sm mt-2" bis_skin_checked="1"></div>
+                            <input type="hidden" id="selectedContentIds" value="" name="selectedContentIds" />
+                        </div>
+
+                        <div class="modal-footer border-0 p-0 gap-3">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                <isprint value="${Resource.msg('button.cancel', 'common', null)}" /></button>
+                            <button type="submit" id="exportFile" class="export btn btn-primary">
+                                <isprint value="${Resource.msg('button.export', 'common', null)}" /></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="pd-results bg-surface-white rounded-4">
+        <isinclude template="executionHistory/executionList" />
+    </div>
+
+</isdecorate>

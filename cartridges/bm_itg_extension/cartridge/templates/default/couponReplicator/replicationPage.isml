@@ -1,0 +1,38 @@
+<div data-action-url="${pdict.actionUrl}" class="replication-coupon-form" data-coupon-id="${pdict.couponId}" data-case-insensitive="${pdict.caseInsensitive}" data-multiple-codes="${pdict.multipleCodesPerBasket}" data-coupon-type="${pdict.couponType}" data-coupon-description="${pdict.couponDescription}">
+    <div class="replicate-coupon-top-section d-flex align-items-center">
+        <img src="${URLUtils.staticURL('/images/coupon-img.png')}" class="coupons-img img-fluid" alt="replicate coupon"/>
+        <div class="coupon-info">
+            <div class="coupon-id-label slate-12 font-inter-medium text-lg">${pdict.couponId}</div>
+            <div class="coupon-desc-label slate-11 text-sm">${!empty(pdict.couponDescription) ? pdict.couponDescription : ''}</div>
+        </div>
+    </div>
+    <div class="replicate-coupon-sites d-flex pb-6">
+        <span><img src="${URLUtils.staticURL('/icons/info-2.svg')}" class="info-icon img-fluid" alt="coupon info"/></span>
+        <span class="replicate-coupon-sites-msg slate-12 text-sm ps-2">${Resource.msg('selected.sites.message', 'couponReplicator', null)}</span>
+    </div>
+
+    <div class="replicate-coupon-sites-options">
+        <label class="coupon-site-label slate-12 font-inter-medium text-lg mt-6 mb-2" for="checkboxDropdown">${Resource.msgf('available.sites.title', 'couponReplicator', null, pdict.availableSitesCount.toFixed())}</label>
+        <div id="list1" class="dropdown-check-list form-group" tabindex="100">
+            <ul class="items list-unstyled mb-9">
+                <isloop items="${pdict.availableSites}" var="item">
+                    <li class="form-check site-name font-inter-semi-bold d-flex mt-3">
+                        <input type="checkbox" class="form-check-input circular site-id ${item.disabled ? 'disable' : ''}" value="${item.siteId}" />
+                        <div class="d-flex flex-column ps-3 ">
+                            <span class="site-name font-inter-semi-bold text-md ${item.disabled ? 'disable' : ''}">${item.siteName}</span>
+                            <isif condition="${item.disabled}">
+                                <span class="disable-msg slate-9 text-sm pt-1">
+                                    <isprint value="${Resource.msg('coupon.this.site.has.coupon.message', 'couponReplicator', null)}" />
+                                </span>
+                            </isif>
+                        </div>
+                    </li>
+                </isloop>
+            </ul>
+        </div>
+    </div>
+    <div class="action-buttons d-flex justify-content-end pt-7">
+       <button type="button" class="btn btn-link me-1" data-bs-dismiss="modal" aria-label="Close">${Resource.msg('coupon.button.cancel', 'couponReplicator', null)}</button>
+       <button type="submit" class="btn btn-primary replication-coupon">${Resource.msg('replicate.cta', 'couponReplicator', null)}</button>
+    </div>
+</div>

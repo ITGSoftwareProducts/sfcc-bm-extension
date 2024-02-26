@@ -1,0 +1,151 @@
+:root {
+    --bs-form-invalid-color: #{$red-9};
+    --bs-body-bg: #{$surface-white};
+    --bs-border-radius: 5px;
+    --bs-border-radius-sm: 8px;
+    --bs-border-radius-lg: 10px;
+    --bs-border-radius-xl: 12px;
+    --bs-border-radius-xxl: 20px;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.main {
+    background-color: $slate-2;
+
+    #bm_content_column {
+        padding: $sub-unit * 7.5 $unit $unit;
+    }
+}
+
+.section {
+    &__wrapper {
+        padding: $unit-xlg * 2.2;
+        border-radius: 12px;
+        background-color: $surface-white;
+
+        .form-content {
+            margin-block-start: $unit * 6.5;
+        }
+    }
+
+    &__msg {
+        color: $slate-11;
+        max-width: 609px;
+    }
+
+    &__text {
+        margin-left: $unit-md * 3;
+        margin-top: $sub-unit * 6;
+    }
+
+    &__img {
+        img {
+            min-width: 132px;
+        }
+    }
+}
+
+.input-desc {
+    max-width: 502px;
+}
+
+.animate-slide-in-down {
+    animation: slideInDown 0.5s ease-in-out;
+}
+
+.hide {
+    display: none;
+}
+
+.search-wrapper {
+    svg {
+        position: absolute;
+        inset-inline-start: $unit * 1.25;
+        inset-block-start: $unit * 1.25;
+        z-index: 10;
+    }
+
+    textarea {
+        &.input-field {
+            overflow: hidden;
+            resize: none;
+            padding-inline-start: $unit * 5.25;
+        }
+    }
+}
+
+.data-mapping-modal {
+    --bs-modal-width: 630px;
+
+    .modal-title {
+        font-weight: $fw-regular;
+    }
+
+    .close-icon {
+        border: none;
+        background-image: url('../icons/close.svg');
+        width: $unit * 3;
+        height: $unit * 3;
+        background-repeat: repeat;
+    }
+
+    .saved-mapping-config {
+        max-height: 270px;
+
+        &::-webkit-scrollbar {
+            width: 5px;
+            background: $slate-1;
+            border-radius: 5px;
+        }
+
+        &::-webkit-scrollbar-track {
+            border-radius: 5px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            border-radius: 5px;
+            background: $slate-8;
+        }
+    }
+
+    .data-map-button,
+    .action-buttons-wrapper {
+        border-top: 0.5px solid $slate-5;
+    }
+
+    .action-buttons {
+        .apply-configuration,
+        .create-new-mapping {
+            padding: $unit * 1.125 $unit-xlg * 1.25;
+            height: 44px;
+
+            &:focus {
+                padding: $unit $unit-xlg * 1.2;
+            }
+        }
+    }
+}
+
+.refresh-execution-list {
+    width: 36px;
+    height: 32px;
+
+    .btn-text {
+        height: 24px;
+    }
+}
+
+.tooltip-icon {
+    background-image: url("../icons/info.svg");
+    width: $unit-xlg;
+    height: $unit-xlg;
+    background-size: $unit-xlg $unit-xlg;
+    vertical-align: middle;
+}
+
+.vdrag-icon {
+    cursor: pointer;
+}

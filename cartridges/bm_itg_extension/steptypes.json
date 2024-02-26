@@ -1,0 +1,428 @@
+{
+    "step-types": {
+        "script-module-step": [
+            {
+                "@type-id": "custom.ExportPageDesigner",
+                "description": "This job step is part of Page Designer Export feature in BM Extension.",
+                "@supports-site-context": true,
+                "@supports-organization-context": true,
+                "module": "bm_itg_extension/cartridge/scripts/jobsteps/exportPageDesigner.js",
+                "function": "execute",
+                "parameters": {
+                    "parameters": [
+                        {
+                            "@name": "SiteLibrary",
+                            "description": "Library assigned to the Site",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true"
+                        },
+                        {
+                            "@name": "PageIds",
+                            "description": "Content IDs",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true"
+                        },
+                        {
+                            "@name": "ExportFileName",
+                            "description": "Export File Name",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true"
+                        },
+                        {
+                            "@name": "PDLibraryPath",
+                            "description": "Library IMPEX path which has the page designer library XMLs",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true"
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "WARN",
+                            "description": "Used when small, but acceptable problems occurred."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CouponReplicator",
+                "@supports-parallel-execution": false,
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "description": "This job step is part of Coupon Replicator feature in BM Extension.",
+                "module": "bm_itg_extension/cartridge/scripts/jobsteps/buildCouponXmlFile.js",
+                "function": "buildXML",
+                "parameters": {
+                    "parameters": [
+                        {
+                            "@name": "CouponID",
+                            "@type": "string",
+                            "@required": "false",
+                            "description": "The unique identifier for the coupon.",
+                            "default-value": ""
+                        },
+                        {
+                            "@name": "Description",
+                            "@type": "string",
+                            "@required": "false",
+                            "description": "The coupon description.",
+                            "default-value": ""
+                        },
+                        {
+                            "@name": "CaseInsensitive",
+                            "@type": "boolean",
+                            "@required": "false",
+                            "description": "If true, the coupon code will be case-insensitive.",
+                            "default-value": "false"
+                        },
+                        {
+                            "@name": "MultipleCodesPerBasket",
+                            "@type": "boolean",
+                            "@required": "false",
+                            "description": "If true, the coupon allows multiple codes per basket.",
+                            "default-value": "false"
+                        },
+                        {
+                            "@name": "CouponCodeType",
+                            "@type": "string",
+                            "@required": "false",
+                            "description": "The type of coupon code.",
+                            "default-value": ""
+                        },
+                        {
+                            "@name": "SitesScope",
+                            "@type": "string",
+                            "@required": "false",
+                            "description": "The name of the sites you would to import the coupon",
+                            "default-value": ""
+                        },
+                        {
+                            "@name": "SiteID",
+                            "@type": "string",
+                            "@required": "false",
+                            "description": "The name of the current site",
+                            "default-value": ""
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "WARN",
+                            "description": "Used when small, but acceptable problems occurred."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.SendOutOfStockNotification",
+                "description": "This job step is part of Automatic Notifications feature in BM Extension.",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bm_itg_extension/cartridge/scripts/jobsteps/sendOutOfStockNotification.js",
+                "function": "execute",
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "WARN",
+                            "description": "Used when small, but acceptable problems occurred."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.SendCampaignNotification",
+                "description": "This job step is part of Automatic Notifications feature in BM Extension.",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bm_itg_extension/cartridge/scripts/jobsteps/sendCampaignNotification.js",
+                "function": "execute",
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "WARN",
+                            "description": "Used when small, but acceptable problems occurred."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.SendOrderIntervalAlert",
+                "description": "This job step is part of Automatic Notifications feature in BM Extension.",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bm_itg_extension/cartridge/scripts/jobsteps/sendOrderIntervalAlert.js",
+                "function": "execute",
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "WARN",
+                            "description": "Used when small, but acceptable problems occurred."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.SendFailedOrderAlert",
+                "description": "This job step is part of Automatic Notifications feature in BM Extension.",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bm_itg_extension/cartridge/scripts/jobsteps/sendFailedOrderAlert.js",
+                "function": "execute",
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "WARN",
+                            "description": "Used when small, but acceptable problems occurred."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.XmlCsvConvertor",
+                "description": "This job step is part of CSV Import Export feature in BM Extension.",
+                "@supports-parallel-execution": false,
+                "@supports-site-context": true,
+                "@supports-organization-context": true,
+                "module": "bm_itg_extension/cartridge/scripts/jobsteps/csvXmlConvertor.js",
+                "function": "execute",
+                "parameters": {
+                    "parameters": [
+                        {
+                            "@name": "ImpexType",
+                            "@type": "string",
+                            "@required": "false",
+                            "default-value": ""
+                        },
+                        {
+                            "@name": "ProcessType",
+                            "@type": "string",
+                            "@required": "false",
+                            "default-value": ""
+                        },
+                        {
+                            "@name": "XMLFilePath",
+                            "@type": "string",
+                            "@required": "false",
+                            "default-value": ""
+                        },
+                        {
+                            "@name": "CSVFilePath",
+                            "@type": "string",
+                            "@required": "false",
+                            "default-value": ""
+                        },
+                        {
+                            "@name": "ExportFileName",
+                            "@type": "string",
+                            "@required": "false",
+                            "default-value": ""
+                        },
+                        {
+                            "@name": "ObjectID",
+                            "@type": "string",
+                            "@required": "false",
+                            "default-value": ""
+                        },
+                        {
+                            "@name": "ImportFileName",
+                            "@type": "string",
+                            "@required": "false",
+                            "default-value": ""
+                        },
+                        {
+                            "@name": "DataMappingName",
+                            "@type": "string",
+                            "@required": "false",
+                            "default-value": ""
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "WARN",
+                            "description": "Used when small, but acceptable problems occurred."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CsvImportExportProcessSelector",
+                "description": "This job step is part of CSV Import Export feature in BM Extension.",
+                "@supports-parallel-execution": false,
+                "@supports-site-context": true,
+                "@supports-organization-context": true,
+                "module": "bm_itg_extension/cartridge/scripts/jobsteps/csvImportExportProcessSelector.js",
+                "function": "execute",
+                "parameters": {
+                    "parameters": [
+                        {
+                            "@name": "ImpexType",
+                            "@type": "string",
+                            "@required": "false",
+                            "default-value": ""
+                        },
+                        {
+                            "@name": "ProcessType",
+                            "@type": "string",
+                            "@required": "false",
+                            "default-value": ""
+                        },
+                        {
+                            "@name": "ImpexProcessType",
+                            "@type": "string",
+                            "@required": "false",
+                            "default-value": "Customer Import",
+                            "enum-values": {
+                                "value": [
+                                    "Customer Import",
+                                    "Customer Export",
+                                    "Customer Group Import",
+                                    "Customer Group Export",
+                                    "PriceBook Import",
+                                    "PriceBook Export",
+                                    "InventoryList Import",
+                                    "InventoryList Export",
+                                    "Stores Import",
+                                    "Stores Export"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "WARN",
+                            "description": "Used when small, but acceptable problems occurred."
+                        },
+                        {
+                            "@code": "STOP",
+                            "description": "Used when the ProcessType and ImpexType don't match ImpexProcessType"
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.ExportPageDesignerScopeSelector",
+                "description": "This job step is part of CSV Import Export feature in BM Extension.",
+                "@supports-parallel-execution": false,
+                "@supports-site-context": true,
+                "@supports-organization-context": true,
+                "module": "bm_itg_extension/cartridge/scripts/jobsteps/pageDesignerScopeSelector.js",
+                "function": "execute",
+                "parameters": {
+                    "parameters": [
+                        {
+                            "@name": "LibraryId",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true"
+                        },
+                        {
+                            "@name": "Scope",
+                            "@type": "string",
+                            "@required": "true",
+                            "enum-values": {
+                                "value": [
+                                    "organization",
+                                    "site"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "WARN",
+                            "description": "Used when small, but acceptable problems occurred."
+                        },
+                        {
+                            "@code": "STOP",
+                            "description": "Used when the ProcessType and ImpexType don't match ImpexProcessType"
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

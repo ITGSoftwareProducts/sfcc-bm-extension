@@ -1,0 +1,58 @@
+<isdecorate template="common/frame/page">
+    <isinclude template="/common/util/modules"/>
+    <isscript>
+        var assets = require('*/cartridge/scripts/assets');
+        assets.addJs('/js/customerProductList.js');
+        assets.addCss('/css/customerProductList.css');
+    </isscript>
+    <form class="customer-productlist-form" action="${pdict.actionUrl}" novalidate>
+        <div class="section__wrapper mb-2">
+            <div class="d-flex flex-md-row">
+                <div class="section__img">
+                    <img alt="product-list" src="${URLUtils.staticURL('/icons/product-lists.svg')}" class="img-fluid" />
+                </div>
+                <div class="section__text">
+                    <h1 class="t-h5 mb-0">
+                        <isprint value="${Resource.msg('customer.productlist', 'customerProductLists', null)}" />
+                    </h1>
+                    <p class="text-sm section__msg mt-3 mb-0">
+                        <isprint value="${Resource.msg('customer.productlist.copy1', 'customerProductLists', null)}" />
+                    </p>
+                    <div class="main-form form-content d-flex align-items-baseline gap-3">
+                        <div class="form-group input">
+                            <label for="customer-search-term" class="form-label">
+                                <isprint
+                                    value="${Resource.msg('customer.search.term', 'customerProductLists', null)}" />
+                            </label>
+                            <input type="text" id="customer-search-term"
+                                required
+                                aria-required="true"
+                                class="inputfield_en not_disabled form-control"
+                                name="searchTerm"
+                                data-missing-error="${Resource.msg('customer.error.label', 'customerProductLists', null)}"
+                                placeholder="${Resource.msg('customer.search.placeholder', 'customerProductLists', null)}" />
+                            <div class="invalid-feedback text-sm mt-2" bis_skin_checked="1"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="productListType" class="form-label">
+                                <isprint
+                                    value="${Resource.msg('customer.select.label', 'customerProductLists', null)}" />
+                            </label>
+                            <select id="productListType" class="productlist_type form-select" name="productListType">
+                                <isloop items="${pdict.productListTypes}" var="productListType">
+                                    <option value='${productListType.value}'>${productListType.name}&nbsp;</option>
+                                </isloop>
+                            </select>
+                        </div>
+                        <button type="submit" id="search" class="btn btn-primary mt-8 align-self-start">${Resource.msg('button.find', 'customerProductLists', null)}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="results bg-surface-white rounded-4">
+            <div class="search-result result-table">
+                <isinclude template="customerProductList/productList"/>
+            </div>
+        </div>
+    </form>
+</isdecorate>

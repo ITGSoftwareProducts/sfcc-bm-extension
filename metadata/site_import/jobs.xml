@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobs xmlns="http://www.demandware.com/xml/impex/jobs/2015-07-01">
+    <job job-id="BM Extension - Page Designer Export" priority="0">
+        <description>This job is resposible for running Page Designer Export feature in BM Extension</description>
+        <parameters>
+            <parameter name="SiteScope"/>
+            <parameter name="PageIds">.</parameter>
+            <parameter name="ExportFile">""</parameter>
+            <parameter name="ExportFileName">.</parameter>
+            <parameter name="LibraryId">""</parameter>
+            <parameter name="SiteLibraryId">""</parameter>
+        </parameters>
+        <flow>
+            <context site-id="Sites"/>
+            <step step-id="Scope Selector 1" type="custom.ExportPageDesignerScopeSelector" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="LibraryId" job-parameter-ref="SiteLibraryId"/>
+                    <parameter name="Scope">organization</parameter>
+                </parameters>
+                <rules>
+                    <on-exit status="STOP">
+                        <stop-flow/>
+                    </on-exit>
+                </rules>
+            </step>
+            <step step-id="Export Shared Library" type="ExportContent" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="LibraryID" job-parameter-ref="LibraryId"/>
+                    <parameter name="ExportFile" job-parameter-ref="ExportFile"/>
+                    <parameter name="OverwriteExportFile">true</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <split sequential="true">
+            <contexts template-ref="template_108">
+                <job-parameter-ref name="SiteScope"/>
+            </contexts>
+            <flow-template template-id="template_108">
+                <step step-id="Scope Selector 2" type="custom.ExportPageDesignerScopeSelector" enforce-restart="false">
+                    <description/>
+                    <parameters>
+                        <parameter name="LibraryId" job-parameter-ref="SiteLibraryId"/>
+                        <parameter name="Scope">site</parameter>
+                    </parameters>
+                    <rules>
+                        <on-exit status="STOP">
+                            <stop-flow/>
+                        </on-exit>
+                    </rules>
+                </step>
+                <step step-id="Export Site Library" type="ExportContent" enforce-restart="false">
+                    <description/>
+                    <parameters>
+                        <parameter name="LibraryID">Library</parameter>
+                        <parameter name="ExportFile" job-parameter-ref="ExportFile"/>
+                        <parameter name="OverwriteExportFile">true</parameter>
+                    </parameters>
+                </step>
+            </flow-template>
+        </split>
+        <split sequential="false">
+            <contexts template-ref="template_186">
+                <job-parameter-ref name="SiteScope"/>
+            </contexts>
+            <flow-template template-id="template_186">
+                <step step-id="Page Designer Export" type="custom.ExportPageDesigner" enforce-restart="false">
+                    <description/>
+                    <parameters>
+                        <parameter name="SiteLibrary" job-parameter-ref="SiteLibraryId"/>
+                        <parameter name="PageIds" job-parameter-ref="PageIds"/>
+                        <parameter name="ExportFileName" job-parameter-ref="ExportFileName"/>
+                        <parameter name="PDLibraryPath">/src/bm-extension/PDPageExport/</parameter>
+                    </parameters>
+                </step>
+            </flow-template>
+        </split>
+        <rules/>
+        <triggers/>
+    </job>
+
+    <job job-id="BM Extension - Coupon Replicator: Producer" priority="0">
+        <description>This job is resposible for running Coupon Replicator feature in BM Extension</description>
+        <parameters>
+            <parameter name="CouponId">""</parameter>
+            <parameter name="ExportFileName">""</parameter>
+            <parameter name="ReplicatedCouponId">""</parameter>
+            <parameter name="SiteID">''</parameter>
+            <parameter name="SiteScope"/>
+            <parameter name="SitesScope">''</parameter>
+            <parameter name="CaseInsensitive"/>
+            <parameter name="CouponCodeType">""</parameter>
+            <parameter name="Description">""</parameter>
+            <parameter name="MultipleCodesPerBasket"/>
+        </parameters>
+        <split sequential="false">
+            <contexts template-ref="template_72">
+                <job-parameter-ref name="SiteScope"/>
+            </contexts>
+            <flow-template template-id="template_72">
+                <step step-id="BM Extension - Coupon Replicator: Producer" type="ExportCouponCodes" enforce-restart="false">
+                    <description/>
+                    <parameters>
+                        <parameter name="CouponID" job-parameter-ref="ReplicatedCouponId"/>
+                        <parameter name="NumberOfCodes">1000000</parameter>
+                        <parameter name="StartFrom">1</parameter>
+                        <parameter name="ExportFile" job-parameter-ref="ExportFileName"/>
+                        <parameter name="OverwriteExportFile">true</parameter>
+                    </parameters>
+                </step>
+                <step step-id="build_coupon_xml" type="custom.CouponReplicator" enforce-restart="false">
+                    <description/>
+                    <parameters>
+                        <parameter name="CouponID" job-parameter-ref="CouponId"/>
+                        <parameter name="CaseInsensitive" job-parameter-ref="CaseInsensitive"/>
+                        <parameter name="Description" job-parameter-ref="Description"/>
+                        <parameter name="MultipleCodesPerBasket" job-parameter-ref="MultipleCodesPerBasket"/>
+                        <parameter name="CouponCodeType" job-parameter-ref="CouponCodeType"/>
+                        <parameter name="SitesScope" job-parameter-ref="SitesScope"/>
+                        <parameter name="SiteID" job-parameter-ref="SiteID"/>
+                    </parameters>
+                    <rules>
+                        <on-exit status="ERROR">
+                            <stop-job/>
+                        </on-exit>
+                    </rules>
+                </step>
+            </flow-template>
+        </split>
+        <rules/>
+        <triggers/>
+    </job>
+
+    <job job-id="BM Extension - Coupon Replicator: Consumer" priority="0">
+        <description>This job is resposible for running Coupon Replicator feature in BM Extension</description>
+        <parameters>
+            <parameter name="SiteScope"/>
+            <parameter name="WorkingFolder">''</parameter>
+        </parameters>
+        <split sequential="false">
+            <contexts template-ref="template_27">
+                <job-parameter-ref name="SiteScope"/>
+            </contexts>
+            <flow-template template-id="template_27">
+                <step step-id="importCoupon" type="ImportCoupons" enforce-restart="false">
+                    <description/>
+                    <parameters>
+                        <parameter name="WorkingFolder" job-parameter-ref="WorkingFolder"/>
+                        <parameter name="FileNamePattern">code_to_be_replicated.xml</parameter>
+                        <parameter name="NoFilesFoundHandling">NO_FILES_FOUND</parameter>
+                        <parameter name="ImportMode">Merge</parameter>
+                        <parameter name="ImportFailedHandling">ERROR</parameter>
+                        <parameter name="AfterImportFileHandling">Keep</parameter>
+                        <parameter name="ArchiveFolder">archive</parameter>
+                    </parameters>
+                </step>
+            </flow-template>
+        </split>
+        <rules/>
+        <triggers>
+            <run-once enabled="false">
+                <date>2023-11-12Z</date>
+                <time>07:41:00.000Z</time>
+            </run-once>
+        </triggers>
+    </job>
+
+    <job job-id="BM Extension - Automatic Notifications" priority="0">
+        <description>This job is resposible for running Automatic Notifications feature in BM Extension</description>
+        <parameters/>
+        <split sequential="false">
+            <contexts template-ref="template_32">
+                <all-storefront-sites/>
+            </contexts>
+            <flow-template template-id="template_32">
+                <step step-id="SendOutOfStockNotification" type="custom.SendOutOfStockNotification" enforce-restart="false">
+                    <description/>
+                    <parameters/>
+                    <rules>
+                        <on-exit status="ERROR">
+                            <continue/>
+                        </on-exit>
+                    </rules>
+                </step>
+            </flow-template>
+        </split>
+        <split sequential="false">
+            <contexts template-ref="template_33">
+                <all-storefront-sites/>
+            </contexts>
+            <flow-template template-id="template_33">
+                <step step-id="SendOrderIntervalAlert" type="custom.SendOrderIntervalAlert" enforce-restart="false">
+                    <description/>
+                    <parameters/>
+                    <rules>
+                        <on-exit status="ERROR">
+                            <continue/>
+                        </on-exit>
+                    </rules>
+                </step>
+            </flow-template>
+        </split>
+        <split sequential="false">
+            <contexts template-ref="template_34">
+                <all-storefront-sites/>
+            </contexts>
+            <flow-template template-id="template_34">
+                <step step-id="SendFailedOrderAlert" type="custom.SendFailedOrderAlert" enforce-restart="false">
+                    <description/>
+                    <parameters/>
+                    <rules>
+                        <on-exit status="ERROR">
+                            <continue/>
+                        </on-exit>
+                    </rules>
+                </step>
+            </flow-template>
+        </split>
+        <split sequential="false">
+            <contexts template-ref="template_35">
+                <all-storefront-sites/>
+            </contexts>
+            <flow-template template-id="template_35">
+                <step step-id="SendCampaignNotification" type="custom.SendCampaignNotification" enforce-restart="false">
+                    <description/>
+                    <parameters/>
+                </step>
+            </flow-template>
+        </split>
+        <rules/>
+        <triggers>
+            <run-recurring enabled="true">
+                <recurrence>
+                    <date-from>2024-02-01Z</date-from>
+                    <start-time>08:00:00.000Z</start-time>
+                    <interval>5m</interval>
+                    <day-of-week>
+                        <weekday>Monday</weekday>
+                        <weekday>Tuesday</weekday>
+                        <weekday>Thursday</weekday>
+                        <weekday>Saturday</weekday>
+                        <weekday>Sunday</weekday>
+                        <weekday>Wednesday</weekday>
+                        <weekday>Friday</weekday>
+                    </day-of-week>
+                </recurrence>
+            </run-recurring>
+        </triggers>
+    </job>
+
+    <job job-id="BM Extension - CSV Import Export" priority="0">
+        <description>This job is resposible for running CSV Import Export feature in BM Extension</description>
+        <parameters>
+            <parameter name="CSVFilePath">.</parameter>
+            <parameter name="ExportFileName">.</parameter>
+            <parameter name="OTBFilePath">.</parameter>
+            <parameter name="ImpexType">.</parameter>
+            <parameter name="ImportFileName">.</parameter>
+            <parameter name="InventoryID">.</parameter>
+            <parameter name="ObjectID">.</parameter>
+            <parameter name="PriceBookID">.</parameter>
+            <parameter name="ProcessType">.</parameter>
+            <parameter name="SiteScope"/>
+            <parameter name="XMLFilePath">.</parameter>
+            <parameter name="DataMappingName">.</parameter>
+        </parameters>
+        <flow>
+            <context site-id="Sites"/>
+            <step step-id="Process Selector 1" type="custom.CsvImportExportProcessSelector" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ImpexType" job-parameter-ref="ImpexType"/>
+                    <parameter name="ProcessType" job-parameter-ref="ProcessType"/>
+                    <parameter name="ImpexProcessType">PriceBook Export</parameter>
+                </parameters>
+                <rules>
+                    <on-exit status="STOP">
+                        <stop-flow/>
+                    </on-exit>
+                </rules>
+            </step>
+            <step step-id="PriceBook Export" type="ExportPriceBook" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="PriceBookID" job-parameter-ref="PriceBookID"/>
+                    <parameter name="FileNamePrefix" job-parameter-ref="OTBFilePath"/>
+                    <parameter name="OverwriteExportFile">true</parameter>
+                </parameters>
+            </step>
+            <step step-id="Convert PriceBook XML to CSV" type="custom.XmlCsvConvertor" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ImpexType" job-parameter-ref="ImpexType"/>
+                    <parameter name="ProcessType" job-parameter-ref="ProcessType"/>
+                    <parameter name="XMLFilePath" job-parameter-ref="XMLFilePath"/>
+                    <parameter name="CSVFilePath" job-parameter-ref="CSVFilePath"/>
+                    <parameter name="ExportFileName" job-parameter-ref="ExportFileName"/>
+                    <parameter name="ObjectID" job-parameter-ref="ObjectID"/>
+                    <parameter name="ImportFileName" job-parameter-ref="ImportFileName"/>
+                    <parameter name="DataMappingName" job-parameter-ref="DataMappingName"/>
+                </parameters>
+            </step>
+        </flow>
+        <split sequential="false">
+            <contexts template-ref="template_141">
+                <job-parameter-ref name="SiteScope"/>
+            </contexts>
+            <flow-template template-id="template_141">
+                <step step-id="Process Selector 2" type="custom.CsvImportExportProcessSelector" enforce-restart="false">
+                    <description/>
+                    <parameters>
+                        <parameter name="ImpexType" job-parameter-ref="ImpexType"/>
+                        <parameter name="ProcessType" job-parameter-ref="ProcessType"/>
+                        <parameter name="ImpexProcessType">PriceBook Import</parameter>
+                    </parameters>
+                    <rules>
+                        <on-exit status="STOP">
+                            <stop-flow/>
+                        </on-exit>
+                    </rules>
+                </step>
+                <step step-id="Convert CSV to PriceBook XML" type="custom.XmlCsvConvertor" enforce-restart="false">
+                    <description/>
+                    <parameters>
+                        <parameter name="ImpexType" job-parameter-ref="ImpexType"/>
+                        <parameter name="ProcessType" job-parameter-ref="ProcessType"/>
+                        <parameter name="XMLFilePath" job-parameter-ref="XMLFilePath"/>
+                        <parameter name="CSVFilePath" job-parameter-ref="CSVFilePath"/>
+                        <parameter name="ExportFileName" job-parameter-ref="ExportFileName"/>
+                        <parameter name="ObjectID" job-parameter-ref="ObjectID"/>
+                        <parameter name="ImportFileName" job-parameter-ref="ImportFileName"/>
+                        <parameter name="DataMappingName" job-parameter-ref="DataMappingName"/>
+                    </parameters>
+                </step>
+                <step step-id="PriceBook Import" type="ImportPriceBook" enforce-restart="false">
+                    <description/>
+                    <parameters>
+                        <parameter name="WorkingFolder" job-parameter-ref="OTBFilePath"/>
+                        <parameter name="NoFilesFoundHandling">NO_FILES_FOUND</parameter>
+                        <parameter name="ImportMode">Merge</parameter>
+                        <parameter name="ImportFailedHandling">ERROR</parameter>
+                        <parameter name="AfterImportFileHandling">Archive</parameter>
+                        <parameter name="ArchiveFolder">archive</parameter>
+                    </parameters>
+                </step>
+            </flow-template>
+        </split>
+        <split sequential="false">
+            <contexts template-ref="template_324">
+                <job-parameter-ref name="SiteScope"/>
+            </contexts>
+            <flow-template template-id="template_324">
+                <step step-id="Process Selector 3" type="custom.CsvImportExportProcessSelector" enforce-restart="false">
+                    <description/>
+                    <parameters>
+                        <parameter name="ImpexType" job-parameter-ref="ImpexType"/>
+                        <parameter name="ProcessType" job-parameter-ref="ProcessType"/>
+                        <parameter name="ImpexProcessType">InventoryList Export</parameter>
+                    </parameters>
+                    <rules>
+                        <on-exit status="STOP">
+                            <stop-flow/>
+                        </on-exit>
+                    </rules>
+                </step>
+                <step step-id="InventoryList Export" type="ExportInventoryLists" enforce-restart="false">
+                    <description/>
+                    <parameters>
+                        <parameter name="InventoryListIDs" job-parameter-ref="InventoryID"/>
+                        <parameter name="FileNamePrefix" job-parameter-ref="OTBFilePath"/>
+                        <parameter name="OverwriteExportFile">true</parameter>
+                    </parameters>
+                </step>
+                <step step-id="Convert inventory XML to CSV" type="custom.XmlCsvConvertor" enforce-restart="false">
+                    <description/>
+                    <parameters>
+                        <parameter name="ImpexType" job-parameter-ref="ImpexType"/>
+                        <parameter name="ProcessType" job-parameter-ref="ProcessType"/>
+                        <parameter name="XMLFilePath" job-parameter-ref="XMLFilePath"/>
+                        <parameter name="CSVFilePath" job-parameter-ref="CSVFilePath"/>
+                        <parameter name="ExportFileName" job-parameter-ref="ExportFileName"/>
+                        <parameter name="ObjectID" job-parameter-ref="ObjectID"/>
+                        <parameter name="ImportFileName" job-parameter-ref="ImportFileName"/>
+                        <parameter name="DataMappingName" job-parameter-ref="DataMappingName"/>
+                    </parameters>
+                </step>
+            </flow-template>
+        </split>
+        <flow>
+            <context site-id="Sites"/>
+            <step step-id="Process Selector 4" type="custom.CsvImportExportProcessSelector" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ImpexType" job-parameter-ref="ImpexType"/>
+                    <parameter name="ProcessType" job-parameter-ref="ProcessType"/>
+                    <parameter name="ImpexProcessType">InventoryList Import</parameter>
+                </parameters>
+                <rules>
+                    <on-exit status="STOP">
+                        <stop-flow/>
+                    </on-exit>
+                </rules>
+            </step>
+            <step step-id="Convert CSV to Inventory XML" type="custom.XmlCsvConvertor" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ImpexType" job-parameter-ref="ImpexType"/>
+                    <parameter name="ProcessType" job-parameter-ref="ProcessType"/>
+                    <parameter name="XMLFilePath" job-parameter-ref="XMLFilePath"/>
+                    <parameter name="CSVFilePath" job-parameter-ref="CSVFilePath"/>
+                    <parameter name="ExportFileName" job-parameter-ref="ExportFileName"/>
+                    <parameter name="ObjectID" job-parameter-ref="ObjectID"/>
+                    <parameter name="ImportFileName" job-parameter-ref="ImportFileName"/>
+                    <parameter name="DataMappingName" job-parameter-ref="DataMappingName"/>
+                </parameters>
+            </step>
+            <step step-id="InventoryList Import" type="ImportInventoryLists" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="WorkingFolder" job-parameter-ref="OTBFilePath"/>
+                    <parameter name="NoFilesFoundHandling">NO_FILES_FOUND</parameter>
+                    <parameter name="ImportMode">Merge</parameter>
+                    <parameter name="ImportFailedHandling">ERROR</parameter>
+                    <parameter name="AfterImportFileHandling">Archive</parameter>
+                    <parameter name="ArchiveFolder">archive</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <rules/>
+        <triggers/>
+    </job>
+</jobs>

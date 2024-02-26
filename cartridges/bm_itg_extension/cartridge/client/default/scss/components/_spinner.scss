@@ -1,0 +1,34 @@
+.veil {
+    position: absolute;
+    z-index: 100;
+    text-align: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    .underlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.5;
+        background-color: $surface-white;
+    }
+}
+
+.spinner {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto;
+    border-radius: 50%;
+    border: 6px solid $slate-11;
+    border-color: $slate-11 transparent $slate-11 transparent;
+    animation: spinner-loop 1.2s linear infinite;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+}

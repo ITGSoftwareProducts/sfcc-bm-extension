@@ -1,0 +1,127 @@
+<isdecorate template="common/frame/page">
+    <isinclude template="/common/util/modules" />
+    <isscript>
+        var assets = require('*/cartridge/scripts/assets');
+        assets.addJs('/js/configuration.js');
+        assets.addJs('/js/dataMappingConfig.js');
+    </isscript>
+    <div class="configuration section__wrapper">
+        <isif condition="${!pdict.preferences.noAvailablePreferences}">
+            <div class="configuration__badge rounded-5 p-4 mt-5">
+                <form class="configration-form position-relative" action="${pdict.saveConfigurationUrl}">
+                        <div class="config-item d-flex flex-column gap-5">
+                            <div class="configuration__header d-flex justify-content-between align-items-center">
+                                <label class="form-label mb-0">${Resource.msg('preferences.title', 'configuration', null)}</label>
+                                <button class="btn btn-primary" type="submit" disabled>${Resource.msg('save.button.text', 'configuration', null)}</button>
+                            </div>
+                            <isif condition="${pdict.preferences.orderIntervalAlertEnabled !== null}">
+                                <div class="preference-item row align-items-center justify-content-between">
+                                    <label class="col-6">${Resource.msg('field.intervalalert.enabled.label', 'configuration', null)}</label>
+                                    <select class="preferences-data form-select col-4" name="bmExtOrderIntervalAlertEnabled">
+                                        <option value="true" ${pdict.preferences.orderIntervalAlertEnabled ? 'selected' : ''}>
+                                            ${Resource.msg('literal.yes', 'configuration', null)}</option>
+                                        <option value="false" ${pdict.preferences.orderIntervalAlertEnabled ? '' : 'selected'}>
+                                            ${Resource.msg('literal.no', 'configuration', null)}</option>
+                                    </select>
+                                </div>
+                            </isif>
+                            <isif condition="${pdict.preferences.oosNotificationEnabled !== null}">
+                                <div class="preference-item row align-items-center justify-content-between">
+                                    <label class="col-6">${Resource.msg('field.oos.enabled.label', 'configuration', null)}</label>
+                                    <select class="preferences-data form-select col-4" name="bmExtOOSNotificationEnabled">
+                                        <option value="true" ${pdict.preferences.oosNotificationEnabled ? 'selected' : ''}>
+                                            ${Resource.msg('literal.yes', 'configuration', null)}</option>
+                                        <option value="false" ${pdict.preferences.oosNotificationEnabled ? '' : 'selected'}>
+                                            ${Resource.msg('literal.no', 'configuration', null)}</option>
+                                    </select>
+                                </div>
+                            </isif>
+                            <isif condition="${pdict.preferences.campaignNotificationEnabled !== null}">
+                                <div class="preference-item row align-items-center justify-content-between">
+                                    <label class="col-6">${Resource.msg('field.campaign.enabled.label', 'configuration', null)}</label>
+                                    <select class="preferences-data form-select col-4" name="bmExtCampaignNotificationEnabled">
+                                        <option value="true" ${pdict.preferences.campaignNotificationEnabled ? 'selected' : ''}>
+                                            ${Resource.msg('literal.yes', 'configuration', null)}</option>
+                                        <option value="false" ${pdict.preferences.campaignNotificationEnabled ? '' : 'selected'}>
+                                            ${Resource.msg('literal.no', 'configuration', null)}</option>
+                                    </select>
+                                </div>
+                            </isif>
+                            <isif condition="${pdict.preferences.failedOrderAlertEnabled !== null}">
+                                <div class="preference-item row align-items-center justify-content-between">
+                                    <label class="col-6">${Resource.msg('field.ordering.failed.enabled.label', 'configuration', null)}</label>
+                                    <select class="preferences-data form-select col-4" name="bmExtFailedOrderAlertEnabled">
+                                        <option value="true" ${pdict.preferences.failedOrderAlertEnabled ? 'selected' : ''}>
+                                            ${Resource.msg('literal.yes', 'configuration', null)}</option>
+                                        <option value="false" ${pdict.preferences.failedOrderAlertEnabled ? '' : 'selected'}>
+                                            ${Resource.msg('literal.no', 'configuration', null)}</option>
+                                    </select>
+                                </div>
+                            </isif>
+                            <isif condition="${pdict.preferences.realmId !== null}">
+                                <div class="preference-item row align-items-center justify-content-between">
+                                    <label class="col-6">${Resource.msg('field.realmid.label', 'configuration', null)}</label>
+                                    <input type="text" id="realm-id" name="bmExtRealmId" class="preferences-data col-4 form-control" value="${pdict.preferences.realmId || ''}" />
+                                </div>
+                            </isif>
+                            <isif condition="${pdict.preferences.instanceId !== null}">
+                                <div class="preference-item row align-items-center justify-content-between">
+                                    <label class="col-6">${Resource.msg('field.instanceid.label', 'configuration', null)}</label>
+                                    <input type="text" name="bmExtInstanceId" class="preferences-data col-4 form-control" value="${pdict.preferences.instanceId || ''}" />
+                                </div>
+                            </isif>
+                            <isif condition="${pdict.preferences.organizationId !== null}">
+                                <div class="preference-item row align-items-center justify-content-between">
+                                    <label class="col-6">${Resource.msg('field.organizationid.label', 'configuration', null)}</label>
+                                    <input type="text" name="bmExtOrganizationId" class="preferences-data col-4 form-control" value="${pdict.preferences.organizationId || ''}" />
+                                </div>
+                            </isif>
+                            <isif condition="${pdict.preferences.shortCode !== null}">
+                                <div class="preference-item row align-items-center justify-content-between">
+                                    <label class="col-6">${Resource.msg('field.shortcode.label', 'configuration', null)}</label>
+                                    <input type="text" name="bmExtShortCode" class="preferences-data col-4 form-control" value="${pdict.preferences.shortCode || ''}" />
+                                </div>
+                            </isif>
+                        </div>
+                </form>
+            </div>
+        </isif>
+        <isset name="ociConfigs" scope="page" value="${pdict.ociConfigs}" />
+        <div class="configuration__badge rounded-5 p-4 mt-5">
+            <label class="form-label">${Resource.msg('datamapping.title', 'configuration', null)}</label>
+            <div class="data-mapping-section preference-item row justify-content-between align-items-center ms-0 gap-2" data-delete-data-map-url="${pdict.deleteMapUrl}">
+                <select class="data-type-select form-select col-5" name="dataType">
+                    <option value="" disabled selected hidden>
+                        ${Resource.msg('import.export.object.select.type.placeholder', 'csvImportExport', null)}
+                    </option>
+                    <isif condition="${!ociConfigs.isOciInventoryIntegrationMode}">
+                        <option value="inventory__Import">${Resource.msg('import.product.inventory', 'csvImportExport', null)}</option>
+                        <option value="inventory__Export">${Resource.msg('export.product.inventory', 'csvImportExport', null)}</option>
+                    </isif>
+                    <option value="priceBook__Import">${Resource.msg('import.product.price.book', 'csvImportExport', null)}</option>
+                    <option value="priceBook__Export">${Resource.msg('export.product.price.book', 'csvImportExport', null)}</option>
+                </select>
+                <button class="btn btn-secondary d-flex justify-content-center show-data-mapping col-5" disabled
+                    data-mapping-url="${pdict.dataMapURL}" data-bs-toggle="modal" data-bs-target="#dataMapping">
+                    <span class="btn-text">${Resource.msg('literal.configure', 'configuration', null)}</span>
+                </button>
+            </div>
+        </div>
+
+        <isif condition="${ociConfigs && ociConfigs.isOciInventoryIntegrationMode}">
+            <div class="configuration__badge rounded-5 p-4 mt-5">
+                <div class="sync-locations-section preference-item row justify-content-between align-items-center ms-0 gap-2" data-sync-locations-url="${ociConfigs.syncOciLocationsUrl}">
+                    <label class="form-label">${Resource.msg('oci.locations.title', 'configuration', null)}</label>
+                    <div class="last-locations-sync">
+                        <span>${Resource.msg('field.oci.lastupdate.label', 'configuration', null)}<span>
+                        <span class="value">${ociConfigs.locationsDownloadTime || '-'}</span>
+                    </div>
+                    <button class="btn btn-secondary d-flex justify-content-center sync-locations-groups col-4">
+                        <span class="btn-text">${Resource.msg('field.oci.locationsgroups.download.cta', 'configuration', null)}</span>
+                    </button>
+                </div>
+            </div>
+        </isif>
+        <isinclude template="/csvImportExport/csvImportExportModals" />
+    </div>
+</isdecorate>

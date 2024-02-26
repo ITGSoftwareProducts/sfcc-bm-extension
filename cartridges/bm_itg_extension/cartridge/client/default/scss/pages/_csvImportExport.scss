@@ -1,0 +1,136 @@
+.import-export-container {
+    .mid-section {
+        padding-inline-start: 197px;
+    }
+
+    .section__img {
+        img {
+            object-fit: cover;
+        }
+    }
+
+    .csv-file-input {
+        width: 220px;
+    }
+
+    .csv-icon {
+        flex-basis: 16%;
+    }
+}
+
+.import-export-container {
+    .mapping-table {
+        .mapping-table-labels {
+            border-color: $slate-5;
+        }
+
+        .vdrag-icon {
+            cursor: move;
+            cursor: -webkit-grabbing;
+        }
+    }
+
+    .csv-name {
+        width: 220px;
+    }
+
+    .data-mapping-button {
+        min-width: 176px;
+
+        span {
+            text-transform: none;
+        }
+
+        .btn-text {
+            width: 125px;
+        }
+    }
+
+    .import-section,
+    .export-section {
+        select {
+            width: 272px;
+            padding-left: $unit * 2.25;
+        }
+    }
+}
+
+.import-export-container {
+    .data-mapping-modal {
+        .saved-mapping-config {
+            .form-check {
+                padding-right: $unit-xlg;
+                min-height: 50px;
+
+                &:nth-child(odd) {
+                    background-color: $blue-3;
+                }
+            }
+
+            .input-wrapper {
+                .saved-configration {
+                    word-break: break-all;
+                }
+            }
+        }
+
+        .badge {
+            &.error-badge {
+                text-transform: none;
+            }
+        }
+    }
+}
+
+.data-mapping-modal {
+    .badge {
+        &.error-badge {
+            text-transform: none;
+        }
+    }
+
+    .edit-title {
+        display: none;
+    }
+
+    &.edit-modal {
+        .new-title {
+            display: none;
+        }
+
+        .edit-title {
+            display: block;
+        }
+    }
+}
+
+.mapping-table-content {
+    max-height: 275px;
+
+    &::-webkit-scrollbar {
+        width: 5px;
+        background: $slate-1;
+        border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+        border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background: $slate-8;
+    }
+
+    .linked-icon,
+    .vdrag-icon {
+        margin-top: 10px;
+    }
+}
+
+.new-mapping-name {
+    &.edit-mode {
+        background-color: $slate-2;
+        pointer-events: none;
+    }
+}

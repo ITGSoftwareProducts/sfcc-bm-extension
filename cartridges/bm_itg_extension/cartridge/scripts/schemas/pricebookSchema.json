@@ -1,0 +1,73 @@
+{
+    "primaryKey": {
+        "value": "productId",
+        "groupBy": {
+            "value": ["onlineFrom", "onlineTo"]
+        }
+    },
+    "header": {
+        "attributes": {
+            "pricebook-id": {
+                "mappingAttributeId": "ID"
+            }
+        },
+        "elements": {
+            "currency": {
+                "value": {
+                    "mappingAttributeId": "currencyCode"
+                }
+            },
+            "display-name": {
+                "value": {
+                    "mappingAttributeId": "displayName"
+                }
+            },
+            "online-flag": {
+                "value": {
+                    "mappingAttributeId": "onlineFlag"
+                }
+            }
+        }
+    },
+    "elements": {
+        "price-table": {
+            "attributes": {
+                "product-id": {
+                    "mappingAttributeId": "productId"
+                },
+                "dataType": "string"
+            },
+            "elements": {
+                "online-from": {
+                    "value": {
+                        "mappingAttributeId": "onlineFrom"
+                    },
+                    "dataType": "dateTime"
+                },
+                "online-to": {
+                    "value": {
+                        "mappingAttributeId": "onlineTo"
+                    },
+                    "dataType": "dateTime"
+                },
+                "amount": {
+                    "multipleValues": true,
+                    "attributes": {
+                        "quantity": {
+                            "mappingAttributeId": "quantity"
+                        }
+                    },
+                    "value": {
+                        "mappingAttributeId": "amount"
+                    }
+                },
+                "price-info": {
+                    "value": {
+                        "mappingAttributeId": "priceInfo"
+                    },
+                    "dataType": "string"
+                }
+            }
+        }
+    }
+}

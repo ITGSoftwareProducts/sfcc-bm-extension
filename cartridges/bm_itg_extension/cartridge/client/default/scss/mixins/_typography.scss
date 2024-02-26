@@ -1,0 +1,127 @@
+body {
+    color: $black;
+    font-size: $fs-df;
+    font-family: $font-inter;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: $font-inter-tight;
+    color: $black;
+}
+
+h1,
+.t-h1 {
+    font-size: $fs-xxxl;
+    line-height: $lh-xxxl;
+}
+
+h2,
+.t-h2 {
+    font-size: $fs-xxl;
+    line-height: $lh-xxl;
+}
+
+h3,
+.t-h3 {
+    font-size: $fs-xl;
+    line-height: $lh-xl;
+}
+
+h4,
+.t-h4 {
+    font-size: $fs-lg;
+    line-height: $lh-lg;
+}
+
+h5,
+.t-h5 {
+    font-size: $fs-md;
+    line-height: $lh-md;
+}
+
+h6,
+.t-h6 {
+    font-size: $fs-sm;
+    line-height: $lh-sm;
+}
+
+.text-lg,
+.text-md,
+.text-sm,
+.caption {
+    font-family: $font-inter;
+}
+
+.text-lg {
+    font-size: $fs-xs;
+    line-height: $lh-sm;
+}
+
+.text-md {
+    font-size: $fs-xxs;
+    line-height: $lh-xs;
+}
+
+.text-sm {
+    font-size: $fs-df;
+    line-height: $lh-df;
+}
+
+.caption {
+    font-size: $fs-xxxs;
+    line-height: $lh-xxs;
+}
+
+.caps-lg,
+.caps-md,
+.caps-sm {
+    text-transform: uppercase;
+    font-family: $font-inter;
+    font-weight: $fw-medium;
+    color: $black;
+}
+
+.caps-lg {
+    font-size: $fs-df;
+    line-height: $lh-df;
+    letter-spacing: 1px;
+}
+
+.caps-md {
+    font-size: $fs-xxxs;
+    line-height: $lh-df;
+    letter-spacing: 0.8px;
+}
+
+.caps-sm {
+    font-size: $fs-xxxxs;
+    line-height: $lh-df;
+    letter-spacing: 1px;
+}
+
+.text-ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.font-inter {
+    font-family: $font-inter;
+}
+
+.font-inter-medium {
+    font-family: $font-inter-medium;
+}
+
+.font-inter-semi-bold {
+    font-family: $font-inter-semi-bold;
+}
+
+.font-inter-tight {
+    font-family: $font-inter-tight;
+}

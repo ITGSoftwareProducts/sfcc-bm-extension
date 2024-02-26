@@ -1,0 +1,65 @@
+
+<isset name="currentPage" value="${pdict.paginationModel.currentPage}" scope="page" />
+<isset name="skipCount" value="${ pdict.paginationModel.skipCount}" scope="page" />
+<isset name="pageCount" value="${pdict.paginationModel.pageCount}" scope="page" />
+<isset name="itemNumber" value="${pdict.paginationModel.itemNumber}" scope="page" />
+<isset name="totalCount" value="${pdict.paginationModel.totalCount}" scope="page" />
+<isset name="defaultPageSize" value="${pdict.paginationModel.defaultPageSize}" scope="page" />
+<isset name="showLastThreeDots" value="${(pageCount - skipCount) >= 1 && ((pageCount - currentPage) >= skipCount || skipCount > currentPage)}" scope="page" />
+<isset name="disableOption" value="${false}" scope="page" />
+
+<div class="pagination-bar-wrapper d-flex justify-content-between align-items-end mb-8">
+    <div class="d-flex align-items-center">
+        <span class="items-label text-sm me-2">${Resource.msg('pagination.items.per.page', 'common', null)}</span>
+        <select name="pageSize" class="page-size p-2 form-select" id="pageSize">
+            <isloop items="${defaultPageSize}" var="item">
+                <option ${disableOption ? 'disabled': ''} value="${item}" data-pagination-url="${pdict.paginationModel.pageSizeUrl + '&pageSize=' + item}" class="selected-page-size" ${pdict.paginationModel.selectedPage == item ? 'selected' : ''}> ${item.toFixed()}</option>
+                <isset name="disableOption" value="${totalCount <= item}" scope="page" />
+            </isloop>
+        </select>
+        <span class="item-per-page text-sm ms-2">${Resource.msgf('pagintaion.items.in.page', 'common', null, pdict.paginationModel.itemPerPage, pdict.paginationModel.displayedItem, pdict.paginationModel.totalCount)}</span>
+    </div>
+    <isif condition="${pageCount > 0}">
+        <div class="pagination-bar" data-current-page-number="${pdict.paginationModel.currentPage}" data-last-page-number="${pdict.paginationModel.pageCount}">
+            <isif condition="${pdict.paginationModel.currentPage != 1}">
+                <isif condition="${pageCount > skipCount}">
+                    <span class="start me-3" data-pagination-url="${pdict.paginationModel.url + '&pageNumber=' + 1 }"><img src="${URLUtils.staticURL('/icons/first.svg')}" class="start-page" alt="start page"/></span>
+                </isif>
+                <isif condition="${currentPage > 1}">
+                    <span class="previous  me-1" data-pagination-url="${pdict.paginationModel.url + '&pageNumber=' + (currentPage - 1)}"><img src="${URLUtils.staticURL('/icons/chevronleft.svg')}" class="previous-page" alt="start page"/></span>
+                </isif>
+            </isif>
+            <isif condition="${currentPage >= skipCount && pageCount > skipCount}">
+                <button class="pagination-button" data-pagination-url="${pdict.paginationModel.url + '&pageNumber=' + 1}">
+                    ${Resource.msg('pagination.first.page', 'common', null)}
+                </button>
+                <span class="m3">${Resource.msg('pagination.three.dots', 'common', null)}</span>
+            </isif>
+            <isloop begin="${pdict.paginationModel.startPage}" end="${pdict.paginationModel.endPage}" status="status">
+                <isif condition="${status.index <= pageCount}">
+                    <button class="pagination-button ${status.index == currentPage ? 'active' : ''}" data-pagination-url="${pdict.paginationModel.url + '&pageNumber=' + status.index}">${status.index}</button>
+                </isif>
+            </isloop>
+            <isif condition="${showLastThreeDots}">
+                <span class="m3">${Resource.msg('pagination.three.dots', 'common', null)}</span>
+                <button class="pagination-button" data-pagination-url="${pdict.paginationModel.url + '&pageNumber=' + pageCount}">
+                    <isprint value="${pageCount.toString()}" encoding="on" />
+                </button>
+            </isif>
+            <isif condition="${currentPage != pageCount}">
+                <isif condition="${currentPage < pageCount}">
+                    <span class="next ms-1" data-pagination-url="${pdict.paginationModel.url + '&pageNumber=' + (currentPage + 1)}"><img src="${URLUtils.staticURL('/icons/chevronright.svg')}" class="next-page" alt="start page"/></span>
+                </isif>
+                <isif condition="${pageCount > skipCount}">
+                    <span class="last ms-3" data-pagination-url="${pdict.paginationModel.url + '&pageNumber=' + pageCount}"><img src="${URLUtils.staticURL('/icons/last.svg')}" class="last-page" alt="start page"/></span>
+                </isif>
+            </isif>
+        </div>
+    </isif>
+
+    <div class="page-label d-flex align-items-center">
+        <span class="text-sm me-2 text-sm">${Resource.msg('pagination.page.label', 'common', null)}</span>
+        <input type="number" id="paginationInput" class="form-control page-input p-2 text-center" data-pagination-url="${pdict.paginationModel.url}" data-page-count="${pageCount}" name="pagination" data-current-page="${currentPage.toString()}" value="${currentPage.toString()}"/>
+        <span class="ms-2 text-sm">${Resource.msgf('pagination.page.number', 'common', null, pageCount)}</span>
+    </div>
+</div>

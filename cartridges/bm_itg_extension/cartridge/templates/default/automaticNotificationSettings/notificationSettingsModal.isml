@@ -1,0 +1,37 @@
+<div class="modal fade notification-modal right" id="recipientEmailsModal" tabindex="-1" aria-labelledby="recipientEmailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h1 class="modal-title text-sm" id="recipientEmailsModalLabel"><isprint value="${Resource.msg('field.recipientemails.label', 'automaticNotifications', null)}" /></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-left">
+                <div class="list-container emails-list d-flex flex-wrap"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade notification-modal right" id="productsIdsModal" tabindex="-1" aria-labelledby="productsIdsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h1 class="modal-title text-sm" id="productsIdsModalLabel"><isprint value="${Resource.msg('field.productids.modal.title', 'automaticNotifications', null)}" /></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-left">
+                <div class="modal-subtitle font-inter-semi-bold text-lg"><isprint value="${Resource.msg('field.productids.modal.subtitle', 'automaticNotifications', null)}" /></div>
+                <div class="text-sm product-ids slate-11">
+                    <isprint value="${Resource.msg('field.productids.label', 'automaticNotifications', null)}" />
+                    <span class="px-1">•</span>
+                    <span class="product-id-count"></span>
+                </div>
+                <div class="product-search mt-7 mb-4">
+                    <div class="input-group">
+                        <input type="text" id="productSearch" required aria-required="true" class="form-control product-search-input inputfield_en not_disabled ps-9" name="productSearch" placeholder="${Resource.msg('field.productids.placholder', 'automaticNotifications', null)}"/>
+                    </div>
+                </div>
+                <div class="list-container d-flex flex-wrap"></div>
+            </div>
+        </div>
+    </div>
+</div>

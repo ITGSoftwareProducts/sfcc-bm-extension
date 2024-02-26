@@ -1,0 +1,35 @@
+<isinclude template="/common/util/modules"/>
+<div id="jobRatioModal" class="modal right fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content text-left">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-sm">
+                <isprint value="${Resource.msg('job.execution.ratio.modal.title', 'jobExecutionReport', null)}" />
+                </h5>
+                <button type="button" class="btn btn-secondary close-icon small" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-8">
+                <div class="top-section d-flex flex-column pb-6 mb-6">
+                    <p class="text-md mb-1 font-inter-semi-bold"><isprint value="${Resource.msg('job.execution.ratio.modal.copy', 'jobExecutionReport', null)}" /></p>
+                    <div class="form-group position-relative">
+                        <input type="text" id="datepicker" class='job-ratio-date custom-datepicker pe-8 form-control' placeholder="${Resource.msg('input.date.placeholder', 'common', null)}" readonly="true"/>
+                        <div class="invalid-feedback text-sm"><isprint value="${Resource.msg('job.execution.ratio.modal.invalid', 'jobExecutionReport', null)}" /></div>
+                    </div>
+                    <button class="btn btn-primary check-jobs-ratio mt-4" data-job-ratio-url="${pdict.jobRatioUrl}">${Resource.msg('job.execution.check.ratio.button', 'jobExecutionReport', null)}</button>
+                </div>
+                <div class="result-section d-none">
+                    <p class="ratio-description text-lg font-inter-medium"><isprint value="${Resource.msg('job.execution.ratio.result.message', 'jobExecutionReport', null)}" /></p>
+                    <span class="t-h3 ratio-value font-inter-tight"></span>
+                    <div class="result-message warning-message yellow-11 d-none p-2 align-items-center gap-1 font-inter-medium rounded-1">
+                        <span class="icon"><issvgimg name="${'errors'}" color="${'#946800'}" /></span>
+                        <span><isprint value="${Resource.msg('job.execution.warning.message', 'jobExecutionReport', null)}" /></span>
+                    </div>
+                    <div class="result-message safe-message green-11 d-none p-3 align-items-center gap-1 font-inter-medium rounded-1">
+                        <span><isprint value="${Resource.msg('job.execution.safe.message', 'jobExecutionReport', null)}" /></span>
+                    </div>
+                    <span class="invalid-feedback error-message text-sm"><isprint value="${Resource.msg('job.execution.error.message', 'jobExecutionReport', null)}" /></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
