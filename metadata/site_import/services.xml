@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns="http://www.demandware.com/xml/impex/services/2014-09-26">
+    <service-credential service-credential-id="bmextension.ocapidata.auth.credentials">
+        <url>https://account.demandware.com/dw/oauth2/access_token</url>
+    </service-credential>
+
+    <service-credential service-credential-id="bmextension.oci.auth.credentials">
+        <url>https://account.demandware.com/dw/oauth2/access_token</url>
+    </service-credential>
+
+    <service-profile service-profile-id="bmextension.auth.profile">
+        <timeout-millis>10000</timeout-millis>
+        <rate-limit-enabled>false</rate-limit-enabled>
+        <rate-limit-calls>0</rate-limit-calls>
+        <rate-limit-millis>0</rate-limit-millis>
+        <cb-enabled>false</cb-enabled>
+        <cb-calls>0</cb-calls>
+        <cb-millis>0</cb-millis>
+    </service-profile>
+
+    <service-profile service-profile-id="bmextension.ocapidata.profile">
+        <timeout-millis>10000</timeout-millis>
+        <rate-limit-enabled>false</rate-limit-enabled>
+        <rate-limit-calls>0</rate-limit-calls>
+        <rate-limit-millis>0</rate-limit-millis>
+        <cb-enabled>false</cb-enabled>
+        <cb-calls>0</cb-calls>
+        <cb-millis>0</cb-millis>
+    </service-profile>
+
+    <service-profile service-profile-id="bmextension.oci.profile">
+        <timeout-millis>10000</timeout-millis>
+        <rate-limit-enabled>true</rate-limit-enabled>
+        <rate-limit-calls>100</rate-limit-calls>
+        <rate-limit-millis>10000</rate-limit-millis>
+        <cb-enabled>false</cb-enabled>
+        <cb-calls>0</cb-calls>
+        <cb-millis>0</cb-millis>
+    </service-profile>
+
+    <service service-id="bmextension.ocapidata.auth">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <force-prd-enabled>false</force-prd-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>bmextension.auth.profile</profile-id>
+        <credential-id>bmextension.ocapidata.auth.credentials</credential-id>
+    </service>
+
+    <service service-id="bmextension.ocapidata.rest.all">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <force-prd-enabled>false</force-prd-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>bmextension.ocapidata.profile</profile-id>
+        <credential-id/>
+    </service>
+
+    <service service-id="bmextension.oci.auth">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <force-prd-enabled>false</force-prd-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>bmextension.auth.profile</profile-id>
+        <credential-id>bmextension.oci.auth.credentials</credential-id>
+    </service>
+
+    <service service-id="bmextension.oci.rest.all">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <force-prd-enabled>false</force-prd-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>bmextension.oci.profile</profile-id>
+        <credential-id/>
+    </service>
+
+</services>

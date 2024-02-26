@@ -1,0 +1,64 @@
+<div id="ociNewRecordModal" class="modal oci-modal oci-new-record-modal right fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <form action="${pdict.updateRecordActionUrl}" class="oci-record-new" method="POST" name="record-form"
+                novalidate>
+                <div class="modal-header border-0 position-fixed top-0 z-2">
+                    <h1 class="modal-title text-sm" id="recipientEmailsModalLabel">
+                        <isprint value="${Resource.msg('inventory.add.new.record', 'oci', null)}" />
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-left">
+                    <div class="top-section pt-8">
+                        <div class="product-info d-flex align-items-center">
+                            <img src="${URLUtils.staticURL('/images/product.png')}" class="img-fluid" alt="product" />
+                            <div class="name-wrapper ms-7">
+                                <div class="text-lg">
+                                    <isprint value="${Resource.msg('inventory.new.record', 'oci', null)}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group select-wrapper mt-9 border-top border-bottom py-5">
+                        <label class="form-label">
+                            ${Resource.msg('oci.inventory.location.label', 'oci', null)}
+                        </label>
+                        <select name="location" class="form-select select inventory-locations perm_not_disabled">
+                            <isif condition="${!empty(pdict.groupsAndLocations)}">
+                                <isloop items="${pdict.groupsAndLocations}" var="group">
+                                    <optgroup label="${group.id}">
+                                        <isif condition="${!empty(group.locations)}">
+                                            <isloop items="${group.locations}" var="location">
+                                                <option value="${location}">${location}</option>
+                                            </isloop>
+                                        </isif>
+                                    </optgroup>
+                                </isloop>
+                            </isif>
+                        </select>
+                    </div>
+                    <div class="form-group mt-4">
+                        <label class="form-label" for="record-form-product-id">
+                            ${Resource.msg('inventory.product.id', 'oci', null)}
+                        </label>
+                        <input type="text" required aria-required="true" class="form-control inputfield_en not_disabled"
+                            name="productId"
+                            placeholder="${Resource.msg('inventory.input.placeholder', 'oci', null)}" />
+                        <div class="invalid-feedback" id="form-product-id-error"></div>
+                    </div>
+                    <isinclude template="/oci/ociRecordForm" />
+
+                </div>
+                <div class="modal-footer position-fixed bottom-0 z-2 px-9 py-7">
+                    <button type="button" class="btn btn-link m-0 me-4" data-bs-dismiss="modal" aria-label="Cancel">
+                        <isprint value="${Resource.msg('button.cancel', 'common', null)}" />
+                    </button>
+                    <button type="submit" class="btn btn-primary add-new-record add-btn m-0" aria-label="Add">
+                        <isprint value="${Resource.msg('button.add', 'common', null)}" />
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+<div class="bm-itg-footer bg-slate-2 px-2">
+    <div class="bm-itg-footer-content  bg-surface-white d-flex justify-content-between rounded-4">
+        <div class="itg-footer-left-section d-flex align-items-end">
+            <span class="itg-logo pe-2">
+                <img src="${URLUtils.staticURL('/images/itg-logo.svg')}" class=" img-fluid" alt="itg logo"/>
+            </span>
+            <span class="itg-desc slate-10 font-inter-medium caption">${Resource.msg('bm.footer.itg.desc', 'common', null)}</span>
+        </div>
+
+        <div class="itg-footer-right-section d-flex align-items-baseline">
+            <span class="itg-copyright slate-10 font-inter-medium caption pe-1">${Resource.msg('bm.footer.itg.copyright', 'common', null)}</span>
+            <span class="itg-website">
+              <a class="text-underline font-inter-medium slate-12 caption" href="https://itgsoftware.com/"><isprint value="${Resource.msg('bm.footer.itg.website', 'common', null)}" /></a>
+            </span>
+        </div>
+    </div>
+</div>

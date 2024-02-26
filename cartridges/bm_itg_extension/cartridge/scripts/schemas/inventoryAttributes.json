@@ -1,0 +1,44 @@
+{
+    "attributes": {
+        "productId": {
+            "displayName": "Product ID",
+            "rules": {
+                "mandatory": true
+            }
+        },
+        "allocation": {
+            "displayName": "Allocation"
+        },
+        "allocationTimeStamp": {
+            "displayName": "Allocation Timestamp"
+        },
+        "perpetual": {
+            "displayName": "Perpetual"
+        },
+        "preorderBackorderHandling": {
+            "displayName": "Preorder Backorder Handling"
+        },
+        "preorderBackorderAllocation": {
+            "displayName": "Preorder Backorder Allocation"
+        },
+        "ats": {
+            "displayName": "ATS"
+        },
+        "onOrder": {
+            "displayName": "On Order"
+        },
+        "turnover": {
+            "displayName": "Turnover"
+        },
+        "inStockDatetime": {
+            "displayName": "In Stock Datetime"
+        }
+    },
+    "type": "inventory",
+    "ocapiSystemAttributeType": "ProductInventoryRecord",
+    "systemAttributes": [
+        "UUID",
+        "creationDate",
+        "lastModified"
+    ]
+}

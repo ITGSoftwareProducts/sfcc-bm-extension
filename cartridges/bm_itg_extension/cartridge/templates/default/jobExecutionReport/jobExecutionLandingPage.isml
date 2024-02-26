@@ -1,0 +1,132 @@
+<isdecorate template="common/frame/page">
+    <isscript>
+        var assets = require('*/cartridge/scripts/assets');
+        assets.addJs('/js/jobExecutionReport.js');
+        assets.addJs('/js/thirdparty/chart.js');
+        assets.addJs('/js/thirdparty/chartjs-adapter-date-fns.bundle.min.js');
+    </isscript>
+    <isinclude template="/common/util/modules"/>
+    <div class="section__wrapper job-execution-container mb-2">
+        <div class="d-flex">
+            <div class="section__img">
+                <img src="${URLUtils.staticURL('/images/job-execution-report.svg')}" class="job-execution-img"
+                    alt="job execution report" />
+            </div>
+            <div class="section__text w-100">
+                <h1 class="t-h5 mb-0 job-execution-title">${Resource.msg('feature.title', 'jobExecutionReport', null)}</h1>
+                <p class="text-sm section__msg mt-3 mb-0 job-execution-description">
+                    ${Resource.msg('job.execution.description1', 'jobExecutionReport', null)}</p>
+                <p class="text-sm section__msg mb-0 job-execution-description">
+                    ${Resource.msg('job.execution.description2', 'jobExecutionReport', null)}</p>
+
+                <div class="job-execution-action d-flex align-items-center">
+                    <div class="job-execution-buttons d-flex justify-content-between w-100" data-job-report-url="${pdict.jobReportUrl}" data-instance-time-zone="${pdict.instanceTimeZone}">
+                        <div class="job-execution-wrapper-actions d-flex align-items-center">
+                            <button class="btn selector-button last-four-hour font-inter d-flex align-items-center">
+                                <span><issvgimg name="${'time'}" color="${'#11181C'}" /></span>
+                                <span class="ps-1">${Resource.msg('job.execution.last.4.hour', 'jobExecutionReport', null)}</span>
+                            </button>
+                            <span class="or-label text-md slate-12 px-2">
+                                ${Resource.msg('job.execution.or', 'jobExecutionReport', null)}
+                            </span>
+                            <div class="custom-time-frame">
+                                <button id="custom-time-frame-btn" class="selector-button btn custom-time-frame-btn font-inter d-flex align-items-center" type="">
+                                    <span><issvgimg name="${'calendar'}" color="${'#11181C'}" /></span>
+                                    <span class="px-1 time-value">${Resource.msg('job.execution.custom.date.button', 'jobExecutionReport', null)}</span>
+                                    <span><issvgimg name="${'chevrondown'}" color="${'#11181C'}" /></span>
+                                </button>
+                                <div class="position-absolute calendar-wrapper bg-surface-white rounded-5 hide">
+                                    <div id="customTimeFrame"></div>
+                                    <div id="additionalInputsContainer"
+                                        class="time-inputs-wrapper d-flex justify-content-between flex-column pt-3 px-2">
+                                        <div class="d-flex justify-content-between time-inputs">
+                                            <div class="start-time">
+                                                <span class="label text-sm font-inter-semi-bold"><isprint value="${Resource.msg('job.execution.label.from', 'jobExecutionReport', null)}" /></span>
+                                                <div class="d-flex align-items-center">
+                                                    <input class="form-control text-center" type="number" name="hours" id="startHours"
+                                                        value="" />
+                                                    <input type="hidden" id="startHoursHidden" value="" />
+                                                    <span class="px-1">:</span>
+                                                    <input class="form-control text-center" name="minutes" type="number" id="startMinutes"
+                                                        value="" />
+                                                    <input type="hidden" id="startMinutesHidden" value="" />
+                                                    <div id="startToggle" class="toggle-time ps-1 blue-11"><isprint value="${Resource.msg('job.execution.label.am', 'jobExecutionReport', null)}" /></div>
+                                                    <input type="hidden" id="startToggleHidden" value="" />
+                                                </div>
+                                            </div>
+                                            <div class="end-time">
+                                                <span class="label text-sm font-inter-semi-bold"><isprint value="${Resource.msg('job.execution.label.to', 'jobExecutionReport', null)}" /></span>
+                                                <span class="new-day caption slate-11"></span>
+                                                <div class="end-time d-flex align-items-center">
+
+                                                    <input class="form-control text-center" type="number" name="hours" id="endHours"
+                                                        value="" />
+                                                    <input type="hidden" id="endHoursHidden" value="" />
+                                                    <span class="px-1">:</span>
+                                                    <input class="form-control text-center" type="number" name="minutes" id="endMinutes"
+                                                        value="" />
+                                                    <input type="hidden" id="endMinutesHidden" value="" />
+                                                    <div id="endToggle" class="toggle-time blue-11 ps-1"><isprint value="${Resource.msg('job.execution.label.am', 'jobExecutionReport', null)}" /></div>
+                                                    <input type="hidden" id="endToggleHidden" value="" />
+                                                    <input id="nextDay" type="hidden" />
+                                                    <input id="startDate" type="hidden" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span class="invalid-feedback error-msg py-2 text-sm"><isprint value="${Resource.msg('job.execution.timedifference', 'jobExecutionReport', null)}" /></span>
+                                        <span class="invalid-feedback time-error-msg pb-2 mt-0 text-sm"><isprint value="${Resource.msg('job.execution.entertime', 'jobExecutionReport', null)}" /></span>
+                                        <div class="actions d-flex justify-content-end pt-3 gap-3">
+                                            <button id="closeDatePicker" class="btn btn-link"><isprint value="${Resource.msg('button.cancel', 'common', null)}" /></button>
+                                            <button id="saveButton" class="btn btn-primary save"><isprint value="${Resource.msg('button.done', 'common', null)}" /></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary job-execution-generate ms-3 disabled" type="">
+                                ${Resource.msg('job.execution.generate.button', 'jobExecutionReport', null)}
+                            </button>
+                        </div>
+                        <div class="job-execution-ratio">
+                            <button class="btn btn-secondary d-flex align-items-center px-4" data-bs-toggle="modal" data-bs-target="#jobRatioModal">
+                                <span><issvgimg name="${'jratio'}" color="${'#11181C'}" /></span>
+                                <span class="ps-1">${Resource.msg('job.execution.check.job.ratio.button', 'jobExecutionReport', null)}</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="job-execution-wrapper bg-surface-white ">
+        <label class="recent-report slate-11 text-sm d-none">${Resource.msg('job.execution.recent.report.label', 'jobExecutionReport', null)}</label>
+        <div class="chart-info">
+            <span class="date pe-1"></span>
+            <span class="start-time"></span>
+            <span class="space"></span>
+            <span class="end-time"></span>
+            <span class="total-executions slate-11 text-sm ms-2"></span>
+        </div>
+
+        <div class="job-execution-content m-auto">
+            <div class="empty-search-result d-flex align-items-center flex-column">
+                <img src="${URLUtils.staticURL('/images/report.png')}" class="job-execution img-fluid"
+                    alt="job-execution" />
+                <p class="empty-job-execution-msg1 slate-11 text-center text-sm mt-6 mb-0">
+                    ${Resource.msg('job.execution.empty.msg1', 'jobExecutionReport', null)}</p>
+                <p class="empty-job-execution-msg2 slate-11 $font-inter-medium text-center text-sm">${Resource.msg('job.execution.empty.msg2', 'jobExecutionReport', null)}</p>
+            </div>
+            <div class="chart-wrapper position-relative mt-7 d-none">
+                <div class="chart-area-wrapper position-relative">
+                    <div class="chart-area-wrapper2">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+                    <canvas class="position-absolute bg-surface-white" id="axis-test" width="0"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <isinclude template="jobExecutionReport/jobRatio" />
+    <div class="result"></div>
+</isdecorate>

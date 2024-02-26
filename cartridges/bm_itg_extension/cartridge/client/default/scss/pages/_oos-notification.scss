@@ -1,0 +1,191 @@
+.notification-system {
+    @include media-breakpoint-up(xxl) {
+        .custom-container {
+            max-width: 1600px;
+        }
+    }
+
+    &__right-section {
+        border: 1px solid $slate-5;
+        box-shadow: 0 1px 3px 0 rgba(17, 24, 29, 0.08);
+
+        .recipient-emails-msg {
+            color: $slate-11;
+        }
+    }
+
+    .notification-form {
+        &.disabled {
+            pointer-events: none;
+
+            .btn-more {
+                &::before {
+                    content: url("../icons/disabled-add.svg");
+                }
+
+                &::after {
+                    content: url("../icons/chevronright-gray.svg");
+                }
+            }
+        }
+    }
+
+    .icon-wrapper {
+        width: 132px;
+
+        .icon-bg {
+            width: 64px;
+            height: 64px;
+            border: 1px solid $slate-5;
+            border-radius: 100px;
+        }
+    }
+
+    .msg-wrapper {
+        margin-left: $unit * 4.5;
+        margin-right: $sub-unit * 7;
+    }
+
+    .text-msg {
+        max-width: 360px;
+    }
+
+    .btn-more {
+        &::before {
+            display: inline-block;
+            content: url("../icons/add.svg");
+            height: 15px;
+        }
+
+        &::after {
+            content: url("../icons/chevronright-blue.svg");
+            width: 24px;
+            height: 24px;
+        }
+    }
+
+    .order-interval-value {
+        &::before {
+            content: url("../icons/stopwatch.svg");
+            width: 24px;
+            height: 24px;
+            margin-right: $sub-unit;
+        }
+    }
+
+    .failed-interval-alert {
+        .form-control {
+            width: 56px;
+            min-width: 56px;
+        }
+    }
+
+    .campaign-list {
+        .campaign-labels {
+            border-bottom: 1px solid $slate-5;
+            margin-bottom: $sub-unit * 5;
+
+            .campaign-label-id {
+                width: 285px;
+            }
+        }
+
+        .campaign {
+            .suggestion-list {
+                top: 100%;
+                left: 0;
+                width: 100%;
+                box-shadow: 0 1px 3px 0 rgba(17, 24, 29, 0.08);
+                z-index: 2;
+                list-style: none;
+
+                .suggestion-list-item {
+                    border-bottom: 1px solid $slate-5;
+                    cursor: pointer;
+
+                    .campaign-id {
+                        font-weight: $fw-bold;
+                    }
+
+                    .expire-date {
+                        font-size: $fs-xxxs;
+                    }
+
+                    &:last-child {
+                        border-bottom: 0;
+                    }
+                }
+            }
+
+            .form-control[type="number"] {
+                width: 56px;
+                min-width: 56px;
+            }
+        }
+    }
+}
+
+.content-notification-campaign {
+    max-width: 246px;
+
+    .form-control {
+        width: 246px;
+    }
+
+    .invalid-feedback {
+        margin-bottom: $unit;
+    }
+}
+
+.campaign {
+    .linked-icon {
+        margin-top: $unit * 1.25;
+    }
+}
+
+.notification-modal {
+    .product-search-input {
+        background: url("../icons/search.svg") no-repeat $unit * 1.25;
+        background-size: $unit * 3;
+        padding-inline-start: $unit * 5.25;
+    }
+}
+
+.recipient-emails-form {
+    .list-item {
+        &::before {
+            content: url("../icons/mail.svg");
+            margin-right: $sub-unit;
+            height: 24px;
+        }
+    }
+}
+
+.list-container {
+    .list {
+        .list-item {
+            padding: $sub-unit $sub-unit * 1.5;
+
+            .value {
+                font-family: $font-inter-medium;
+            }
+
+            .remove-item {
+                height: 16px;
+                cursor: pointer;
+
+                &::after {
+                    content: url("../icons/remove-icon.svg");
+                    margin-left: $unit;
+                }
+            }
+        }
+    }
+}
+
+/* Remove arrows on focus for input type number */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}

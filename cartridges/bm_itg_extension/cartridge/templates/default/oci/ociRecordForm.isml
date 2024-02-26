@@ -1,0 +1,68 @@
+<div class="oci-record">
+    <div class="form-group mt-4">
+        <label class="form-label" for="record-form-onhand-qty">
+            ${Resource.msg('inventory.on.hand.qty', 'oci', null)}
+        </label>
+        <input type="number" required aria-required="true" class="form-control inputfield_en not_disabled" name="onHandQty"
+            data-negative-value-error="${Resource.msg('inventory.negative.value.msg', 'oci', null)}"
+            placeholder="${Resource.msg('inventory.input.placeholder', 'oci', null)}" />
+        <div class="invalid-feedback" id="form-onhand-qty-error"></div>
+    </div>
+    <div class="form-group mt-4">
+        <label class="form-label" for="record-form-safety-stock">
+            ${Resource.msg('inventory.safety.stock', 'oci', null)}
+        </label>
+        <input type="number" required aria-required="true" class="form-control inputfield_en not_disabled" name="safetyStock"
+            data-negative-value-error="${Resource.msg('inventory.negative.value.msg', 'oci', null)}"
+            placeholder="${Resource.msg('inventory.input.placeholder', 'oci', null)}" />
+        <div class="invalid-feedback" id="form-safety-stock-error"></div>
+    </div>
+    <div class="form-group mt-4">
+        <label class="form-label" for="record-form-future-qty1">
+            ${Resource.msg('inventory.future.qty1', 'oci', null)}
+        </label>
+        <input type="number" class="form-control inputfield_en not_disabled" name="futureQty1"
+            data-negative-value-error="${Resource.msg('inventory.negative.value.msg', 'oci', null)}"
+            data-mandatory-if-exist="futureQtyDate1"
+            placeholder="${Resource.msg('inventory.input.placeholder', 'oci', null)}" />
+        <div class="invalid-feedback" id="form-future-qty1-error"></div>
+    </div>
+    <div class="form-group mt-4 position-relative">
+        <label class="form-label" for="record-form-future-qty-date1">
+            ${Resource.msg('inventory.future.qty.date1', 'oci', null)}
+        </label>
+        <div class="futureQtyDate-container d-flex align-items-center">
+            <input type="text" class="form-control inputfield_en not_disabled futureQtyDate"
+                name="futureQtyDate1" data-mandatory-if-exist="futureQty1"
+                placeholder="${Resource.msg('input.date.placeholder', 'common', null)}" readonly="true" />
+            <div class="delete-icon">
+                <issvgimg name="${'delete'}" color="${'#11181C'}" />
+            </div>
+        </div>
+        <div class="invalid-feedback" id="form-future-qty-date1-error"></div>
+    </div>
+    <div class="form-group mt-4">
+        <label class="form-label" for="record-form-future-qty2">
+            ${Resource.msg('inventory.future.qty2', 'oci', null)}
+        </label>
+        <input type="number" class="form-control inputfield_en not_disabled" name="futureQty2"
+            data-negative-value-error="${Resource.msg('inventory.negative.value.msg', 'oci', null)}"
+            data-mandatory-if-exist="futureQtyDate2"
+            placeholder="${Resource.msg('inventory.input.placeholder', 'oci', null)}" />
+        <div class="invalid-feedback" id="form-future-qty2-error"></div>
+    </div>
+    <div class="form-group mt-4 position-relative">
+        <label class="form-label" for="record-form-future-qty2">
+            ${Resource.msg('inventory.future.qty.date2', 'oci', null)}
+        </label>
+        <div class="futureQtyDate-container d-flex align-items-center">
+            <input type="text" class="form-control inputfield_en not_disabled futureQtyDate"
+                name="futureQtyDate2" data-mandatory-if-exist="futureQty2"
+                placeholder="${Resource.msg('input.date.placeholder', 'common', null)}" readonly="true" />
+            <div class="delete-icon">
+                <issvgimg name="${'delete'}" color="${'#11181C'}" />
+            </div>
+        </div>
+        <div class="invalid-feedback" id="form-future-qty-date2-error"></div>
+    </div>
+</div>

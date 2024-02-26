@@ -1,0 +1,92 @@
+.oci-record-modal {
+    .product-content-info {
+        .value {
+            font-family: $font-inter-semi-bold;
+        }
+    }
+
+    .inventory-locations-list {
+        .group {
+            font-family: $font-inter-semi-bold;
+        }
+    }
+}
+
+.oci-new-record-modal,
+.oci-edit-record-modal {
+    --bs-border-color: #{$slate-5};
+    --bs-border-width: 0.5px;
+
+    .modal-body {
+        .oci-record {
+            padding-bottom: $unit * 15;
+
+            .calendar-icon {
+                top: 54px;
+            }
+
+            .futureQtyDate {
+                background-image: url("../icons/calendar.svg");
+                background-repeat: no-repeat;
+                background-position: right 8px top 9px;
+                cursor: pointer;
+            }
+
+            .futureQtyDate-container {
+                .delete-icon {
+                    margin-left: 10px;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    .modal-footer {
+        background-color: $surface-white;
+        width: 97%;
+
+        .add-btn {
+            width: 96px;
+            height: 44px;
+        }
+    }
+}
+
+.oci-modal {
+    .modal-header {
+        background-color: $surface-white;
+        width: 97%;
+        height: 48px;
+    }
+}
+
+.product-inv-list-form {
+    .empty-search-result {
+        padding: $unit * 6.25;
+    }
+}
+
+.ui-datepicker {
+    button.ui-datepicker-current {
+        display: none;
+    }
+
+    .ui-datepicker-buttonpane {
+        display: block;
+        text-align: center;
+
+        button.ui-datepicker-close {
+            width: 50%;
+        }
+    }
+}
+
+.search-oci-inventory-form {
+    .product-id-group {
+        max-width: 520px;
+
+        textarea.is-invalid {
+            background-position-y: 50%;
+        }
+    }
+}

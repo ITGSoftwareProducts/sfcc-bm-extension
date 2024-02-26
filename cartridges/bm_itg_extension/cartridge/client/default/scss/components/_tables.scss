@@ -1,0 +1,146 @@
+.table {
+    --bs-table-striped-bg: #{$slate-2};
+    --bs-table-border-color: #{$slate-6};
+    --bs-table-color: #{$slate-12};
+    --bs-table-striped-color: #{$slate-12};
+    --bs-table-hover-bg: #{$blue-3};
+    --bs-body-bg: #{$surface-white};
+
+    &.custom-table {
+        thead {
+            th {
+                font-family: $font-inter-medium;
+                font-weight: $fw-medium;
+            }
+        }
+
+        tr {
+            td {
+                vertical-align: middle;
+            }
+
+            a {
+                color: $slate-12;
+            }
+
+            &.pending {
+                * {
+                    color: $violet-11;
+                }
+            }
+        }
+
+        tbody {
+            tr {
+                cursor: pointer;
+
+                &:hover,
+                &.focused {
+                    --bs-table-striped-bg: #{$blue-3};
+                    --bs-table-bg-type: #{$blue-3};
+
+                    .selection_link {
+                        color: $blue-11;
+                    }
+
+                    .export {
+                        visibility: visible;
+                    }
+                }
+            }
+
+            .selection_link {
+                word-break: break-all;
+            }
+        }
+
+        &.fixed {
+            td,
+            th {
+                &:nth-of-type(1) {
+                    width: 27%;
+                }
+
+                &:nth-of-type(2) {
+                    width: 12%;
+                }
+
+                &:nth-of-type(3) {
+                    width: 10%;
+                }
+
+                &:nth-of-type(4) {
+                    width: 10%;
+                }
+
+                &:nth-of-type(5) {
+                    width: 10%;
+                }
+            }
+        }
+    }
+
+    th[data-sort-type] {
+        &:hover {
+            cursor: pointer;
+
+            &::after {
+                content: "\21C5";
+                padding-left: $unit;
+                color: $black;
+                opacity: 0.7;
+            }
+        }
+    }
+
+    &.sorting {
+        thead {
+            .sort-asc {
+                &::after {
+                    content: "↓";
+                    padding-left: $sub-unit;
+                }
+            }
+
+            .sort-desc {
+                &::after {
+                    content: "↑";
+                    padding-left: $sub-unit;
+                }
+            }
+        }
+    }
+
+    .status {
+        .badge {
+            &.in-progress-badge {
+                &::before {
+                    animation: rotate 2s linear infinite;
+                }
+            }
+        }
+    }
+
+    .actions {
+        .export {
+            display: inline-block;
+            align-items: center;
+            visibility: hidden;
+            text-transform: lowercase;
+            text-decoration: none;
+
+            &::before {
+                content: url("../icons/download2.svg");
+                width: $unit * 3;
+                height: $unit * 3;
+                margin-inline-end: $unit * 0.75;
+                vertical-align: middle;
+                display: inline-block;
+            }
+        }
+    }
+
+    .empty-execution-list-msg {
+        max-width: 250px;
+    }
+}

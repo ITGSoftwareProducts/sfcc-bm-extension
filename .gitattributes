@@ -1,0 +1,8 @@
+# Unix-style newlines with a newline ending every file. Relates to .editorconfig setting.
+* text=auto eol=lf
+
+# LFS Configuration
+*.jpg binary
+*.png binary
+*.gif binary
+*.pdf binary

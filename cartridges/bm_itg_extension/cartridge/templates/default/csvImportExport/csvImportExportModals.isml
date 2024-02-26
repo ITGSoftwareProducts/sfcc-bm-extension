@@ -1,0 +1,40 @@
+<div class="modal fade data-mapping-modal" id="dataMapping" tabindex="-1" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h1 class="modal-title text-sm font-inter slate-11" id="productsIdsModalLabel">
+                    <isprint value="${Resource.msg('data.mapping.configuration', 'csvImportExport', null)}" />
+                </h1>
+                <button type="button" class="btn btn-secondary close-icon small" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-0 pt-8 pb-7">
+                <div class="px-9">
+                    <h6 class="t-h6 mb-1"><isprint value="${Resource.msg('data.mapping.feature.title', 'csvImportExport', null)}" /></h6>
+                    <p class="text-sm copy mb-0 slate-11"><isprint value="${Resource.msg('data.mapping.configuration.copy', 'csvImportExport', null)}" /></p>
+                    <p class="badge error-badge p-3 invalid-feedback text-sm text-lowercase d-none"><isprint value="${Resource.msg('data.mapping.configuration.error.message', 'csvImportExport', null)}" /></p>
+                </div>
+
+                <div class="modal-data mt-6"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade data-mapping-modal" id="newDataMapping" tabindex="-1" aria-labelledby=""
+    aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h1 class="modal-title text-sm font-inter slate-11 new-title" id="productsIdsModalLabel">
+                    <isprint value="${Resource.msg('new.data.mapping.configuration', 'csvImportExport', null)}" />
+                </h1>
+                <h1 class="modal-title text-sm font-inter slate-11 edit-title" id="productsIdsModalLabel">
+                    <isprint value="${Resource.msg('edit.data.mapping.configuration', 'csvImportExport', null)}" />
+                </h1>
+                <button type="button" class="btn btn-secondary close-icon small" data-bs-target="#dataMapping" data-bs-toggle="modal" aria-label="Close"></button>
+            </div>
+            <isinclude template="/csvImportExport/newMappingConfigurationRecord" />
+            <div class="modal-body px-0 pb-7"></div>
+        </div>
+    </div>
+</div>

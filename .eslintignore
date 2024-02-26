@@ -1,0 +1,10 @@
+**/cartridge/static/**/*
+coverage/
+node_modules/
+cartridges/app_storefront_base/
+cartridges/plugin_cartridge_merge/
+cartridges/plugin_giftregistry/
+cartridges/plugin_wishlists/
+cartridges/plugin_applepay/
+cartridges/bm_itg_extension/cartridge/scripts/jobsteps/exportPageDesigner.js
+cartridges/bm_itg_extension/cartridge/scripts/helpers/xmlCsvConversionHelper.js

@@ -1,0 +1,59 @@
+<isdecorate template="common/frame/page">
+    <isinclude template="/common/util/modules" />
+    <isscript>
+        var assets = require('*/cartridge/scripts/assets');
+        assets.addJs('/js/ociInventory.js');
+    </isscript>
+
+    <div class="oci-inventory-container">
+        <form action="${pdict.searchInventoryActionUrl}" class="section__wrapper search-oci-inventory-form mb-2"
+            method="POST" name="oci-inventory-form" novalidate>
+            <div class="d-flex align-items-end justify-content-between">
+                <div class="d-flex">
+                    <div class="section__img oci-inventory-img">
+                        <img src="${URLUtils.staticURL('/images/inventory.svg')}" class="oci-invenory-img img-fluid"
+                            alt="OCI Inventory" />
+                    </div>
+                    <div class="section__text">
+                        <h1 class="t-h5 mb-0">${Resource.msg('oci.inventory.title', 'oci', null)}</h1>
+                        <p class="text-sm section__msg mt-3 mb-0">
+                            ${Resource.msg('oci.inventory.description1', 'oci', null)}
+                        </p>
+                        <div class="form-content search-wrapper d-flex">
+                            <div class="input-group me-2 form-group position-relative product-id-group">
+                                <textarea type="text" id="searchTerm" required aria-required="true"
+                                    class="form-control search-input w-100 rounded-3 ps-9 inputfield_en not_disabled input-field"
+                                    name="searchTerm"
+                                    data-missing-error="${Resource.msg('oci.search.missing.error', 'oci', null)}"
+                                    placeholder="${Resource.msg('oci.search.placeholder', 'oci', null)}"></textarea>
+                                <issvgimg name="${'search'}" color="${'#11181C'}" />
+                                <div class="invalid-feedback" id="form-search-oci-error"></div>
+                            </div>
+                            <button id="searchOCIInventory" type="submit"
+                                class="btn btn-primary search-btn mt-4 mt-lg-0">
+                                <isprint value="${Resource.msg('button.search', 'common', null)}" /></button>
+                        </div>
+                        <p class="text-sm section__msg input-desc mt-2 mb-0">
+                            ${Resource.msg('oci.inventory.description2', 'oci', null)}
+                        </p>
+                    </div>
+                </div>
+                <button id="newOCIrecord" type="button"
+                    class="btn btn-secondary add-record-btn d-flex align-items-center mt-4 mt-lg-0"
+                    data-bs-toggle="modal" data-bs-target="#ociNewRecordModal">
+                    <span>
+                        <issvgimg name="${'add'}" color="${'#11181C'}" /></span>
+                    <span class="ms-2">
+                        <isprint value="${Resource.msg('button.new.oci.record', 'oci', null)}" /></span>
+                </button>
+            </div>
+        </form>
+        <div class="results bg-surface-white rounded-4">
+            <div class="search-result result-table">
+                <isinclude template="/oci/ociInventoryResults" />
+            </div>
+        </div>
+        <isinclude template="/oci/ociNewRecordModal" />
+        <isinclude template="/oci/ociEditRecordModal" />
+    </div>
+</isdecorate>

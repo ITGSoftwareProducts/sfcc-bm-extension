@@ -1,0 +1,85 @@
+<isinclude template="/common/util/modules" />
+<div class="data-mapping-container">
+    <div class="saved-mapping-config d-flex flex-column px-9 me-4 overflow-auto">
+        <isloop items="${pdict.savedMappingArray}" var="map">
+            <div class="form-check d-flex align-items-center data-mapping-id justify-content-between position-relative"
+                data-mapping-id="${map.mappingId}">
+                <div class="input-wrapper d-flex gap-2 align-items-center overflow-hidden">
+                    <input type="radio" class="radio" id="${map.mappingId}" name="data-mapping"
+                        value="${map.mappingId}" />
+                    <span class="text-md saved-configration text-nowrap text-ellipsis">${map.mappingId}</span>
+                </div>
+                <div class="actions d-flex ps-5">
+                    <button class="btn btn-secondary small edit-map" data-bs-toggle="modal"
+                                data-bs-target="#newDataMapping">${Resource.msg('button.edit', 'common', null)}</button>
+                    <isif condition="${pdict.editMode === 'true'}">
+                            <button class="btn btn-secondary small delete-map border-0 ms-1">
+                                <issvgimg name="${'delete'}" color="${'#11181C'}" /></button>
+                    </isif>
+                </div>
+                <div class="delete-map-wrapper position-absolute top-0" style="display: none;">
+                    <div class="d-flex justify-content-between align-items-center text-nowrap delete-map-wrapper-content">
+                    <div>
+                    <issvgimg name="${'delete'}" color="${'#fff'}" />
+                    <span class="white">
+                        <isprint value="${Resource.msg('delete.confirmation', 'common', null)}" /></span></div>
+                    <div class="actions d-flex gap-2">
+                        <button class="btn btn-link small white delete-map-confirmation">
+                            <isprint value="${Resource.msg('button.yes', 'common', null)}" /></button>
+                        <button class="btn btn-link small white no">
+                            <isprint value="${Resource.msg('button.no', 'common', null)}" /></button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </isloop>
+        <div class="d-none global-configuration-template">
+             <div class="form-check d-flex align-items-center data-mapping-id justify-content-between position-relative"
+                data-mapping-id="">
+                <div class="input-wrapper d-flex gap-2 align-items-center overflow-hidden">
+                    <input type="radio" class="radio" name="data-mapping"
+                        value="" />
+                    <span class="text-md saved-configration text-nowrap text-ellipsis"></span>
+                </div>
+                <div class="actions d-flex ps-5">
+                    <button class="btn btn-secondary small edit-map" data-bs-toggle="modal"
+                        data-bs-target="#newDataMapping">${Resource.msg('button.edit', 'common', null)}</button>
+                    <isif condition="${pdict.editMode === 'true'}">
+                            <button class="btn btn-secondary small delete-map border-0 ms-1">
+                                <issvgimg name="${'delete'}" color="${'#11181C'}" /></button>
+                    </isif>
+                </div>
+                <div class="delete-map-wrapper position-absolute top-0" style="display: none;">
+                    <div class="d-flex justify-content-between align-items-center text-nowrap delete-map-wrapper-content">
+                    <div>
+                    <issvgimg name="${'delete'}" color="${'#fff'}" />
+                    <span class="white">
+                        <isprint value="${Resource.msg('delete.confirmation', 'common', null)}" /></span></div>
+                    <div class="actions d-flex gap-2">
+                        <button class="btn btn-link small white delete-map-confirmation">
+                            <isprint value="${Resource.msg('button.yes', 'common', null)}" /></button>
+                        <button class="btn btn-link small white no">
+                            <isprint value="${Resource.msg('button.no', 'common', null)}" /></button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="data-map-button mt-7" data-object-attributes="${pdict.systemAttribute}">
+        <div class="px-9 d-flex aligne-items-baseline justify-content-between pt-7">
+            <button class="btn btn-success new-mapping-configuration" data-map-configuration-url="${pdict.actionUrl}"
+                data-bs-toggle="modal" data-bs-target="#newDataMapping">
+                <issvgimg name="${'add'}" color="${'#ffffff'}" />
+                ${Resource.msg('new.mapping.configuration', 'csvImportExport', null)}
+            </button>
+            <div class="action-buttons d-flex">
+                <isif condition="${pdict.editMode !== 'true'}">
+                    <button type="button" class="cancel btn btn-link me-1" data-bs-dismiss="modal"
+                        aria-label="Close">${Resource.msg('import.export.cancel', 'csvImportExport', null)}</button>
+                </isif>
+                <button type="submit" class="btn btn-primary ${pdict.editMode === 'true' ? 'close-configuration' : 'apply-configuration'}" data-missing-data="${Resource.msg('import.export.missing.select.data', 'csvImportExport', null)}">${pdict.editMode === 'true' ? Resource.msg('import.export.close', 'csvImportExport', null) : Resource.msg('import.export.apply', 'csvImportExport', null)}</button>
+            </div>
+        </div>
+    </div>
+</div>
