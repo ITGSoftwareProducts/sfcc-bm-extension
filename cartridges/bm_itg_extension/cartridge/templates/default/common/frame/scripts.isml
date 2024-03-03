@@ -1,0 +1,24 @@
+<script defer src="${URLUtils.staticURL('/js/main.js')}"></script>
+<isloop items="${ require('*/cartridge/scripts/assets.js').scripts }" var="script">
+    <script defer src="${script.src}"
+        <isif condition="${script.integrity != null}">integrity="${script.integrity}" crossorigin="anonymous"></isif>
+        >
+    </script>
+</isloop>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Remove stylesheets with href not containing "slds-ccbm.css"
+        var styleElements = document.querySelectorAll('.page > link[rel="stylesheet"]:not([href*="slds-ccbm.css"])');
+        styleElements.forEach(function(styleElement) {
+            styleElement.parentNode.removeChild(styleElement);
+        });
+
+        // Remove img elements with src containing "space.gif"
+        var emptyElements = document.querySelectorAll('.page .top img[src*="space.gif"]');
+        emptyElements.forEach(function(emptyElement) {
+            emptyElement.parentNode.removeChild(emptyElement);
+        });
+    });
+
+</script>
+<script defer src="${URLUtils.staticURL('/js/thirdparty/bootstrap.bundle.min.js')}"></script>

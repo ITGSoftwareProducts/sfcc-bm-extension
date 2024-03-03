@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns="http://www.demandware.com/xml/impex/metadata/2006-10-31">
+    <custom-type type-id="AutomaticNotificationSettings">
+        <display-name xml:lang="x-default">AutomaticNotificationSettings</display-name>
+        <staging-mode>no-staging</staging-mode>
+        <storage-scope>site</storage-scope>
+        <key-definition attribute-id="notificationType">
+            <display-name xml:lang="x-default">Notification Type</display-name>
+            <type>string</type>
+            <min-length>0</min-length>
+        </key-definition>
+        <attribute-definitions>
+            <attribute-definition attribute-id="configuration">
+                <display-name xml:lang="x-default">Configuration</display-name>
+                <type>text</type>
+                <localizable-flag>false</localizable-flag>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+        </attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="custom">
+                <display-name xml:lang="x-default">custom</display-name>
+                <attribute attribute-id="configuration"/>
+                <attribute attribute-id="notificationType"/>
+            </attribute-group>
+        </group-definitions>
+    </custom-type>
+
+    <custom-type type-id="CSVMappingConfigType">
+        <display-name xml:lang="x-default">Mapping Configration Type</display-name>
+        <description xml:lang="x-default">Mapping Configration Type</description>
+        <staging-mode>source-to-target</staging-mode>
+        <storage-scope>organization</storage-scope>
+        <key-definition attribute-id="mappingId">
+            <display-name xml:lang="x-default">Mapping ID</display-name>
+            <description xml:lang="x-default">Mapping ID</description>
+            <type>string</type>
+            <min-length>0</min-length>
+        </key-definition>
+        <attribute-definitions>
+            <attribute-definition attribute-id="mappingJson">
+                <display-name xml:lang="x-default">Mapping Configuration</display-name>
+                <description xml:lang="x-default">Mapping Configuration</description>
+                <type>text</type>
+                <localizable-flag>false</localizable-flag>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+        </attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="custom">
+                <display-name xml:lang="x-default">custom</display-name>
+                <attribute attribute-id="creationDate" system="true"/>
+                <attribute attribute-id="lastModified" system="true"/>
+                <attribute attribute-id="mappingJson"/>
+                <attribute attribute-id="mappingId"/>
+            </attribute-group>
+        </group-definitions>
+    </custom-type>
+</metadata>

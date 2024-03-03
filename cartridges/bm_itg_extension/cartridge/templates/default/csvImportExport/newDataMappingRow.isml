@@ -1,0 +1,75 @@
+<isinclude template="/common/util/modules"/>
+<isif condition="${pdict.editMode}">
+    <div class="d-flex mb-3 parent-group">
+        <div class="vdrag-icon me-2">
+            <issvgimg name="${'vdrag'}" color="${'#889096'}" />
+        </div>
+        <div class="form-group input">
+            <input type="text" value="${map[0][1]}" class="form-control csv-name" name="csvAttr"
+            placeholder="${Resource.msg('import.export.column.placeholder', 'csvImportExport', null)}"
+            required
+            aria-required="true"
+            data-missing-error="${Resource.msg('import.export.csv.new.column.error.message', 'csvImportExport', null)}"
+            />
+            <div class="invalid-feedback text-sm mt-2" bis_skin_checked="1"></div>
+        </div>
+        <div class="linked-icon mx-2">
+            <issvgimg name="${'linked'}" color="${'#d7dbdf'}" />
+        </div>
+        <div class="me-2 selected-object-attr form-group" data-selected-value="${map[0][0]}">
+            <select class="form-select object-attr object-attributes text-ellipsis pe-8 form-control"
+            name="objectAttr"
+            required
+            aria-required="true"
+            data-missing-error="${Resource.msg('import.export.attribute.new.column.error.message', 'csvImportExport', null)}"
+            >
+                <option value="" disabled selected hidden>
+                    ${Resource.msg('import.export.object.attribute.placeholder', 'csvImportExport', null)}
+                </option>
+            </select>
+            <div class="invalid-feedback text-sm mt-2" bis_skin_checked="1"></div>
+        </div>
+        <div class="invalid-feedback error-msg-mandatory-attr-missing ps-8"></div>
+        <button class="remove-button btn btn-link align-self-start p-0" type="button">
+            <issvgimg name="${'removeIcon'}" />
+        </button>
+    </div>
+    <div class="invalid-feedback text-sm mt-2" bis_skin_checked="1"></div>
+    <input type="hidden" class="error-msg-duplicate-object" value="${Resource.msg('import.export.duplicate.object.error.message', 'csvImportExport', null)}"/>
+<iselse/>
+    <div class="d-flex mb-3 parent-group">
+        <div class="vdrag-icon me-2">
+            <issvgimg name="${'vdrag'}" color="${'#889096'}" />
+        </div>
+        <div class="form-group input">
+            <input type="text" class="form-control csv-name" name="csvAttr"
+            placeholder="${Resource.msg('import.export.column.placeholder', 'csvImportExport', null)}"
+            required
+            aria-required="true"
+            data-missing-error="${Resource.msg('import.export.csv.new.column.error.message', 'csvImportExport', null)}"
+            />
+            <div class="invalid-feedback text-sm mt-2" bis_skin_checked="1"></div>
+        </div>
+        <div class="linked-icon mx-2">
+            <issvgimg name="${'linked'}" color="${'#d7dbdf'}" />
+        </div>
+        <div class="me-2 form-group">
+            <select class="form-select object-attr text-ellipsis pe-8 form-control" name="objectAttr"
+            required
+            aria-required="true"
+            data-missing-error="${Resource.msg('import.export.attribute.new.column.error.message', 'csvImportExport', null)}"
+            >
+                <option value="" disabled selected hidden>
+                    ${Resource.msg('import.export.object.attribute.placeholder', 'csvImportExport', null)}
+                </option>
+            </select>
+            <div class="invalid-feedback text-sm mt-2" bis_skin_checked="1"></div>
+        </div>
+        <div class="invalid-feedback error-msg-mandatory-attr-missing ps-8"></div>
+        <button class="remove-button btn btn-link align-self-start p-0" type="button">
+            <issvgimg name="${'removeIcon'}" />
+        </button>
+    </div>
+    <div class="invalid-feedback text-sm mt-2" bis_skin_checked="1"></div>
+    <input type="hidden" class="error-msg-duplicate-object" value="${Resource.msg('import.export.duplicate.object.error.message', 'csvImportExport', null)}"/>
+</isif>

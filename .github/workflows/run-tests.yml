@@ -1,0 +1,37 @@
+name: Run Lint/Tests
+
+on:
+  push:
+    branches: [ "main", "develop"  ]
+  pull_request:
+    branches: [ "main", "develop" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.21.0]
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install Node Modules
+      run: |
+        npm install
+    - name: Build JS & CSS
+      run: |
+        npm run build
+    - name: Test Linting
+      run: |
+        npm run lint
+    - name: Run Tests
+      run: |
+        npm run test
+        npm run test:integration

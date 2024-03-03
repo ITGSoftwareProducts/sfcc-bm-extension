@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<extensions xmlns="http://www.demandware.com/xml/bmmodules/2007-12-11" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.demandware.com/xml/bmmodules/2007-12-11 bmext.xsd">
+
+    <menuaction id="oos_notifications" menupath="prod-cat" position="550" site="true">
+        <name xml:lang="x-default">OOS Notification</name>
+        <short_description xml:lang="x-default">
+           Sends out-of-stock notification emails for configured products when their inventory is 0.
+        </short_description>
+        <description xml:lang="x-default">
+            Sends out-of-stock notification emails for configured products when their inventory is 0.
+        </description>
+        <exec pipeline="AutomaticNotificationSettings" node="ShowOOSNotificationSettings"/>
+        <sub-pipelines>
+            <pipeline name="AutomaticNotificationSettings-ShowOOSNotificationSettings" />
+            <pipeline name="AutomaticNotificationSettings-SaveOOSNotificationSettings" />
+            <pipeline name="AutomaticNotificationSettings-UpdateEnablementPreference" />
+            <pipeline name="AutomaticNotificationSettings-SaveSenderEmail" />
+        </sub-pipelines>
+        <icon>icons/bm_ext_ico.png</icon>
+    </menuaction>
+    <menuaction id="order_alert" menupath="orders" position="800" site="true">
+        <name xml:lang="x-default">Order Notifications</name>
+        <short_description xml:lang="x-default">
+           Sends notification emails when orders are not placed or failing for specific period.
+        </short_description>
+        <description xml:lang="x-default">
+            Sends notification emails when orders are not placed or failing for specific period.
+        </description>
+        <exec pipeline="AutomaticNotificationSettings" node="ShowOrderAlertSettings"/>
+        <sub-pipelines>
+            <pipeline name="AutomaticNotificationSettings-ShowOrderAlertSettings" />
+            <pipeline name="AutomaticNotificationSettings-SaveOrderIntervalSettings" />
+            <pipeline name="AutomaticNotificationSettings-SaveFailedOrderAlertSettings" />
+            <pipeline name="AutomaticNotificationSettings-UpdateEnablementPreference" />
+            <pipeline name="AutomaticNotificationSettings-SaveSenderEmail" />
+        </sub-pipelines>
+        <icon>icons/bm_ext_ico.png</icon>
+    </menuaction>
+
+    <menuaction id="campaign_notifications" menupath="marketing" position="145" site="true">
+        <name xml:lang="x-default">Expired Campaigns Notification</name>
+        <short_description xml:lang="x-default">
+           Sends notification emails for configured campaigns when they are about to expire.
+        </short_description>
+        <description xml:lang="x-default">
+            Sends notification emails for configured campaigns when they are about to expire.
+        </description>
+        <exec pipeline="AutomaticNotificationSettings" node="ShowCampaignNotificationSetting"/>
+        <sub-pipelines>
+            <pipeline name="AutomaticNotificationSettings-ShowCampaignNotificationSetting" />
+            <pipeline name="AutomaticNotificationSettings-SaveCampaignNotificationSettings" />
+            <pipeline name="AutomaticNotificationSettings-GetCampaignSuggestions" />
+            <pipeline name="AutomaticNotificationSettings-UpdateEnablementPreference" />
+            <pipeline name="AutomaticNotificationSettings-ShowSVG" />
+            <pipeline name="AutomaticNotificationSettings-SaveSenderEmail" />
+        </sub-pipelines>
+        <icon>icons/bm_ext_ico.png</icon>
+    </menuaction>
+
+    <menuaction id="pageDesigner_export" menupath="content" position="999" site="true">
+        <name xml:lang="x-default">Targeted Pages Export</name>
+        <short_description xml:lang="x-default">
+            Export Page Designer Pages.
+        </short_description>
+        <description xml:lang="x-default">
+            Export Page Designer Pages.
+        </description>
+        <exec pipeline="PageDesignerExport" node="Start"/>
+        <sub-pipelines>
+            <pipeline name="PageDesignerExport-Start" />
+            <pipeline name="PageDesignerExport-ExportPages" />
+            <pipeline name="ExecutionList-DownloadExportFile" />
+            <pipeline name="ExecutionList-GetExecutionDetails" />
+        </sub-pipelines>
+        <icon>icons/bm_ext_ico.png</icon>
+    </menuaction>
+
+    <menuaction id="OCI-Inventory" menupath="prod-cat" position="400" site="true">
+        <name xml:lang="x-default">OCI Inventory</name>
+        <short_description xml:lang="x-default">
+            OCI Data Management Interface.
+        </short_description>
+        <description xml:lang="x-default">
+            OCI Data Management Interface.
+        </description>
+        <exec pipeline="OmniChannelnventory" node="Start"/>
+        <sub-pipelines>
+            <pipeline name="OmniChannelnventory-Start" />
+            <pipeline name="OmniChannelnventory-UpdateOrAddInventoryRecord" />
+            <pipeline name="OmniChannelnventory-SearchInventoryRecords" />
+            <pipeline name="OmniChannelnventory-GetRecordDetails" />
+        </sub-pipelines>
+        <icon>icons/bm_ext_ico.png</icon>
+    </menuaction>
+
+    <menuaction id="coupon_replicator" menupath="marketing" position="120" site="true">
+        <name xml:lang="x-default">Coupon Replicator</name>
+        <short_description xml:lang="x-default">
+            Replicate Coupon From Specific Site to Multiple Sites.
+        </short_description>
+        <description xml:lang="x-default">
+             Replicate Coupon From Specific Site to Multiple Sites.
+        </description>
+        <exec pipeline="CouponReplicator" node="Start"/>
+        <sub-pipelines>
+            <pipeline name="CouponReplicator-Start" />
+            <pipeline name="CouponReplicator-GetCouponList" />
+            <pipeline name="CouponReplicator-RunReplicationJob" />
+            <pipeline name="CouponReplicator-ReplicationPage" />
+        </sub-pipelines>
+        <icon>icons/bm_ext_ico.png</icon>
+    </menuaction>
+
+    <menuaction id="customer_productlist" menupath="customers" position="200" site="true">
+        <name xml:lang="x-default"> Customer Product Lists</name>
+        <short_description xml:lang="x-default">
+            Get Customer's Created product-lists.
+        </short_description>
+        <description xml:lang="x-default">
+            Display all product lists the customer created.
+        </description>
+        <exec pipeline="CustomerProductList" node="Start"/>
+        <sub-pipelines>
+            <pipeline name="CustomerProductList-Start" />
+            <pipeline name="CustomerProductList-GetList" />
+        </sub-pipelines>
+        <icon>icons/bm_ext_ico.png</icon>
+    </menuaction>
+
+    <menuaction id="export_import_product" menupath="prod-cat" position="1000" site="true">
+        <name xml:lang="x-default">CSV Import &amp; Export</name>
+        <short_description xml:lang="x-default">
+            CSV Import &amp; Export.
+        </short_description>
+        <description xml:lang="x-default">
+            CSV Import &amp; Export.
+        </description>
+        <exec pipeline="CSVImportExport" node="Start"/>
+        <sub-pipelines>
+            <pipeline name="CSVImportExport-Start" />
+            <pipeline name="CSVImportExport-DataMapping" />
+            <pipeline name="CSVImportExport-NewMappingConfiguration" />
+            <pipeline name="CSVImportExport-SaveMappingConfiguration" />
+            <pipeline name="CSVImportExport-ExecuteCsvImportExportJob" />
+        </sub-pipelines>
+        <icon>icons/bm_ext_ico.png</icon>
+    </menuaction>
+
+    <menuaction id="job_execution_report" menupath="operations" position="110" site="false">
+        <name xml:lang="x-default">Job Execution Report</name>
+        <short_description xml:lang="x-default">
+            Job Execution Report.
+        </short_description>
+        <description xml:lang="x-default">
+            Job Execution Report.
+        </description>
+        <exec pipeline="JobExecutionReport" node="Start"/>
+        <sub-pipelines>
+            <pipeline name="JobExecutionReport-Start" />
+            <pipeline name="JobExecutionReport-GetJobReport" />
+            <pipeline name="JobExecutionReport-GetJobRatio" />
+        </sub-pipelines>
+        <icon>icons/bm_ext_ico.png</icon>
+    </menuaction>
+
+    <menuaction id="configuration" menupath="site-prefs" position="10000" site="true">
+        <name xml:lang="x-default">BM Extension Configuration</name>
+        <short_description xml:lang="x-default">
+            BM Extension Configuration.
+        </short_description>
+        <description xml:lang="x-default">
+            BM Extension Configuration.
+        </description>
+        <exec pipeline="ConfigurationPage" node="Start"/>
+        <sub-pipelines>
+            <pipeline name="ConfigurationPage-Start" />
+            <pipeline name="ConfigurationPage-DeleteDataMapping" />
+            <pipeline name="ConfigurationPage-SaveConfiguration" />
+            <pipeline name="ConfigurationPage-DownloadOciLocations" />
+        </sub-pipelines>
+        <icon>icons/bm_ext_ico.png</icon>
+    </menuaction>
+
+</extensions>

@@ -1,0 +1,9 @@
+.bm-breadcrumb {
+    background-color: $surface-white;
+    padding: $unit-xlg $unit-xlg * 2.2;
+
+    .breadcrumb-element,
+    .active-link {
+        color: $slate-11;
+    }
+}

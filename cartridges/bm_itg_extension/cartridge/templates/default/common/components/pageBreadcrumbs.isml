@@ -1,0 +1,21 @@
+<div class="bm-breadcrumb rounded-4 mb-2">
+    <div role="navigation" aria-label="Breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <isif condition="${pdict.breadcrumbs}">
+                <isset name="homePageURL" value="${URLUtils.https('Home-Show')}" scope="page" />
+                <isloop items="${pdict.breadcrumbs}" var="breadcrumbValue" status="loopState">
+                    <isif condition="${loopState.last}">
+                        <span class="active-link text-sm">
+                            ${breadcrumbValue.htmlValue}
+                        </span>
+                    <iselse>
+                        <a class="breadcrumb-element text-sm" href="${breadcrumbValue.htmlValue === Resource.msg('global.home', 'common', null) ? homePageURL : breadcrumbValue.url}">
+                            ${breadcrumbValue.htmlValue}
+                        </a>
+                        &nbsp>&nbsp
+                    </isif>
+                </isloop>
+            </isif>
+        </ol>
+    </div>
+</div>

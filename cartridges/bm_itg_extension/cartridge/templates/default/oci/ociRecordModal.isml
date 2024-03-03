@@ -1,0 +1,41 @@
+<div id="ociRecordModal" class="modal oci-modal oci-record-modal right fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content text-left">
+            <div class="modal-header border-0 position-fixed top-0 z-2">
+                <h1 class="modal-title text-sm" id="recipientEmailsModalLabel">
+                    <isprint value="${Resource.msg('inventory.product.details', 'oci', null)}" />
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="top-section pt-8">
+                    <div class="product-info d-flex align-items-center">
+                        <img src="${URLUtils.staticURL('/images/product.png')}" class="img-fluid" alt="product" />
+                        <div class="name-wrapper ms-7">
+                            <div class="file-name text-lg oci-modal-product-id"></div>
+                        </div>
+                    </div>
+                    <div class="select-wrapper mt-9 border-top border-bottom py-5">
+                        <label class="form-label">
+                            ${Resource.msg('oci.inventory.locationgroup.label', 'oci', null)}
+                        </label>
+                        <select name="location" class="form-select select inventory-locations-list perm_not_disabled">
+                            <isif condition="${!empty(pdict.groupsAndLocations)}">
+                                <isloop items="${pdict.groupsAndLocations}" var="group">
+                                    <option label="${group.id}" class="group">${group.id}</option>
+                                    <isif condition="${!empty(group.locations)}">
+                                        <isloop items="${group.locations}" var="location">
+                                            <option value="${location}">${location}</option>
+                                        </isloop>
+                                    </isif>
+                                </isloop>
+                            </isif>
+                        </select>
+                    </div>
+                </div>
+                <div class="oci-product-info">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

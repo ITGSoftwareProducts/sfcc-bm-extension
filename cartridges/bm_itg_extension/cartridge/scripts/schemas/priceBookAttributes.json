@@ -1,0 +1,44 @@
+{
+    "attributes": {
+        "productId": {
+            "displayName": "Product ID",
+            "rules": {
+                "mandatory": true
+            }
+        },
+        "amount": {
+            "displayName": "Amount",
+            "rules": {
+                "mandatoryIfAnyExists": ["quantity"]
+            }
+        },
+        "quantity": {
+            "displayName": "Quantity",
+            "rules": {
+                "mandatoryIfAnyExists": ["amount"]
+            }
+        },
+        "onlineFrom": {
+            "displayName": "Online From"
+        },
+        "onlineTo": {
+            "displayName": "Online To"
+        },
+        "priceInfo": {
+            "displayName": "Price Info"
+        }
+    },
+    "type": "priceBook",
+    "ocapiSystemAttributeType": "PriceBook",
+    "systemAttributes": [
+        "ID",
+        "UUID",
+        "creationDate",
+        "currencyCode",
+        "deltaFiles",
+        "description",
+        "displayName",
+        "lastModified",
+        "onlineFlag"
+    ]
+}

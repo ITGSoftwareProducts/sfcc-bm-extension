@@ -1,0 +1,101 @@
+<div class="section__wrapper">
+    <form class="product-inv-list-form" data-action="${pdict.getRecordDetailsUrl}">
+        <isif condition="${pdict.paginationModel && pdict.paginationModel.totalCount > 0}">
+            <div class="total-count text-sm slate-11">
+                <span class="total-count-number"><isprint value="${pdict.paginationModel.totalCount}" /></span>
+                <span>${pdict.paginationModel.totalCount === 1 ? Resource.msg('productlist.one.item', 'customerProductLists', null) : Resource.msg('productlist.item', 'customerProductLists', null)}</span>
+            </div>
+            <div class="table-responsive">
+                <table width="100%"
+                    class="table custom-table table-striped table-hover caption-top mt-6 product-table ${pdict.sortRole ? 'sorting' : ''}"
+                    data-sort-role="${pdict.sortRole}" data-selected-page-size="${pdict.selectedPageSize}">
+                    <thead>
+                        <tr>
+                            <th class="table_header product-id-column">${Resource.msg('inventory.product.id', 'oci', null)}</th>
+                            <th class="table_header product-name-column">${Resource.msg('inventory.product.name', 'oci', null)}</th>
+                            <th class="table_header atf-column">${Resource.msg('inventory.atf', 'oci', null)}
+                                <span class="tooltip-icon d-inline-block" data-bs-toggle="tooltip"
+                                    data-bs-title="${Resource.msg('inventory.atf.tooltip', 'oci', null)}" data-bs-placement="top">
+                                </span>
+                            </th>
+                            <th class="table_header ato-column">${Resource.msg('inventory.ato', 'oci', null)}
+                                <span class="tooltip-icon d-inline-block" data-bs-toggle="tooltip"
+                                    data-bs-title="${Resource.msg('inventory.ato.tooltip', 'oci', null)}" data-bs-placement="top">
+                                </span>
+                            </th>
+                            <th class="table_header on-hand-column">${Resource.msg('inventory.on.hand', 'oci', null)}</th>
+                             <th class="table_header future-column">${Resource.msg('inventory.future', 'oci', null)}
+                                <span class="tooltip-icon d-inline-block" data-bs-toggle="tooltip"
+                                    data-bs-title="${Resource.msg('inventory.future.tooltip', 'oci', null)}" data-bs-placement="top">
+                                </span>
+                            </th>
+                            <th class="table_header future-expectations-column">${Resource.msg('inventory.future.expectations', 'oci', null)}
+                                <span class="tooltip-icon d-inline-block" data-bs-toggle="tooltip"
+                                    data-bs-title="${Resource.msg('inventory.future.expectations.tooltip', 'oci', null)}" data-bs-placement="top">
+                                </span>
+                            </th>
+                            <th class="table_header reservations-column">${Resource.msg('inventory.reservations', 'oci', null)}</th>
+                            <th class="table_header safety-column">${Resource.msg('inventory.safety', 'oci', null)}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <isloop items="${pdict.paginationModel.pageElements}" status="status" var="record">
+                            <tr class="oci-record-row" data-product-id="${record.sku}"
+                                data-bs-toggle="modal"
+                                data-bs-target="#ociRecordModal">
+                                <td class="table_detail oci-product-id">
+                                    <isprint value="${record.sku}" />
+                                </td>
+                                <td class="table_detail">
+                                    <isprint value="${record.productName}" />
+                                </td>
+                                <td class="table_detail">
+                                    <isprint value="${record.atf}" />
+                                </td>
+                                <td class="table_detail">
+                                    <isprint value="${record.ato}" />
+                                </td>
+                                <td class="table_detail">
+                                    <isprint value="${record.onHand}" />
+                                </td>
+                                <td class="table_detail">
+                                    <isprint value="${record.future}" />
+                                </td>
+                                <td class="table_detail">
+                                    <isprint value="${record.futureExpectations}" />
+                                </td>
+                                <td class="table_detail">
+                                    <isprint value="${record.reserved}" />
+                                </td>
+                                <td class="table_detail">
+                                    <isprint value="${record.safetyStockCount}" />
+                                </td>
+                            </tr>
+                        </isloop>
+                    </tbody>
+                </table>
+            </div>
+            <isinclude template="/common/components/pagination" />
+            <iselse/>
+                <div class="empty-search-result d-flex align-items-center flex-column">
+                    <img src="${URLUtils.staticURL('/images/data.png')}" class="coupon-img img-fluid" alt="coupons" />
+                    <div class="empty-msg mt-6">
+                        <isif condition="${pdict.paginationModel && pdict.paginationModel.totalCount === 0}">
+                            <p class="empty-search-msg slate-11 text-center mb-1">
+                                <isprint value="${Resource.msg('oci.nosearch.result', 'oci', null)}" />
+                            </p>
+                        <iselse/>
+                            <p class="empty-search-msg slate-11 text-center mb-1">
+                                <isprint value="${Resource.msg('oci.landing.empty1', 'oci', null)}" />
+                            </p>
+                            <p class="empty-search-msg slate-11 result-msg font-inter-medium text-center mb-0">
+                                <isprint value="${Resource.msg('oci.landing.empty2', 'oci', null)}" />
+                            </p>
+                        </isif>
+                    </div>
+                </div>
+        </isif>
+        <isinclude template="/oci/ociRecordModal" />
+
+    </form>
+</div>

@@ -1,0 +1,5 @@
+**/cartridge/static/**/*
+coverage/
+node_modules/
+cartridges/bm_itg_extension/cartridge/scripts/jobsteps/exportPageDesigner.js
+cartridges/bm_itg_extension/cartridge/scripts/helpers/xmlCsvConversionHelper.js

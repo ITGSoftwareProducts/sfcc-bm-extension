@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns="http://www.demandware.com/xml/impex/metadata/2006-10-31">
+    <type-extension type-id="SitePreferences">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="bmExtCampaignNotificationEnabled">
+                <display-name xml:lang="x-default">Campaign Notification Enabled</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="bmExtFailedOrderAlertEnabled">
+                <display-name xml:lang="x-default">Failed Order Alert Enabled</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="bmExtOOSNotificationEnabled">
+                <display-name xml:lang="x-default">OOS Notification Enabled</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="bmExtOrderIntervalAlertEnabled">
+                <display-name xml:lang="x-default">Order Interval Alert Enabled</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+
+            <attribute-definition attribute-id="bmExtOrganizationId">
+                <display-name xml:lang="x-default">Organization ID</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="bmExtRealmId">
+                <display-name xml:lang="x-default">Realm ID</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="bmExtInstanceId">
+                <display-name xml:lang="x-default">Instance ID</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="bmExtShortCode">
+                <display-name xml:lang="x-default">Short Code</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="BM Extension">
+                <display-name xml:lang="x-default">BM Extension</display-name>
+                <attribute attribute-id="bmExtOrderIntervalAlertEnabled"/>
+                <attribute attribute-id="bmExtOOSNotificationEnabled"/>
+                <attribute attribute-id="bmExtCampaignNotificationEnabled"/>
+                <attribute attribute-id="bmExtFailedOrderAlertEnabled"/>
+                <attribute attribute-id="bmExtOrganizationId"/>
+                <attribute attribute-id="bmExtRealmId"/>
+                <attribute attribute-id="bmExtInstanceId"/>
+                <attribute attribute-id="bmExtShortCode"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+</metadata>

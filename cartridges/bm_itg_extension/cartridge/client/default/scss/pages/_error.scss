@@ -1,0 +1,37 @@
+.error-page {
+    min-height: 606px;
+}
+
+.error-page-wrapper {
+    max-width: 900px;
+
+    @include media-breakpoint-down(lg) {
+        flex-direction: column;
+    }
+
+    .right-section {
+        background-image: url("../icons/error-page.svg");
+        width: 208px;
+        height: 321px;
+        background-repeat: no-repeat;
+
+        @include media-breakpoint-down(lg) {
+            background-size: contain;
+            width: 144px;
+            height: 200px;
+            order: -1;
+            margin-bottom: $unit-xlg;
+        }
+    }
+
+    .left-section {
+        flex: 1 1 0;
+    }
+
+    .buttons-wrapper {
+        button {
+            height: auto;
+            min-height: 44px;
+        }
+    }
+}
