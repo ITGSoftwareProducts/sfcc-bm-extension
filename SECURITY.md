@@ -2,11 +2,15 @@
 
 ## Reporting a Vulnerability
 
-At ITG Software, we take security seriously. If you believe you have found a security vulnerability in our project, we encourage you to let us know right away. We appreciate your efforts in responsibly disclosing any potential issues.
+At ITG Software, we take security seriously. If you believe you have found a security vulnerability in our project, we encourage you to report it to us directly using GitHub's Security Advisories feature. This allows you to report security vulnerabilities privately and securely.
 
-To report a vulnerability, please email us directly at [salesforce@itgsoftware.com](mailto:salesforce@itgsoftware.com) with a detailed description of the vulnerability and steps to reproduce it. We also welcome any additional information you can provide to help us understand and address the issue.
+To report a vulnerability, follow these steps:
+1. Go to the "Security" tab of our repository.
+2. Click on "Report a security vulnerability".
+3. Fill out the required information in the form.
+4. Click "Submit report".
 
-Please refrain from publicly disclosing the vulnerability until we have had an opportunity to review and address it. We strive to promptly respond to all reports and will work with you to understand and resolve any security concerns.
+Once we receive your report, we will promptly review it and take appropriate action. We appreciate your efforts in responsibly disclosing any potential security issues and helping us keep our project safe and secure for everyone.
 
 ## Responsible Disclosure
 
