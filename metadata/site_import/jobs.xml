@@ -76,6 +76,16 @@
                 </step>
             </flow-template>
         </split>
+        <flow>
+            <context site-id="Sites"/>
+            <step step-id="File Cleaner" type="custom.FileCleaner" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="WorkingFolder">src/bm-extension/PDPageExport</parameter>
+                    <parameter name="AllowedFilesCountPerFolder">12</parameter>
+                </parameters>
+            </step>
+        </flow>
         <rules/>
         <triggers/>
     </job>
@@ -424,6 +434,16 @@
                     <parameter name="ImportFailedHandling">ERROR</parameter>
                     <parameter name="AfterImportFileHandling">Archive</parameter>
                     <parameter name="ArchiveFolder">archive</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <flow>
+            <context site-id="Sites"/>
+            <step step-id="File Cleaner" type="custom.FileCleaner" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="WorkingFolder">src/bm-extension/CSV_IMPEX</parameter>
+                    <parameter name="AllowedFilesCountPerFolder">12</parameter>
                 </parameters>
             </step>
         </flow>

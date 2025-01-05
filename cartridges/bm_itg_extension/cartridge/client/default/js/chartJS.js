@@ -210,13 +210,12 @@ const initializeCanvas = function ({ startTime, endTime, data }) {
                             tableRoot.innerHTML = innerHtml;
                         }
 
-                        const position = context.chart.canvas.getBoundingClientRect();
-                        const desiredLeft = (position.left + window.scrollX + tooltipModel.caretX) - tooltipEl.clientWidth;
-                        const desiredTop = (position.top + window.scrollY + tooltipModel.caretY) - tooltipEl.clientHeight - 22;
-
                         // Display, position, and set styles for font
                         tooltipEl.style.opacity = 1;
                         tooltipEl.style.position = 'absolute';
+
+                        const desiredLeft = parseInt($('#myChart').data('pointer-x'), 10) - tooltipEl.clientWidth;
+                        const desiredTop = parseInt($('#myChart').data('pointer-y'), 10) - tooltipEl.clientHeight - 22;
                         tooltipEl.style.left = desiredLeft + 'px';
                         tooltipEl.style.top = desiredTop + 'px';
                         tooltipEl.style.pointerEvents = 'none';
@@ -229,6 +228,10 @@ const initializeCanvas = function ({ startTime, endTime, data }) {
     $('.chart-wrapper').removeClass('d-none');
 
     myChart = new Chart(ctx, config); // eslint-disable-line
+    $('#myChart').on('mousemove', function (e) {
+        $('#myChart').data('pointer-x', e.pageX);
+        $('#myChart').data('pointer-y', e.pageY);
+    });
 };
 function changeTimezone(date, ianatz) {
     var invdate = new Date(date.toLocaleString('en-US', {

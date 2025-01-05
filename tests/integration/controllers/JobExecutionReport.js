@@ -10,6 +10,7 @@ const DW = require('../../mock/dw');
 const ISML = require('../../mock/dw/template/ISML');
 const Logger = require('../../mock/dw/system/Logger');
 const { AppUtil } = require('../../mock/controllers');
+const Site = require('../../mock/dw/system/Site');
 
 const jobExecutionHelper = {
     getJobExecutionReport: sinon.stub(),
@@ -18,6 +19,13 @@ const jobExecutionHelper = {
 
 describe('JobExecutionReport', function () {
     var responseUtil = { renderJSON: sinon.stub() };
+
+    const dateUtil = proxyquire('../../../cartridges/bm_itg_extension/cartridge/scripts/util/dateUtil.js', {
+        'dw/system/Site': Site,
+        'dw/system/System': DW.system.System,
+        'dw/util/StringUtils': StringUtils
+    });
+
     var { Start: start,
         GetJobReport: getJobReport,
         GetJobRatio: getJobRatio
@@ -33,7 +41,8 @@ describe('JobExecutionReport', function () {
         'dw/util/StringUtils': StringUtils,
         '~/cartridge/scripts/util/guard': {
             ensure: (filters, action) => sinon.stub().callsFake(action)
-        }
+        },
+        '~/cartridge/scripts/util/dateUtil': dateUtil
     });
 
     afterEach(function () {

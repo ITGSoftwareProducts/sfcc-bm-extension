@@ -38,13 +38,18 @@ function start() {
     ];
     try {
         var actionUrl = URLUtils.https('CouponReplicator-GetCouponList');
-        var executionListResult = jobServicesHelper.getRecentProcessList([constants.COUPON_REPLICATOR.FIRST_JOB_ID, constants.COUPON_REPLICATOR.SECOND_JOB_ID], constants.COUPON_REPLICATOR.RECENT_PROCESSES_NUMBER);
+        var jobIds = [constants.COUPON_REPLICATOR.FIRST_JOB_ID, constants.COUPON_REPLICATOR.SECOND_JOB_ID];
+        var executionListResult = jobServicesHelper.getRecentProcessList(jobIds, constants.COUPON_REPLICATOR.RECENT_PROCESSES_NUMBER);
         if (executionListResult.success) {
             ISML.renderTemplate('couponReplicator/couponReplicator', {
                 actionUrl: actionUrl,
                 executionList: executionListResult.executionList,
-                exportDetailsURL: URLUtils.https('ExecutionList-GetExecutionDetails'),
-                serviceType: Resource.msg('service.type', 'couponReplicator', null),
+                executionListData: {
+                    exportDetailsURL: URLUtils.https('ExecutionList-GetExecutionDetails').toString(),
+                    maxProcessNumber: constants.COUPON_REPLICATOR.RECENT_PROCESSES_NUMBER,
+                    serviceType: Resource.msg('service.type', 'couponReplicator', null),
+                    jobIds: jobIds
+                },
                 breadcrumbs: breadcrumbs
             });
         } else {
@@ -210,7 +215,9 @@ function runReplicationJob() {
         var jobResult = couponReplicatorHelper.runCouponReplicatorJob(couponId, siteIds, caseInsensitive, multipleCodesPerBasket, couponType, couponDescription);
         if (jobResult instanceof jobExecutionItem) {
             var resultContext = {
-                serviceType: Resource.msg('service.type', 'couponReplicator', null),
+                executionListData: {
+                    serviceType: Resource.msg('service.type', 'couponReplicator', null)
+                },
                 executionDetails: jobResult
             };
             var resultTemplate = 'executionHistory/executionRow';

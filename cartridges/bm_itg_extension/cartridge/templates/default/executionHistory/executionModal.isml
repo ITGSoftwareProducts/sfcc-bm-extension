@@ -4,7 +4,7 @@
         <div class="modal-content text-left">
             <div class="modal-header border-0">
                 <h5 class="modal-title text-sm">
-                <isprint value="${Resource.msg('modal.title.export', 'common', null)}" />
+                <isprint value="${Resource.msg('modal.title', 'common', null)}" />
                 </h5>
                 <button type="button" class="btn btn-secondary close-icon small" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -16,10 +16,10 @@
                         <div class="status"></div>
                     </div>
                 </div>
-                <div class="download-section border-bottom border-1 text-left px-7 py-4 ${!pdict.showDownloadFile ? 'd-none' : ''}">
+                <div class="download-section border-bottom border-1 text-left px-7 py-4 ${!pdict.executionListData.showDownloadFile ? 'd-none' : ''}">
                     <a class="btn-link small" href="">
                         <span class="me-1"><issvgimg name="${'download'}" color="${'#006adc'}" /></span>
-                        <span><isprint value="${Resource.msg('modal.download.' + pdict.downloadFileType, 'common', null)}" /></span>
+                        <span><isprint value="${Resource.msg('modal.download.' + pdict.executionListData.downloadFileType, 'common', null)}" /></span>
                     </a>
                 </div>
                 <div class="time-section text-left d-flex px-9 pt-9">

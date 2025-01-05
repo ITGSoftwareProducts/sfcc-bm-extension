@@ -64,17 +64,17 @@
                         <div class="d-flex failed-interval-alert">
                             <div class="order-interval-alert-days me-2">
                                 <input type="number" id="days" aria-required="true" class="form-control inputfield_en not_disabled" ${settingObj.enabled ? '' : 'disabled'} name="days" required value="${settingObj.interval && settingObj.interval.days ? settingObj.interval.days : ''}" />
-                                <label for="days" class="form-label slate-11 text-sm"><isprint value="${Resource.msg('literal.interval.days', 'automaticNotifications', null)}" /></label>
+                                <label for="days" class="slate-11 text-sm mt-1"><isprint value="${Resource.msg('literal.interval.days', 'automaticNotifications', null)}" /></label>
                             </div>
 
                             <div class="order-interval-alert-hours me-2">
                                 <input type="number" id="hours" aria-required="true" class="form-control inputfield_en not_disabled" ${settingObj.enabled ? '' : 'disabled'} name="hours" required value="${settingObj.interval && settingObj.interval.hours ? settingObj.interval.hours : ''}" />
-                                <label for="hours" class="form-label text-sm"><isprint value="${Resource.msg('literal.interval.hours', 'automaticNotifications', null)}" /></label>
+                                <label for="hours" class="slate-11 text-sm mt-1"><isprint value="${Resource.msg('literal.interval.hours', 'automaticNotifications', null)}" /></label>
                             </div>
 
                             <div class="order-interval-alert-minutes">
                                 <input type="number" id="minutes" aria-required="true" class="form-control inputfield_en not_disabled" ${settingObj.enabled ? '' : 'disabled'} name="minutes" required value="${settingObj.interval && settingObj.interval.minutes ? settingObj.interval.minutes : ''}" />
-                                <label for="minutes" class="form-label text-sm"><isprint value="${Resource.msg('literal.interval.minutes', 'automaticNotifications', null)}" /></label>
+                                <label for="minutes" class="slate-11 text-sm mt-1"><isprint value="${Resource.msg('literal.interval.minutes', 'automaticNotifications', null)}" /></label>
                             </div>
                         </div>
                         <div class="order-interval-alert text-sm mb-2">

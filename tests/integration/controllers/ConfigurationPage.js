@@ -8,6 +8,8 @@ const StringUtils = require('../../mock/dw/util/StringUtils');
 const Resource = require('../../mock/dw/web/Resource');
 const Logger = require('../../mock/dw/system/Logger');
 const ISML = require('../../mock/dw/template/ISML');
+const DW = require('../../mock/dw');
+var Site = require('../../mock/dw/system/Site');
 const { AppUtil } = require('../../mock/controllers');
 
 var urlUtilsUrl;
@@ -24,6 +26,11 @@ describe('ConfigurationPage', function () {
     const ociInventoryHelper = { getGroupsAndLocations: sinon.stub() };
     const preferences = {};
     const originalRequest = global.request;
+    const dateUtil = proxyquire('../../../cartridges/bm_itg_extension/cartridge/scripts/util/dateUtil.js', {
+        'dw/system/Site': Site,
+        'dw/system/System': DW.system.System,
+        'dw/util/StringUtils': StringUtils
+    });
     var { Start: start,
               DeleteDataMapping: deleteDataMapping,
               SaveConfiguration: saveConfiguration,
@@ -39,6 +46,8 @@ describe('ConfigurationPage', function () {
                   'dw/system/Logger': Logger,
                   '*/cartridge/scripts/util/app': AppUtil,
                   'dw/util/StringUtils': StringUtils,
+                  'dw/util/Calendar': sinon.stub(),
+                  '~/cartridge/scripts/util/dateUtil': dateUtil,
                   '~/cartridge/scripts/util/guard': {
                       ensure: (filters, action) => sinon.stub().callsFake(action)
                   }
@@ -59,8 +68,12 @@ describe('ConfigurationPage', function () {
     });
 
     it('should render the \'globalConfig/configuration\' template with the correct parameters', function () {
+        const request = {
+            httpQueryString: ''
+        };
+        global.request = request;
         configurationHelper.isOciInventoryIntegrationMode.returns(true);
-        ociInventoryHelper.getGroupsAndLocations.returns({ downloadTime: 'mocked-download-time' });
+        ociInventoryHelper.getGroupsAndLocations.returns({ downloadTime: '01/01/1970 00:00:00 am' });
 
         start();
 
@@ -86,7 +99,7 @@ describe('ConfigurationPage', function () {
             saveConfigurationUrl: urlUtilsUrl('ConfigurationPage-SaveConfiguration'),
             ociConfigs: {
                 isOciInventoryIntegrationMode: configurationHelper.isOciInventoryIntegrationMode(),
-                locationsDownloadTime: ociInventoryHelper.getGroupsAndLocations().downloadTime,
+                locationsDownloadTime: 'formattedCalendar formattedCalendar',
                 syncOciLocationsUrl: urlUtilsUrl('ConfigurationPage-DownloadOciLocations')
             }
         }), true);

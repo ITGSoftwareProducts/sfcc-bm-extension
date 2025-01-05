@@ -6,6 +6,7 @@ const File = require('../../../../mock/dw/io/File');
 const FileReader = require('../../../../mock/dw/io/FileReader');
 const ProductInventoryMgr = require('../../../../mock/dw/catalog/ProductInventoryMgr');
 var Site = require('../../../../mock/dw/system/Site');
+const DW = require('../../../../mock/dw');
 
 describe('ociInventoryHelper', function () {
     let ociRequestBuilderInstance = {
@@ -48,6 +49,11 @@ describe('ociInventoryHelper', function () {
             GROUPS_AND_LOCATIONS_FILE: 'GroupsAndLocations.json'
         }
     };
+    const dateUtil = proxyquire('../../../../../cartridges/bm_itg_extension/cartridge/scripts/util/dateUtil.js', {
+        'dw/system/Site': Site,
+        'dw/system/System': DW.system.System,
+        'dw/util/StringUtils': StringUtils
+    });
     var ociInventoryHelper = proxyquire('../../../../../cartridges/bm_itg_extension/cartridge/scripts/helpers/ociInventoryHelper', {
         'dw/util/Calendar': sinon.stub(),
         'dw/io/File': File,
@@ -58,7 +64,7 @@ describe('ociInventoryHelper', function () {
         '~/cartridge/scripts/util/oci': ociStub,
         '*/cartridge/scripts/util/ociUtils/ociEnums': ociEnums,
         '*/cartridge/models/ociRecordModel': OciRecordModel,
-        'dw/system/Site': Site
+        '~/cartridge/scripts/util/dateUtil': dateUtil
     });
     beforeEach(() => {
         sinon.reset();

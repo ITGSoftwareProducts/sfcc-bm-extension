@@ -5,6 +5,17 @@ var StringUtils = require('dw/util/StringUtils');
 var ocapiEnums = require('~/cartridge/scripts/util/ocapiUtils/ocapiEnums');
 var OcapiRequest = require('~/cartridge/scripts/util/ocapiUtils/ocapiRequest');
 
+/**
+ * An enhanced version of encodeURIComponent that encodes more characters
+ * @param {string} str string to encode
+ * @returns {string} encoded string
+ */
+function fixedEncodeURIComponent(str) {
+    return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
+        return '%' + c.charCodeAt(0).toString(16);
+    });
+}
+
 var ocapiRequestBuilder = function () {
     this.reqId = null;
     this.ocapiEndpoint = null;
@@ -142,7 +153,7 @@ ocapiRequestBuilder.prototype.build = function () {
     var ocapiEndpointApiWithParams = ocapiRequestObj.ocapiEndpoint.api;
     if (!empty(this.parameters)) {
         for (var i = 0; i < this.parameters.length; i++) {
-            ocapiEndpointApiWithParams = ocapiEndpointApiWithParams.replace('{' + i + '}', this.parameters[i]);
+            ocapiEndpointApiWithParams = ocapiEndpointApiWithParams.replace('{' + i + '}', fixedEncodeURIComponent(this.parameters[i]));
         }
     }
     if (ocapiRequestObj.ocapiEndpoint.siteSpecific && Site.getCurrent()) {

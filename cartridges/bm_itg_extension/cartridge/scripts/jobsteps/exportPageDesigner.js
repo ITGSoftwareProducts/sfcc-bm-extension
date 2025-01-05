@@ -120,7 +120,12 @@ function processFile(file, siteLibrary, pageMapsList, contentMapsList) {
             };
         }
     } catch (e) {
-        Logger.error(StringUtils.format(jobResources['proccess.xml.error'], e.message))
+        var errorMessage = StringUtils.format(jobResources['proccess.xml.error'], e.message);
+        Logger.error(errorMessage);
+        pageDesignerObj = {
+            error: true,
+            errorMessage: errorMessage
+        };
     } finally {
         xmlReader.close();
         fileReader.close();
@@ -170,6 +175,7 @@ function getValueFromMap(mapList, key) {
  * @param {Object} params - Job params.
 */
 function execute(params) {
+    var status = new Status(Status.OK);
     var pageMapsList = [new HashMap()];
     var contentMapsList =[new HashMap()];
     var exportFileName = params.ExportFileName ? params.ExportFileName : null;
@@ -202,7 +208,7 @@ function execute(params) {
             Logger.error('Error Message: {0}\n{1}', e.message, e.stack);
         }
     }
-    if (!empty(pageDesignerObj) && !empty(pageDesignerObj.pageMapsList)) {
+    if (!empty(pageDesignerObj) && !pageDesignerObj.error && !empty(pageDesignerObj.pageMapsList)) {
         var fileData = {
             siteLibraryStartElement: pageDesignerObj.siteLibraryStartElement,
             encodeString: pageDesignerObj.encodeString,
@@ -214,11 +220,13 @@ function execute(params) {
         } else if (pagesXml.xmlContent) {
             commonHelper.createFileInImpex(pagesXml.xmlContent, pdImpexPath, exportFileName, '.xml');
         }
+    } else if (!empty(pageDesignerObj) && pageDesignerObj.error) {
+        status = Status(Status.ERROR, 'ERROR', pageDesignerObj.errorMessage);
     } else {
         Logger.error(jobResources['no.pages.in.site']);
-        return Status(Status.ERROR, 'ERROR', jobResources['no.pages.in.site']);
+        status = Status(Status.ERROR, 'ERROR', jobResources['no.pages.in.site']);
     }
-    return new Status(Status.OK);
+    return status;
 }
 
 exports.execute = execute;

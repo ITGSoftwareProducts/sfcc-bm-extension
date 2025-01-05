@@ -1,8 +1,9 @@
 <isset name="execution" value="${pdict.executionDetails ? pdict.executionDetails : execution}" scope="page" />
-<isset name="isJobStillRunning" value="${['PENDING', 'RUNNING'].indexOf(execution.status) !== -1}" scope="page" />
-<isset name="serviceType" value="${execution.serviceTypeLabel ? execution.serviceTypeLabel: pdict.serviceType}" scope="page" />
+<isset name="executionStatus" value="${execution.executionStatus}" scope="page" />
+<isset name="isJobStillRunning" value="${execution.isRunning}" scope="page" />
+<isset name="serviceType" value="${execution.serviceTypeLabel ? execution.serviceTypeLabel: pdict.executionListData.serviceType}" scope="page" />
 
-<tr class="table-link ${execution.status === 'PENDING' ? 'animate-slide-in-down' : ''}" data-job-status="${execution.status}" data-execution-id="${execution.id}" data-job-id="${execution.jobId}" data-service-type="${pdict.serviceType}" data-execution-obj="${JSON.stringify(execution)}">
+<tr class="table-link ${execution.status === 'PENDING' ? 'animate-slide-in-down' : ''}" data-job-status="${execution.status}" data-execution-id="${execution.id}" data-job-id="${execution.jobId}" data-service-type="${pdict.executionListData.serviceType}" data-execution-obj="${JSON.stringify(execution)}">
     <td class="table_detail">
         <a href class="selection_link text-decoration-none execution-modal-link">
             <isprint value="${serviceType + ' <' + execution.processName + '>'}" />
@@ -15,17 +16,17 @@
         <isprint value="${isJobStillRunning ? '-' : execution.duration}" />
     </td>
     <td class="table_details  status ${isJobStillRunning ? 'pending' : ''}">
-        <isif condition="${execution.status === 'OK'}">
+        <isif condition="${execution.status === 'OK' && !isJobStillRunning}">
             <span class="badge success-badge">
                 <isprint value="${Resource.msg('status.success', 'common', null)}" />
             </span>
-        <iselseif condition="${execution.status === 'ERROR'}" />
-        <span class="badge error-badge">
-            <isprint value="${Resource.msg('status.error', 'common', null)}" />
-        </span>
         <iselseif condition="${isJobStillRunning}" />
             <span class="badge in-progress-badge">
                 <isprint value="${Resource.msg('status.inprogress', 'common', null)}" />
+            </span>
+        <iselse/>
+            <span class="badge error-badge">
+                <isprint value="${Resource.msg('status.error', 'common', null)}" />
             </span>
         </isif>
     </td>

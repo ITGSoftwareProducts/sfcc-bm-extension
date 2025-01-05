@@ -28,18 +28,18 @@ var CustomObjectMgr = require('dw/object/CustomObjectMgr');
  */
 function start() {
     var params = app.getRequestFormOrParams();
-    var selectedMenuItem = params.SelectedMenuItem;
-    var messageDescription = Resource.msg('import.export.description.' + selectedMenuItem, 'csvImportExport', null);
+    var currentMenuItem = params.CurrentMenuItemId;
+    var messageDescription = Resource.msg('import.export.description.' + currentMenuItem, 'csvImportExport', null);
     var breadcrumbUrl;
     var title;
-    if (selectedMenuItem === constants.CSV_IMPORT_EXPORT.PRODUCT_MENU) {
+    if (currentMenuItem === constants.CSV_IMPORT_EXPORT.PRODUCT_MENU) {
         messageDescription = Resource.msg('import.export.description.product', 'csvImportExport', null);
         breadcrumbUrl = URLUtils.https('SiteNavigationBar-ShowMenuitemOverview', 'CurrentMenuItemId', 'prod-cat');
         title = Resource.msg('breadcrumb.products.catalogs.title', 'common', null);
-    } else if (selectedMenuItem === constants.CSV_IMPORT_EXPORT.CUSTOMER_MENU) {
+    } else if (currentMenuItem === constants.CSV_IMPORT_EXPORT.CUSTOMER_MENU) {
         breadcrumbUrl = URLUtils.https('SiteNavigationBar-ShowMenuitemOverview', 'CurrentMenuItemId', 'customers');
         title = Resource.msg('breadcrumb.products.customers.title', 'common', null);
-    } else if (selectedMenuItem === constants.CSV_IMPORT_EXPORT.MARKETING_MENU) {
+    } else if (currentMenuItem === constants.CSV_IMPORT_EXPORT.MARKETING_MENU) {
         title = Resource.msg('breadcrumb.online.marketing.title', 'common', null);
         breadcrumbUrl = URLUtils.https('SiteNavigationBar-ShowMenuitemOverview', 'CurrentMenuItemId', 'marketing');
     }
@@ -59,34 +59,47 @@ function start() {
     ];
     try {
         var dataMapURL = URLUtils.https('CSVImportExport-DataMapping');
+        var jobIds = [constants.CSV_IMPORT_EXPORT.JOB_ID];
         var executeCsvImportExport = URLUtils.https('CSVImportExport-ExecuteCsvImportExportJob');
 
         var invalidFileType = Resource.msg('import.export.upload.file.error.message', 'csvImportExport', null);
 
-        var executionListResult = jobServicesHelper.getRecentProcessList([constants.CSV_IMPORT_EXPORT.JOB_ID], constants.CSV_IMPORT_EXPORT.RECENT_PROCESSES_NUMBER, true, 'csv', constants.CSV_IMPORT_EXPORT.IMPEX_PATH);
+        var executionListResult = jobServicesHelper.getRecentProcessList(jobIds, constants.CSV_IMPORT_EXPORT.RECENT_PROCESSES_NUMBER, true, 'csv', constants.CSV_IMPORT_EXPORT.IMPEX_PATH);
         var isOciInventoryIntegrationMode = configurationHelper.isOciInventoryIntegrationMode();
         if (executionListResult.success) {
             var result = {
                 messageDescription: messageDescription,
                 dataMapURL: dataMapURL.toString(),
-                selectedMenuItem: selectedMenuItem,
+                currentMenuItem: currentMenuItem,
                 invalidFileType: invalidFileType,
                 executionList: executionListResult.executionList,
-                showDownloadFile: true,
-                downloadFileType: 'csv',
-                impexPath: constants.CSV_IMPORT_EXPORT.IMPEX_PATH,
-                serviceType: Resource.msg('service.type', 'csvImportExport', null),
-                exportDetailsURL: URLUtils.https('ExecutionList-GetExecutionDetails'),
+                executionListData: {
+                    exportDetailsURL: URLUtils.https('ExecutionList-GetExecutionDetails').toString(),
+                    showDownloadFile: true,
+                    downloadFileType: 'csv',
+                    impexPath: constants.CSV_IMPORT_EXPORT.IMPEX_PATH,
+                    maxProcessNumber: constants.CSV_IMPORT_EXPORT.RECENT_PROCESSES_NUMBER,
+                    serviceType: Resource.msg('service.type', 'csvImportExport', null),
+                    jobIds: jobIds
+                },
                 actionUrl: executeCsvImportExport,
                 breadcrumbs: breadcrumbs,
                 isOciInventoryIntegrationMode: isOciInventoryIntegrationMode
             };
 
-            if (selectedMenuItem === constants.CSV_IMPORT_EXPORT.PRODUCT_MENU) {
+            if (currentMenuItem === constants.CSV_IMPORT_EXPORT.PRODUCT_MENU) {
                 result = csvImportExportHelper.addPriceAndInventoryData(result);
             }
 
-            ISML.renderTemplate('csvImportExport/csvImportExport', result);
+            if (result.error) {
+                ISML.renderTemplate('common/errorPage', {
+                    breadcrumbs: breadcrumbs,
+                    message: result.data.errorMessage,
+                    currentUrl: StringUtils.format('{0}?{1}', URLUtils.https('CSVImportExport-Start').toString(), request.httpQueryString)
+                });
+            } else {
+                ISML.renderTemplate('csvImportExport/csvImportExport', result);
+            }
         } else {
             Logger.error(Resource.msgf('render.page.error', 'error', null, executionListResult.errorMessage));
             ISML.renderTemplate('common/errorPage', {
@@ -321,9 +334,11 @@ function executeCsvImportExportJob() {
 
         if (jobResponse.success && jobResponse.executionObj && !jobResponse.executionObj.error) {
             var resultContext = {
-                showDownloadFile: true,
-                downloadFileType: 'csv',
-                serviceType: Resource.msg('service.type', 'csvImportExport', null),
+                executionListData: {
+                    showDownloadFile: true,
+                    downloadFileType: 'csv',
+                    serviceType: Resource.msg('service.type', 'csvImportExport', null)
+                },
                 executionDetails: jobResponse.executionObj
             };
             var resultTemplate = 'executionHistory/executionRow';

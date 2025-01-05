@@ -8,18 +8,7 @@ var ProductInventoryMgr = require('dw/catalog/ProductInventoryMgr');
 var oci = require('~/cartridge/scripts/util/oci');
 var ociEnums = require('*/cartridge/scripts/util/ociUtils/ociEnums');
 var OciRecordModel = require('*/cartridge/models/ociRecordModel');
-var Site = require('dw/system/Site');
-
-/**
- * convert from site timezone to UTC
- * @param {Date} date - date.
- * @returns {Date} date
- */
-function convertToUTCtimeZone(date) {
-    var timeZoneOffset = Site.getCurrent().getTimezoneOffset();
-    date.setTime(date.getTime() - timeZoneOffset);
-    return date;
-}
+var dateUtil = require('~/cartridge/scripts/util/dateUtil');
 
 /**
  * Update inventory record
@@ -40,7 +29,7 @@ function updateOrAddInventoryRecord(params) {
 
     var futureQtys = [];
     if (params.futureQty1 && params.futureQtyDate1) {
-        var futureQtyDate1 = new Calendar(convertToUTCtimeZone(new Date(params.futureQtyDate1)));
+        var futureQtyDate1 = new Calendar(dateUtil.convertSiteTimezoneToUTC(params.futureQtyDate1));
         futureQtys.push({
             quantity: parseFloat(params.futureQty1),
             expectedDate: StringUtils.formatCalendar(futureQtyDate1, DATE_FORMAT)
@@ -48,7 +37,7 @@ function updateOrAddInventoryRecord(params) {
     }
 
     if (params.futureQty2 && params.futureQtyDate2) {
-        var futureQtyDate2 = new Calendar(convertToUTCtimeZone(new Date(params.futureQtyDate2)));
+        var futureQtyDate2 = new Calendar(dateUtil.convertSiteTimezoneToUTC(params.futureQtyDate2));
         futureQtys.push({
             quantity: parseFloat(params.futureQty2),
             expectedDate: StringUtils.formatCalendar(futureQtyDate2, DATE_FORMAT)
@@ -159,6 +148,7 @@ function searchInventory(productIds, invId) {
         var ociRecords = !empty(result) ? result[0].records : [];
         var records = [];
         for (var a = 0; a < ociRecords.length; a++) {
+            ociRecords[a].isGroupInventory = isGroup;
             records.push(new OciRecordModel(ociRecords[a]));
         }
         return {

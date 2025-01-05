@@ -12,6 +12,14 @@
         .recipient-emails-msg {
             color: $slate-11;
         }
+
+        @include media-breakpoint-up(lg) {
+            .failed-order-alert-threshold {
+                input {
+                    width: 260px;
+                }
+            }
+        }
     }
 
     .notification-form {
@@ -133,6 +141,15 @@
     }
 
     .invalid-feedback {
+        margin-bottom: $unit;
+    }
+
+    .warning-feedback {
+        display: none;
+        width: 100%;
+        margin-top: $sub-unit;
+        font-size: $fs-df;
+        color: $yellow-10;
         margin-bottom: $unit;
     }
 }

@@ -110,7 +110,7 @@
 
         <isif condition="${ociConfigs && ociConfigs.isOciInventoryIntegrationMode}">
             <div class="configuration__badge rounded-5 p-4 mt-5">
-                <div class="sync-locations-section preference-item row justify-content-between align-items-center ms-0 gap-2" data-sync-locations-url="${ociConfigs.syncOciLocationsUrl}">
+                <div class="sync-locations-section preference-item row justify-content-between align-items-center ms-0 gap-2" data-sync-locations-url="${ociConfigs.syncOciLocationsUrl}" data-loading-message="${Resource.msg('oci.locations.loading.message', 'configuration', null)}">
                     <label class="form-label">${Resource.msg('oci.locations.title', 'configuration', null)}</label>
                     <div class="last-locations-sync">
                         <span>${Resource.msg('field.oci.lastupdate.label', 'configuration', null)}<span>

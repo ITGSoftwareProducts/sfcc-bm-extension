@@ -6,4 +6,6 @@ ocapi.RequestBuilder = require('~/cartridge/scripts/util/ocapiUtils/ocapiRequest
 
 ocapi.BatchBuilder = require('~/cartridge/scripts/util/ocapiUtils/ocapiBatchRequestBuilder');
 
+ocapi.utils = require('~/cartridge/scripts/util/ocapiUtils/ocapiHelper');
+
 module.exports = ocapi;

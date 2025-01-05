@@ -1,7 +1,6 @@
 'use strict';
 var jobServicesHelper = require('~/cartridge/scripts/helpers/jobServicesHelper');
 var Resource = require('dw/web/Resource');
-var System = require('dw/system/System');
 let duration = 0;
 
 
@@ -57,7 +56,6 @@ function getJobExecutionReport(startTime, endTime, pageNumber, isLastFourHours) 
                 allData = false;
             }
             result = {
-                timeZone: System.getInstanceTimeZone(),
                 jobExecutionObj: jobExecutionMap,
                 allData: allData,
                 count: data.count,
@@ -95,9 +93,6 @@ function getJobRatio(startTime, endTime, pageNumber) {
             duration += job.duration;
         });
 
-        if (jobExecutionList.data.total > jobExecutionList.data.start) {
-            getJobExecutionReport(startTime, endTime, jobExecutionList.data.start + jobExecutionList.data.count);
-        }
         ratio = duration / (24 * 60 * 60 * 1000);
         var jobRatio = ratio.toFixed(3);
         result = {

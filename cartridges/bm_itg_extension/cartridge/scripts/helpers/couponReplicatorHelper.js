@@ -58,8 +58,10 @@ function getCouponReplicationData(couponId) {
 
     var result = ocapiBatchRequest.execute();
 
+    var errorResult = ocapi.utils.getBatchResponseError(result);
+
     var availableSites = [];
-    if (!result.error && !result.serviceError) {
+    if (!errorResult) {
         if (!empty(result.responseList)) {
             allSites.toArray().forEach(function (site) {
                 var coupon = result.responseList[site.getID()];
@@ -77,7 +79,7 @@ function getCouponReplicationData(couponId) {
         };
     }
 
-    return result;
+    return errorResult;
 }
 
 /**
@@ -100,7 +102,7 @@ function runCouponReplicatorJob(couponId, siteIds, caseInsensitive, multipleCode
         CouponId: couponId,
         CaseInsensitive: caseInsensitive + '',
         CouponCodeType: couponType,
-        Description: couponDescription,
+        Description: escape(couponDescription),
         MultipleCodesPerBasket: multipleCodesPerBasket + '',
         SiteScope: JSON.stringify({ named_sites: [currentSiteID] }),
         SitesScope: JSON.stringify({ named_sites: siteIds }),

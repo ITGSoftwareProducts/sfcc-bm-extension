@@ -100,6 +100,7 @@ module.exports = {
         },
         BM_EXTENSION: {
             ATTRIBUTE_GROUP: 'BM Extension'
-        }
+        },
+        FILE_RETENTION_COUNT: 12
     })
 };

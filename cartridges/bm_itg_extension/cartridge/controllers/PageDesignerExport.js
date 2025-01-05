@@ -35,17 +35,22 @@ function start() {
         var params = request.httpParameterMap;
         var errorMessage = params.errorMessage.value;
         var actionUrl = URLUtils.https('PageDesignerExport-ExportPages');
-        var executionListResult = jobServicesHelper.getRecentProcessList([constants.PAGE_DESIGNER_EXPORT.JOB_ID], constants.PAGE_DESIGNER_EXPORT.RECENT_PROCESSES_NUMBER, true, 'xml', constants.PAGE_DESIGNER_EXPORT.IMPEX_PATH);
+        var jobIds = [constants.PAGE_DESIGNER_EXPORT.JOB_ID];
+        var executionListResult = jobServicesHelper.getRecentProcessList(jobIds, constants.PAGE_DESIGNER_EXPORT.RECENT_PROCESSES_NUMBER, true, 'xml', constants.PAGE_DESIGNER_EXPORT.IMPEX_PATH);
         if (executionListResult.success) {
             ISML.renderTemplate('pageDesignerExport/pageDesignerExportForm', {
                 actionUrl: actionUrl,
                 executionList: executionListResult.executionList,
                 errorMessage: errorMessage,
-                exportDetailsURL: URLUtils.https('ExecutionList-GetExecutionDetails'),
-                showDownloadFile: true,
-                downloadFileType: 'xml',
-                impexPath: constants.PAGE_DESIGNER_EXPORT.IMPEX_PATH,
-                serviceType: Resource.msg('service.type', 'pageDesignerExport', null),
+                executionListData: {
+                    exportDetailsURL: URLUtils.https('ExecutionList-GetExecutionDetails').toString(),
+                    showDownloadFile: true,
+                    downloadFileType: 'xml',
+                    impexPath: constants.PAGE_DESIGNER_EXPORT.IMPEX_PATH,
+                    maxProcessNumber: constants.PAGE_DESIGNER_EXPORT.RECENT_PROCESSES_NUMBER,
+                    serviceType: Resource.msg('service.type', 'pageDesignerExport', null),
+                    jobIds: jobIds
+                },
                 breadcrumbs: breadcrumbs
             });
         } else {
@@ -88,9 +93,11 @@ function exportPages() {
     var jobResult = pageDesignerExportHelper.executePageDesignerExportJob(exportFileName, uniqueContentIds);
     if (jobResult instanceof jobExecutionItem) {
         var resultContext = {
-            showDownloadFile: true,
-            downloadFileType: 'xml',
-            serviceType: Resource.msg('service.type', 'pageDesignerExport', null),
+            executionListData: {
+                showDownloadFile: true,
+                downloadFileType: 'xml',
+                serviceType: Resource.msg('service.type', 'pageDesignerExport', null)
+            },
             executionDetails: jobResult
         };
         var resultTemplate = 'executionHistory/executionRow';

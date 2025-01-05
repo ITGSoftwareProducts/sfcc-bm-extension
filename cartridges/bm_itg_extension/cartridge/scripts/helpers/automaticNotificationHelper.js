@@ -10,6 +10,8 @@ var URLUtils = require('dw/web/URLUtils');
 var Resource = require('dw/web/Resource');
 var ocapi = require('~/cartridge/scripts/util/ocapi');
 var preferences = require('~/cartridge/config/preferences');
+var dateUtil = require('~/cartridge/scripts/util/dateUtil');
+var StringUtils = require('dw/util/StringUtils');
 
 /**
  * Builds interval message.
@@ -149,6 +151,7 @@ function handleSaveCampaignNotificationSettings(data) {
     var campaignNotificationObj = {};
     var responseObj = { success: true };
     var faultyCampaigns = [];
+    var warningCampaigns = [];
     campaignNotificationObj.campaigns = data.campaignRecords ? data.campaignRecords : [];
     for (var i = 0; i < campaignNotificationObj.campaigns.length; i++) {
         var campaignObj = campaignNotificationObj.campaigns[i];
@@ -162,17 +165,22 @@ function handleSaveCampaignNotificationSettings(data) {
                     responseObj.faultyCampaigns = faultyCampaigns;
                 } else if (!campaign.endDate) {
                     responseObj.success = false;
-                    faultyCampaigns.push({ campaignId: campaignId, msg: Resource.msgf('field.campaignid.noenddate.error', 'automaticNotifications', null, campaignId) });
+                    faultyCampaigns.push({ campaignId: campaignId, msg: Resource.msg('field.campaignid.noenddate.error', 'automaticNotifications', null) });
                     responseObj.faultyCampaigns = faultyCampaigns;
                 } else {
-                    var dateAfter = new Calendar(new Date());
-                    dateAfter.add(Calendar.DAY_OF_MONTH, parseInt(campaignObj.days, 10));
-                    dateAfter.add(Calendar.HOUR_OF_DAY, parseInt(campaignObj.hours, 10));
-                    dateAfter.add(Calendar.MINUTE, parseInt(campaignObj.minutes, 10));
-                    if (campaign.endDate < dateAfter.time) {
-                        responseObj.success = false;
-                        faultyCampaigns.push({ campaignId: campaignId, msg: Resource.msgf('field.campaignid.expired.error', 'automaticNotifications', null, campaignId) });
-                        responseObj.faultyCampaigns = faultyCampaigns;
+                    var dateNow = new Calendar(new Date());
+                    if (campaign.endDate < dateNow.time) {
+                        warningCampaigns.push({ campaignId: campaignId, msg: Resource.msg('field.campaignid.expired.error', 'automaticNotifications', null) });
+                        responseObj.warningCampaigns = warningCampaigns;
+                    } else {
+                        var dateAfter = new Calendar(new Date());
+                        dateAfter.add(Calendar.DAY_OF_MONTH, parseInt(campaignObj.days, 10));
+                        dateAfter.add(Calendar.HOUR_OF_DAY, parseInt(campaignObj.hours, 10));
+                        dateAfter.add(Calendar.MINUTE, parseInt(campaignObj.minutes, 10));
+                        if (campaign.endDate < dateAfter.time) {
+                            warningCampaigns.push({ campaignId: campaignId, msg: Resource.msg('field.campaignid.almostexpired.error', 'automaticNotifications', null) });
+                            responseObj.warningCampaigns = warningCampaigns;
+                        }
                     }
                 }
             } else {
@@ -354,11 +362,14 @@ function getCampaignSuggestions(searchPhrase) {
                 for (var i = 0; i < hits.length; i++) {
                     var hit = hits[i];
                     if (hit.enabled && hit.end_date) {
-                        var campaignEndDate = new Calendar(new Date(hit.end_date));
-                        if (campaignEndDate.time > now.time) {
+                        var campaignEndDate = new Date(hit.end_date);
+                        if (campaignEndDate > now.time) {
+                            var campaignEndCalendar = new Calendar(dateUtil.convertUTCToSiteTimezone(campaignEndDate));
+                            var campaignFormattedEndDate = StringUtils.formatCalendar(campaignEndCalendar, request.locale, Calendar.INPUT_DATE_PATTERN);
+                            var campaignFormattedEndTime = StringUtils.formatCalendar(campaignEndCalendar, request.locale, Calendar.INPUT_TIME_PATTERN).toUpperCase();
                             campaignDetails.push({
                                 campaignId: hit.campaign_id,
-                                campaignEndDate: campaignEndDate.time
+                                campaignEndDate: campaignFormattedEndDate + ' ' + campaignFormattedEndTime
                             });
                         }
                     }
@@ -421,14 +432,29 @@ function validateProducts(productIDs) {
 function validateCampaigns(campaigns) {
     var result = { valid: true };
     var faultyCampaigns = {};
+    var warningCampaigns = {};
     for (var i = 0; i < campaigns.length; i++) {
-        var campaignId = campaigns[i].campaignId;
+        var campaignObj = campaigns[i];
+        var campaignId = campaignObj.campaignId;
         var campaign = PromotionMgr.getCampaign(campaignId);
         if (campaign) {
             if (!campaign.enabled) {
                 faultyCampaigns[campaignId] = Resource.msgf('field.campaignid.notenabled.error', 'automaticNotifications', null, campaignId);
             } else if (!campaign.endDate) {
-                faultyCampaigns[campaignId] = Resource.msgf('field.campaignid.noenddate.error', 'automaticNotifications', null, campaignId);
+                faultyCampaigns[campaignId] = Resource.msg('field.campaignid.noenddate.error', 'automaticNotifications', null);
+            } else {
+                var dateNow = new Calendar(new Date());
+                if (campaign.endDate < dateNow.time) {
+                    warningCampaigns[campaignId] = Resource.msg('field.campaignid.expired.error', 'automaticNotifications', null);
+                } else {
+                    var dateAfter = new Calendar(new Date());
+                    dateAfter.add(Calendar.DAY_OF_MONTH, parseInt(campaignObj.days, 10));
+                    dateAfter.add(Calendar.HOUR_OF_DAY, parseInt(campaignObj.hours, 10));
+                    dateAfter.add(Calendar.MINUTE, parseInt(campaignObj.minutes, 10));
+                    if (campaign.endDate < dateAfter.time) {
+                        warningCampaigns[campaignId] = Resource.msg('field.campaignid.almostexpired.error', 'automaticNotifications', null);
+                    }
+                }
             }
         } else {
             faultyCampaigns[campaignId] = Resource.msgf('field.campaignid.notexist.error', 'automaticNotifications', null, campaignId);
@@ -438,8 +464,29 @@ function validateCampaigns(campaigns) {
         result.valid = false;
         result.faultyCampaigns = faultyCampaigns;
     }
+    result.warningCampaigns = warningCampaigns;
 
     return result;
+}
+
+/**
+ * Formats text to the correct singular or plural terms
+ * @param {string} text - text to format
+ * @param {number} count - number of items
+ * @returns {string} formatted text
+ */
+function setPlurality(text, count) {
+    var resultText = text;
+    if (count > 1) {
+        resultText = resultText.replace('(s)', 's');
+        resultText = resultText.replace('(be)', 'are');
+        resultText = resultText.replace('(this/these)', 'these');
+    } else {
+        resultText = resultText.replace('(s)', '');
+        resultText = resultText.replace('(be)', 'is');
+        resultText = resultText.replace('(this/these)', 'this');
+    }
+    return resultText;
 }
 
 module.exports = {
@@ -454,5 +501,6 @@ module.exports = {
     handleSaveFailedOrderAlertSettings: handleSaveFailedOrderAlertSettings,
     saveSenderEmail: saveSenderEmail,
     validateProducts: validateProducts,
-    validateCampaigns: validateCampaigns
+    validateCampaigns: validateCampaigns,
+    setPlurality: setPlurality
 };

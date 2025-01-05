@@ -11,13 +11,14 @@ function execute() {
     var PromotionMgr = require('dw/campaign/PromotionMgr');
     var Transaction = require('dw/system/Transaction');
     var CustomObjectMgr = require('dw/object/CustomObjectMgr');
-    var Site = require('dw/system/Site');
     var StringUtils = require('dw/util/StringUtils');
     var emailHelper = require('~/cartridge/scripts/helpers/emailHelper');
     var automaticNotificationHelper = require('~/cartridge/scripts/helpers/automaticNotificationHelper');
+    var dateUtil = require('~/cartridge/scripts/util/dateUtil');
     var constants = require('~/cartridge/scripts/helpers/constants');
     var jobResources = require('~/cartridge/scripts/util/jobResources');
     var renderTemplateHelper = require('~/cartridge/scripts/renderTemplateHelper');
+    var currentSite = require('dw/system/Site').getCurrent();
 
     var campaignNotificationObj = automaticNotificationHelper.getCampaignNotificationSettings();
 
@@ -34,12 +35,16 @@ function execute() {
                 dateAfter.add(Calendar.HOUR_OF_DAY, parseInt(campaignObj.hours, 10));
                 dateAfter.add(Calendar.MINUTE, parseInt(campaignObj.minutes, 10));
                 var campaign = PromotionMgr.getCampaign(campaignObj.campaignId);
-                if (campaign && campaign.endDate < dateAfter.time) {
+                if (campaign && campaign.endDate && campaign.endDate < dateAfter.time) {
                     Logger.info('Campaign ({0}) is about to expire', campaignObj.campaignId);
-                    var calendar = new Calendar(new Date(campaign.getEndDate()));
-                    calendar.setTimeZone(Site.current.getTimezone());
-                    var campaignEndDate = StringUtils.formatCalendar(calendar, 'EEE, dd MMM yyyy HH:mm:ss z');
-                    campaignList.push([campaign.getID(), campaignEndDate]);
+                    var calendar = new Calendar(dateUtil.convertUTCToSiteTimezone(campaign.getEndDate()));
+                    var campaignEndDate = StringUtils.formatCalendar(calendar, request.locale, Calendar.INPUT_DATE_PATTERN);
+                    var campaignEndTime = StringUtils.formatCalendar(calendar, request.locale, Calendar.INPUT_TIME_PATTERN).toUpperCase();
+                    var dateNow = new Calendar(new Date());
+                    if (campaign.endDate < dateNow.time) {
+                        campaignEndDate = jobResources['campaign.email.expiredat'] + campaignEndDate;
+                    }
+                    campaignList.push([campaign.getID(), campaignEndDate + ' ' + campaignEndTime]);
                     campaignObjs.push(campaign);
                 } else {
                     notNotifiedCampaigns.push(campaignObj);
@@ -54,9 +59,10 @@ function execute() {
                 jobResources['campaign.email.column1'],
                 jobResources['campaign.email.column2']
             ];
+            var formattedHeader = StringUtils.format(jobResources['campaign.email.message.header'], currentSite.getName() || currentSite.getID());
             var renderedTemplate = renderTemplateHelper.buildHtmlEmailTemplate({
-                messageHeader: jobResources['campaign.email.message.header'],
-                messageFooter: jobResources['campaign.email.message.footer'],
+                messageHeader: automaticNotificationHelper.setPlurality(formattedHeader, campaignList.length),
+                messageFooter: automaticNotificationHelper.setPlurality(jobResources['campaign.email.message.footer'], campaignList.length),
                 columns: dataColumns,
                 list: campaignList
             });
@@ -64,7 +70,7 @@ function execute() {
             emailHelper.sendMail({
                 from: senderEmail,
                 recipient: campaignNotificationObj.recipientEmails,
-                subject: jobResources['campaign.email.subject'],
+                subject: StringUtils.format(jobResources['campaign.email.subject'], currentSite.getName() || currentSite.getID()),
                 content: renderedTemplate
             });
             var campaignManagementNotification = CustomObjectMgr.getCustomObject(constants.AUTOMATED_NOTIFICATION_SYSTEM.CUSTOM_OBJECT_TYPE, constants.AUTOMATED_NOTIFICATION_SYSTEM.CUSTOM_OBJECTS.CAMPAIGN_NOTIFICATION);

@@ -11,6 +11,7 @@ const URLUtils = require('../../mock/dw/web/URLUtils');
 const ISML = require('../../mock/dw/template/ISML');
 const Site = require('../../mock/dw/system/Site');
 const Calendar = require('../../mock/dw/util/Calendar');
+const DW = require('../../mock/dw');
 const {
     AppUtil,
     RenderTemplateHelper,
@@ -50,13 +51,19 @@ describe('PageDesignerExport', function () {
 
     var responseUtil = { renderJSON: sinon.stub() };
 
+    const dateUtil = proxyquire('../../../cartridges/bm_itg_extension/cartridge/scripts/util/dateUtil.js', {
+        'dw/system/Site': Site,
+        'dw/system/System': DW.system.System,
+        'dw/util/StringUtils': StringUtils
+    });
+
     const JobExecutionItem = proxyquire('../../../cartridges/bm_itg_extension/cartridge/models/jobExecutionItem', {
         'dw/util/StringUtils': StringUtils,
         'dw/util/Calendar': Calendar,
         'dw/web/URLUtils': URLUtils,
         'dw/web/Resource': Resource,
         '~/cartridge/scripts/helpers/constants': constants,
-        'dw/system/Site': Site
+        '~/cartridge/scripts/util/dateUtil': dateUtil
     });
 
     var { Start: start,
@@ -112,11 +119,15 @@ describe('PageDesignerExport', function () {
                 actionUrl: sinon.match.string,
                 executionList: sinon.match.object,
                 errorMessage: sinon.match.string,
-                exportDetailsURL: sinon.match.string,
-                showDownloadFile: sinon.match.bool,
-                downloadFileType: sinon.match.string,
-                impexPath: constants.PAGE_DESIGNER_EXPORT.IMPEX_PATH,
-                serviceType: sinon.match.string,
+                executionListData: {
+                    exportDetailsURL: sinon.match.string,
+                    showDownloadFile: sinon.match.bool,
+                    downloadFileType: sinon.match.string,
+                    impexPath: sinon.match.string,
+                    maxProcessNumber: sinon.match.number,
+                    serviceType: sinon.match.string,
+                    jobIds: sinon.match.array
+                },
                 breadcrumbs: sinon.match.array
             }));
         });
@@ -180,9 +191,11 @@ describe('PageDesignerExport', function () {
 
             assert.isTrue(RenderTemplateHelper.getRenderedHtml.calledOnce);
             assert.isTrue(RenderTemplateHelper.getRenderedHtml.calledWith({
-                showDownloadFile: true,
-                downloadFileType: 'xml',
-                serviceType: sinon.match.string,
+                executionListData: {
+                    showDownloadFile: true,
+                    downloadFileType: 'xml',
+                    serviceType: sinon.match.string
+                },
                 executionDetails: sinon.match.object
             }, 'executionHistory/executionRow'));
             assert.isTrue(responseUtil.renderJSON.calledOnce);

@@ -149,40 +149,19 @@ function callOcapiService(ocapiReq, isBatch) {
             ocapiServiceResult = {
                 error: true,
                 serviceError: true,
-                data: { errorMessage: result.errorMessage }
+                data: { errorMessage: Resource.msgf('error.ocapi.message', 'common', null, result.errorMessage) }
             };
         }
     } else {
         ocapiServiceResult = {
             error: true,
             serviceError: true,
-            data: { errorMessage: authToken.errorMessage }
+            data: { errorMessage: Resource.msgf('error.ocapi.message', 'common', null, authToken.errorMessage) }
         };
     }
     return ocapiServiceResult;
 }
 
-/**
- * Check if ocapi response has error and return them
- * @param {Object} ocapiResponse - Ocapi response.
- * @returns {Object} responseError
- */
-function getOcapiResponseError(ocapiResponse) {
-    var responseError;
-    if (ocapiResponse.error && ocapiResponse.data && ocapiResponse.data.errorMessage) {
-        responseError = {
-            success: false,
-            errorMessage: ocapiResponse.data.errorMessage
-        };
-    } else if (ocapiResponse.error) {
-        responseError = {
-            success: false,
-            errorMessage: Resource.msg('error.technical', 'common', null)
-        };
-    }
-    return responseError;
-}
 module.exports = {
-    callOcapiService: callOcapiService,
-    getOcapiResponseError: getOcapiResponseError
+    callOcapiService: callOcapiService
 };

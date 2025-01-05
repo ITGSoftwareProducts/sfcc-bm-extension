@@ -1,8 +1,13 @@
 .bm-itg-footer {
-    padding-bottom: $unit-xlg * 5.2;
     height: 52px;
 
     .bm-itg-footer-content {
         padding: $unit-lg;
+    }
+}
+
+.main {
+    .bm-itg-footer {
+        padding-bottom: $unit-xlg * 5.2;
     }
 }

@@ -40,7 +40,8 @@ var constants = {
     COUPON_REPLICATOR: {
         FIRST_JOB_ID: 'firstJobId',
         SECOND_JOB_ID: 'secondJobId',
-        IMPEX_PATH: '/path/to/impex/'
+        IMPEX_PATH: '/path/to/impex/',
+        RECENT_PROCESSES_NUMBER: 5
     },
     GLOBAL: {
         EXECUTION_LIST: {
@@ -60,13 +61,19 @@ describe('CouponReplicator', function () {
         'dw/web/Resource': Resource
     });
 
+    const dateUtil = proxyquire('../../../cartridges/bm_itg_extension/cartridge/scripts/util/dateUtil.js', {
+        'dw/system/Site': Site,
+        'dw/system/System': DW.system.System,
+        'dw/util/StringUtils': StringUtils
+    });
+
     const JobExecutionItem = proxyquire('../../../cartridges/bm_itg_extension/cartridge/models/jobExecutionItem', {
         'dw/util/StringUtils': StringUtils,
         'dw/util/Calendar': Calendar,
         'dw/web/URLUtils': URLUtils,
         'dw/web/Resource': Resource,
         '~/cartridge/scripts/helpers/constants': constants,
-        'dw/system/Site': Site
+        '~/cartridge/scripts/util/dateUtil': dateUtil
     });
 
     var jobServicesHelper = proxyquire('../../../cartridges/bm_itg_extension/cartridge/scripts/helpers/jobServicesHelper', {
@@ -133,6 +140,10 @@ describe('CouponReplicator', function () {
     describe('#start', function () {
         it('start function should render the template with the correct parameters', function () {
             // Mock data
+            const request = {
+                httpQueryString: ''
+            };
+            global.request = request;
             var mockedActionUrl = URLUtils.url('CouponReplicator-GetCouponList').toString();
             RequestBuilderStub.returns(searchJobResponseMock);
             BatchBuilderStub.returns(jobExecutionSearchResponseMock);
@@ -145,8 +156,12 @@ describe('CouponReplicator', function () {
             assert.isTrue(ismlRender.calledWith('couponReplicator/couponReplicator', {
                 actionUrl: sinon.match.string,
                 executionList: sinon.match.array,
-                exportDetailsURL: sinon.match.string,
-                serviceType: sinon.match.string,
+                executionListData: {
+                    exportDetailsURL: sinon.match.string,
+                    maxProcessNumber: sinon.match.number,
+                    serviceType: sinon.match.string,
+                    jobIds: sinon.match.array
+                },
                 breadcrumbs: sinon.match.array
             }));
         });
@@ -178,7 +193,7 @@ describe('CouponReplicator', function () {
 
             assert.isTrue(ismlRender.calledWith('common/errorPage', {
                 breadcrumbs: sinon.match.array,
-                message: sinon.match.string,
+                message: undefined,
                 currentUrl: sinon.match.string
             }));
         });
@@ -455,7 +470,12 @@ describe('CouponReplicator', function () {
             runReplicationJob();
 
             assert.isTrue(getRenderHtmlSpy.calledOnce);
-            assert.isTrue(getRenderHtmlSpy.calledWith({ serviceType: 'service.type', executionDetails: jobExecution }, 'executionHistory/executionRow'));
+            assert.isTrue(getRenderHtmlSpy.calledWith({
+                executionListData: {
+                    serviceType: 'service.type'
+                },
+                executionDetails: jobExecution
+            }, 'executionHistory/executionRow'));
             assert.isTrue(resRenderJsonSpy.calledOnce);
             assert.isTrue(resRenderJsonSpy.calledWith({ success: true, renderedTemplate: 'rendered html' }));
         });

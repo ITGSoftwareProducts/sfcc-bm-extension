@@ -41,7 +41,8 @@ function validateRecordValues(formSelector) {
 $(document).ready(function () {
     $('.futureQtyDate').datetimepicker({
         minDate: 0,
-        format: 'm/d/yyyy hh:ii:ss a'
+        timeFormat: 'hh:mm tt',
+        dateFormat: 'mm/dd/yy'
     });
 
     $('body').on('submit', 'form.oci-record-new', function (e) {
@@ -186,6 +187,7 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.success) {
                     $('#ociRecordModal .oci-product-info').html(response.renderedTemplate);
+                    $('#ociRecordModal .oci-product-info [data-bs-toggle="tooltip"]').tooltip();
                     $('.inventory-locations-list').val(response.inventoryId);
                     if (response.isGroup) {
                         $('.oci-edit-btn').addClass('d-none');
