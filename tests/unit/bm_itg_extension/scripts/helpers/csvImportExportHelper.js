@@ -134,7 +134,7 @@ describe('CSVImportExportHelper', function () {
 
             const result = csvImportExportHelper.getSchemaData(type);
 
-            assert.deepEqual(result, undefined);
+            assert.deepEqual(result, {});
         });
 
         it('should retrieve schema data for unrecognized import/export type', () => {

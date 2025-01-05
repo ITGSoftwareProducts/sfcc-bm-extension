@@ -39,7 +39,7 @@
                     <isinclude template="couponReplicator/couponsSearchResults" />
                 </div>
             </div>
-            <div class="tab-pane fade" id="nav-replications" role="tabpanel" aria-labelledby="nav-replications-tab" tabindex="0">
+            <div class="tab-pane fade execution-list" id="nav-replications" role="tabpanel" aria-labelledby="nav-replications-tab" tabindex="0">
                 <isinclude template="executionHistory/executionList" />
             </div>
         </div>

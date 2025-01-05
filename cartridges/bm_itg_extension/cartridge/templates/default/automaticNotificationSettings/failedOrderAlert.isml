@@ -47,17 +47,17 @@
                         <div class="d-flex justify-content-between align-items-end">
                         <div class="d-flex failed-interval-alert">
                             <div class="failed-order-alert-days me-2">
-                                <input type="text" id="failedDays" aria-required="true" class="form-control inputfield_en not_disabled" ${settingObj.enabled ? '' : 'disabled'} name="days" required value="${settingObj.interval && settingObj.interval.days ? settingObj.interval.days : ''}" />
+                                <input type="number" id="failedDays" aria-required="true" class="form-control inputfield_en not_disabled" ${settingObj.enabled ? '' : 'disabled'} name="days" required value="${settingObj.interval && settingObj.interval.days ? settingObj.interval.days : ''}" />
                                 <label for="failedDays" class=" slate-11 text-sm mt-1"><isprint value="${Resource.msg('literal.interval.days', 'automaticNotifications', null)}" /></label>
                             </div>
 
                             <div class="failed-order-alert-hours me-2">
-                                <input type="text" id="failedHours" aria-required="true" class="form-control inputfield_en not_disabled" ${settingObj.enabled ? '' : 'disabled'} name="hours" required value="${settingObj.interval && settingObj.interval.hours ? settingObj.interval.hours : ''}" />
+                                <input type="number" id="failedHours" aria-required="true" class="form-control inputfield_en not_disabled" ${settingObj.enabled ? '' : 'disabled'} name="hours" required value="${settingObj.interval && settingObj.interval.hours ? settingObj.interval.hours : ''}" />
                                 <label for="failedHours" class="slate-11 text-sm mt-1"><isprint value="${Resource.msg('literal.interval.hours', 'automaticNotifications', null)}" /></label>
                             </div>
 
                             <div class="failed-order-alert-minutes">
-                                <input type="text" id="failedMinutes" aria-required="true" class="form-control inputfield_en not_disabled" ${settingObj.enabled ? '' : 'disabled'} name="minutes" required value="${settingObj.interval && settingObj.interval.minutes ? settingObj.interval.minutes : ''}" />
+                                <input type="number" id="failedMinutes" aria-required="true" class="form-control inputfield_en not_disabled" ${settingObj.enabled ? '' : 'disabled'} name="minutes" required value="${settingObj.interval && settingObj.interval.minutes ? settingObj.interval.minutes : ''}" />
                                 <label for="failedMinutes" class="slate-11 text-sm mt-1"><isprint value="${Resource.msg('literal.interval.minutes', 'automaticNotifications', null)}" /></label>
                             </div>
                         </div>

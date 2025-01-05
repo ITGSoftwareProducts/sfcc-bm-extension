@@ -7,17 +7,27 @@
 </isloop>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Remove stylesheets with href not containing "slds-ccbm.css"
-        var styleElements = document.querySelectorAll('.page > link[rel="stylesheet"]:not([href*="slds-ccbm.css"])');
-        styleElements.forEach(function(styleElement) {
-            styleElement.parentNode.removeChild(styleElement);
-        });
+        let styleElements = [];
+        if (document.querySelector('.customModule-wrapper')) { // modern
+            styleElements = document.querySelectorAll('.page > link[rel="stylesheet"]:not([href*="slds-ccbm.css"]):not([href*="slds-ldsbm.css"])');
 
+        } else {
+            styleElements = document.querySelectorAll('.page > link[rel="stylesheet"]:not([href*="slds-ccbm.css"]):not([href*="lock-screen.css"])');
+        }
+        if (styleElements && styleElements.length > 0) {
+            styleElements.forEach(function(styleElement) {
+                styleElement.parentNode.removeChild(styleElement); // Remove the stylesheet element
+            });
+        }
         // Remove img elements with src containing "space.gif"
         var emptyElements = document.querySelectorAll('.page .top img[src*="space.gif"]');
         emptyElements.forEach(function(emptyElement) {
             emptyElement.parentNode.removeChild(emptyElement);
         });
+
+        // Move the login modal to the correct parent
+        var bmLoginPopup = document.getElementById('login');
+        document.body.append(bmLoginPopup);
     });
 
 </script>

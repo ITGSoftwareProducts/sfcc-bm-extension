@@ -2,6 +2,10 @@
 .modal {
     --bs-modal-bg: #{$surface-white};
 
+    .close-icon {
+        margin-left: auto;
+    }
+
     &.right {
         .close-icon {
             border: none;

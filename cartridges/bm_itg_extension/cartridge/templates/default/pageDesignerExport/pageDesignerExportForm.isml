@@ -87,7 +87,7 @@
 
     </div>
 
-    <div class="pd-results bg-surface-white rounded-4">
+    <div class="pd-results bg-surface-white rounded-4 execution-list">
         <isinclude template="executionHistory/executionList" />
     </div>
 

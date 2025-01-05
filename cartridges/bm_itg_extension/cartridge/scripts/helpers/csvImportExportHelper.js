@@ -135,6 +135,7 @@ function getInventoryListId() {
     var index = 1;
     var ocapiBatchRequestData;
     var ocapiBatchRequest;
+    var ocapiBatchError;
     if (!ocapiResponse.error && ocapiResponse.data && ocapiResponse.data.data && ocapiResponse.data.data.length) {
         data = data.concat(ocapiResponse.data.data);
         var ocapiResponseData = ocapiResponse.data;
@@ -149,7 +150,10 @@ function getInventoryListId() {
                     .setPageNumber(index));
             }
             ocapiBatchRequestData = ocapiBatchRequest.execute();
-            if (ocapiBatchRequestData.responseList) {
+            ocapiBatchError = ocapi.utils.getBatchResponseError(ocapiBatchRequestData);
+            if (ocapiBatchError) {
+                data = ocapiBatchError;
+            } else if (ocapiBatchRequestData.responseList) {
                 var responseList = ocapiBatchRequestData.responseList;
                 Object.keys(responseList).forEach(function (key) {
                     if (!responseList[key].error && responseList[key].data && responseList[key].data.data && responseList[key].data.data.length) {
@@ -160,6 +164,9 @@ function getInventoryListId() {
                 });
             }
         }
+    } else if (ocapiResponse.error) {
+        Logger.error('Get inventory list IDs return an error: {0}', ocapiResponse.data.errorMessage);
+        data = ocapiResponse;
     } else {
         Logger.error('Get inventory list IDs return an error: {0}', ocapiResponse.data.errorMessage);
         data = null;
@@ -224,8 +231,9 @@ function addCustomAttributes(schema, csvToXml, xmlSchema, parentRecord) {
                 }
                 var customAttributesArray = customAttributeSchema['custom-attributes'].elements['custom-attribute'];
                 result.forEach(function (item) {
-                    var attributes = Object.values(item.responseList);
-                    attributes.forEach(function (attribute) {
+                    var attributes = Object.keys(item.responseList);
+                    attributes.forEach(function (attrKey) {
+                        var attribute = item.responseList[attrKey];
                         var customAttributeObj = {
                             'attributes': {
                                 'attribute-id': {
@@ -263,6 +271,7 @@ function getSchemaData(type) {
     switch (type) {
         case constants.CSV_IMPORT_EXPORT.DATA_TYPES.INVENTORY:
             schema = require('*/cartridge/scripts/schemas/inventoryAttributes.json');
+            schema = addCustomAttributes(schema);
             break;
         case constants.CSV_IMPORT_EXPORT.DATA_TYPES.PRICEBOOK:
             schema = require('*/cartridge/scripts/schemas/priceBookAttributes.json');
@@ -270,7 +279,7 @@ function getSchemaData(type) {
         default:
             break;
     }
-    return addCustomAttributes(schema);
+    return schema;
 }
 
 
@@ -343,6 +352,9 @@ function addPriceAndInventoryData(result) {
     var priceInventoryObj = result;
     var allPriceBooks = PriceBookMgr.getAllPriceBooks();
     var inventoryListIds = getInventoryListId();
+    if (inventoryListIds && inventoryListIds.error) {
+        return inventoryListIds;
+    }
     if (!empty(allPriceBooks)) {
         priceInventoryObj.allPriceBooks = allPriceBooks;
     }

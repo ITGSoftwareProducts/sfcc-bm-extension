@@ -112,7 +112,7 @@
     </menuaction>
 
     <menuaction id="customer_productlist" menupath="customers" position="200" site="true">
-        <name xml:lang="x-default"> Customer Product Lists</name>
+        <name xml:lang="x-default">Customer Product Lists</name>
         <short_description xml:lang="x-default">
             Get Customer's Created product-lists.
         </short_description>

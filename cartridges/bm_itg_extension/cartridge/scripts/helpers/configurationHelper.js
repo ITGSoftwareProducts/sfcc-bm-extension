@@ -12,6 +12,7 @@ var constants = require('~/cartridge/scripts/helpers/constants');
 var oci = require('~/cartridge/scripts/util/oci.js');
 var preferencesHelper = require('*/cartridge/scripts/helpers/preferencesHelper');
 var ociEnums = require('*/cartridge/scripts/util/ociUtils/ociEnums');
+var dateUtil = require('~/cartridge/scripts/util/dateUtil');
 
 
 /**
@@ -134,13 +135,17 @@ function downloadLocationGraphExportFile(exportId) {
             var content = ociDownloadResponse.data;
             var commonHelper = require('~/cartridge/scripts/helpers/commonFileHelper.js');
             var groupsAndLocationsPath = constants.OMNI_CHANNEL_INVENTORY.IMPEX_PATH + constants.OMNI_CHANNEL_INVENTORY.GROUPS_AND_LOCATIONS_FOLDER;
-            var startDate = new Calendar(new Date());
-            content.downloadTime = StringUtils.formatCalendar(startDate, 'MM/dd/yyyy hh:mm:ss a');
+            var startDate = new Date();
+            content.downloadTime = startDate.toUTCString();
             var impexPath = File.IMPEX + '/src' + groupsAndLocationsPath;
             var fileName = constants.OMNI_CHANNEL_INVENTORY.GROUPS_AND_LOCATIONS_FILE;
             commonHelper.createFileInImpex(JSON.stringify(content), impexPath, fileName, '');
             result.success = true;
-            result.responseJSON.locationsDownloadTime = content.downloadTime;
+            startDate = dateUtil.convertUTCToSiteTimezone(startDate);
+            var calendar = new Calendar(startDate);
+            var ociDownloadFormattedDate = StringUtils.formatCalendar(calendar, request.locale, Calendar.INPUT_DATE_PATTERN);
+            var ociDownloadFormattedTime = StringUtils.formatCalendar(calendar, request.locale, Calendar.TIME_PATTERN);
+            result.responseJSON.locationsDownloadTime = ociDownloadFormattedDate + ' ' + ociDownloadFormattedTime;
             result.responseJSON.exportCompleted = true;
         }
     } else if (ociDownloadResponse.errorCode === '409') {

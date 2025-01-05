@@ -3,10 +3,16 @@
  * Show a spinner inside a given element
  * @param {element} $target - Element to block by the veil and spinner.
  *                            Pass body to block the whole page.
+ * @param {string} text - Optional text to include underneath the spinner
  */
-function addSpinner($target) {
-    var $veil = $('<div class="veil"><div class="underlay"></div></div>');
-    $veil.append(' <div class="spinner"></div>');
+function addSpinner($target, text) {
+    var $veil = $('<div class="veil"><div class="underlay"></div><div class="spinner-container"></div></div>');
+    var $spinnerContainer = $veil.find('.spinner-container');
+    $spinnerContainer.append('<div class="spinner"></div>');
+    if (text) {
+        $spinnerContainer.append('<div class="spinner-message">' + text + '</div>');
+        $veil.find('.underlay').css('opacity', 0.8);
+    }
     if ($target.get(0).tagName === 'IMG') {
         $target.after($veil);
         $veil.css({ width: $target.width(), height: $target.height() });
@@ -20,7 +26,8 @@ function addSpinner($target) {
             $target.parent().addClass('veiled');
         }
         if ($target.get(0).tagName === 'BODY') {
-            $veil.find('.spinner').css('position', 'fixed');
+            $veil.find('.spinner-container').css('position', 'fixed');
+            $veil.css('z-index', 10010);
         }
     }
     $veil.click(function (e) {
@@ -45,9 +52,9 @@ function removeSpinner($veil) {
 $.fn.spinner = function () {
     var $element = $(this);
     var Fn = function () {
-        this.start = function () {
+        this.start = function (text) {
             if ($element.length) {
-                addSpinner($element);
+                addSpinner($element, text);
             }
         };
         this.stop = function () {

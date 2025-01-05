@@ -1,0 +1,18 @@
+#login.lock-screen {
+    font-size: $fs-xxxs + 1;
+    line-height: 1.4;
+
+    #login_switchuser {
+        a {
+            color: #00629b;
+
+            &:hover {
+                color: #137dba;
+            }
+
+            &:active {
+                color: #ffb549;
+            }
+        }
+    }
+}

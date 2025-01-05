@@ -4,7 +4,7 @@ var StringUtils = require('dw/util/StringUtils');
 var Calendar = require('dw/util/Calendar');
 var URLUtils = require('dw/web/URLUtils');
 var Resource = require('dw/web/Resource');
-var Site = require('dw/system/Site');
+var dateUtil = require('~/cartridge/scripts/util/dateUtil');
 
 /**
  * Get the execution duration
@@ -53,10 +53,13 @@ function getJobConfigurationUUID(jobExecutionOcapiObj, otherConnectedExecutions)
  * @returns {Date} processStartTime - Execution start time
  */
 function getJobStartTime(jobExecutionOcapiObj) {
-    var calendar = new Calendar(new Date(jobExecutionOcapiObj.start_time));
-    calendar.setTimeZone(Site.getCurrent().getTimezone());
+    var date = dateUtil.convertUTCToSiteTimezone(jobExecutionOcapiObj.start_time);
+    var calendar = new Calendar(date);
 
-    var processStartTime = StringUtils.formatCalendar(calendar, 'MM/dd/yyyy hh:mm:ss a');
+    var executionDate = StringUtils.formatCalendar(calendar, request.locale, Calendar.INPUT_DATE_PATTERN);
+    var executionTime = StringUtils.formatCalendar(calendar, request.locale, Calendar.TIME_PATTERN);
+
+    var processStartTime = executionDate + ' ' + executionTime;
     return processStartTime;
 }
 
@@ -74,10 +77,12 @@ function getJobEndTime(jobExecutionOcapiObj, otherConnectedExecutions) {
         process = jobExecutionOcapiObj;
     }
 
-    var calendar = new Calendar(new Date(process.end_time));
-    calendar.setTimeZone(Site.getCurrent().getTimezone());
+    var date = dateUtil.convertUTCToSiteTimezone(process.end_time);
+    var calendar = new Calendar(date);
+    var executionDate = StringUtils.formatCalendar(calendar, request.locale, Calendar.INPUT_DATE_PATTERN);
+    var executionTime = StringUtils.formatCalendar(calendar, request.locale, Calendar.TIME_PATTERN);
 
-    return StringUtils.formatCalendar(calendar, 'MM/dd/yyyy hh:mm:ss a');
+    return executionDate + ' ' + executionTime;
 }
 
 /**
@@ -211,7 +216,6 @@ function jobExecutionItem(jobExecutionOcapiObj, options, otherConnectedExecution
     this.id = jobExecutionOcapiObj.id;
     this.exportFileName = getExportFileName(jobExecutionOcapiObj, options);
     this.logFileURL = URLUtils.https('ViewImpexMonitor-DownloadLogFile', 'JobConfigurationUUID', this.configurationUUID).toString();
-    this.modalTitle = Resource.msg('modal.title.export', 'common', null);
 
     if (options) {
         if (options.processNameJobParam || options.fileOrProcessName) {
@@ -233,9 +237,6 @@ function jobExecutionItem(jobExecutionOcapiObj, options, otherConnectedExecution
             this.serviceTypeLabel = Resource.msgf('lable.' + options.impexType.value, 'common', null, this.processType);
         }
     }
-    if (this.processType && this.processType === 'Import') {
-        this.modalTitle = Resource.msg('modal.title.import', 'common', null);
-    }
     this.jobIds = getJobsIds(jobExecutionOcapiObj, otherConnectedExecutions);
     var timeStatusMessage;
     var otherJobsStatus = true;
@@ -252,6 +253,8 @@ function jobExecutionItem(jobExecutionOcapiObj, options, otherConnectedExecution
         timeStatusMessage = Resource.msgf('modal.time.status.section.error.message', 'common', null, getJobStartTime(jobExecutionOcapiObj), getJobEndTime(jobExecutionOcapiObj, otherConnectedExecutions));
     }
     this.timeStatusMessage = timeStatusMessage;
+    var runningJobStatuses = ['pending', 'running', 'pausing', 'paused', 'resuming', 'resumed', 'restarting', 'restarted', 'retrying', 'retried', 'aborting'];
+    this.isRunning = runningJobStatuses.indexOf(this.executionStatus) !== -1;
 }
 
 module.exports = jobExecutionItem;

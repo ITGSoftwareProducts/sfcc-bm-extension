@@ -12,6 +12,7 @@ const ProductInventoryMgr = require('../../../../mock/dw/catalog/ProductInventor
 const Logger = require('../../../../mock/dw/system/Logger');
 const { CustomObjectMgrMock } = require('../../../../mock/controllers');
 const OCI = require('../../../../mock/util/OCI');
+const DW = require('../../../../mock/dw');
 
 describe('configurationHelper', function () {
     let RequestBuilderStub = sinon.stub();
@@ -48,6 +49,11 @@ describe('configurationHelper', function () {
     };
     const preferencesHelper = { setPreferenceValue: sinon.stub() };
     const commonFileHelper = { createFileInImpex: sinon.stub() };
+    const dateUtil = proxyquire('../../../../../cartridges/bm_itg_extension/cartridge/scripts/util/dateUtil.js', {
+        'dw/system/Site': Site,
+        'dw/system/System': DW.system.System,
+        'dw/util/StringUtils': StringUtils
+    });
     var { deleteMappingConfig: deleteMappingConfig,
               getDataMapping: getDataMapping,
               convertJsonToArray: convertJsonToArray,
@@ -70,6 +76,7 @@ describe('configurationHelper', function () {
                             '*/cartridge/scripts/util/ociUtils/ociEnums': ociEnums,
                             '~/cartridge/scripts/helpers/commonFileHelper.js': commonFileHelper,
                             'dw/system/Logger': Logger,
+                            '~/cartridge/scripts/util/dateUtil': dateUtil,
                             '~/cartridge/scripts/util/guard': {
                                 ensure: (filters, action) => sinon.stub().callsFake(action)
                             }
@@ -255,7 +262,7 @@ describe('configurationHelper', function () {
         const expectedResponse = {
             success: true,
             responseJSON: {
-                locationsDownloadTime: 'formattedCalendar',
+                locationsDownloadTime: 'formattedCalendar formattedCalendar',
                 exportCompleted: true
             }
         };

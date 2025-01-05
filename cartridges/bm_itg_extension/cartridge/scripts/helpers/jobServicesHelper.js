@@ -31,7 +31,7 @@ function executeJob(jobId, jobParams, showDownloadFile, downloadFileType, impexP
     var paramBody = { parameters: parameters };
     var jobResponse = new ocapi.RequestBuilder()
         .setOcapi(ocapi.ENDPOINTS.EXECUTE_JOB)
-        .addParameters(encodeURI(jobId))
+        .addParameters(jobId)
         .setBody(paramBody)
         .execute();
 
@@ -72,7 +72,6 @@ function executeJob(jobId, jobParams, showDownloadFile, downloadFileType, impexP
  * @returns {Array} executionList
  */
 function getRecentProcessList(jobIds, numOfExecutions, showDownloadFile, downloadFileType, impexPath) {
-    var ocapiServiceHelper = require('~/cartridge/scripts/util/ocapiUtils/ocapiServiceHelper');
     var executionListResult = {
         success: true
     };
@@ -96,9 +95,11 @@ function getRecentProcessList(jobIds, numOfExecutions, showDownloadFile, downloa
         .execute();
 
     var executionList = [];
-    var ocapiError = ocapiServiceHelper.getOcapiResponseError(result);
-    if (ocapiError) {
-        return ocapiError;
+    if (result.error) {
+        return {
+            success: false,
+            errorMessage: result.data.errorMessage
+        };
     }
     if (!result.error && !empty(result.data) && !empty(result.data.hits)) {
         var ocapiBatchRequest = new ocapi.BatchBuilder();
@@ -128,9 +129,12 @@ function getRecentProcessList(jobIds, numOfExecutions, showDownloadFile, downloa
         });
 
         var ocapiBatchResponse = ocapiBatchRequest.execute();
-        var ocapiBatchError = ocapiServiceHelper.getOcapiResponseError(result);
+        var ocapiBatchError = ocapi.utils.getBatchResponseError(ocapiBatchResponse);
         if (ocapiBatchError) {
-            return ocapiBatchError;
+            return {
+                success: false,
+                errorMessage: ocapiBatchError.data.errorMessage
+            };
         }
         if (!ocapiBatchResponse.error && ocapiBatchResponse.responseList) {
             var resList = ocapiBatchResponse.responseList;
@@ -200,7 +204,7 @@ function getRecentProcessList(jobIds, numOfExecutions, showDownloadFile, downloa
 function getJobExecutionDetails(jobIds, executionId, showDownloadFile, downloadFileType, impexPath) {
     var jobResponse = new ocapi.RequestBuilder()
         .setOcapi(ocapi.ENDPOINTS.EXECUTION_DETAILS)
-        .addParameters(encodeURI(jobIds[0]), executionId)
+        .addParameters(jobIds[0], executionId)
         .execute();
 
     var fileNameMap = constants.GLOBAL.EXECUTION_LIST.FILES_MAP;
@@ -214,7 +218,7 @@ function getJobExecutionDetails(jobIds, executionId, showDownloadFile, downloadF
                 var secondExecutionId = lastStepExecution.exit_status.message;
                 secondExecution = new ocapi.RequestBuilder()
                 .setOcapi(ocapi.ENDPOINTS.EXECUTION_DETAILS)
-                .addParameters(encodeURI(jobIds[1]), secondExecutionId)
+                .addParameters(jobIds[1], secondExecutionId)
                 .execute();
                 jobExecution = new JobExecutionItem(execution, {
                     processNameJobParam: fileNameMap[jobIds[0]],

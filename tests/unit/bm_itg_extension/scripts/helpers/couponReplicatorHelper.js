@@ -113,7 +113,7 @@ describe('CouponReplicationHelper', function () {
             const caseInsensitive = 'true';
             const multipleCodesPerBasket = 'false';
             const couponType = 'yourCouponType';
-            const couponDesc = 'Your description here!';
+            const couponDesc = 'YourCouponDescription';
             const currentSite = { ID: 'siteID1' };
             const siteStub = sinon.stub(Site.getCurrent(), 'ID').returns('siteID1');
 

@@ -4,7 +4,7 @@
 var toast = require('./components/toastNotification');
 
 $(document).ready(function () {
-    var onloadErrorMsgs = $('.invalid-feedback.display-error-msg');
+    var onloadErrorMsgs = $('.invalid-feedback.display-error-msg, .warning-feedback.display-error-msg');
     if (onloadErrorMsgs && onloadErrorMsgs.length) {
         onloadErrorMsgs.each(function () {
             $(this).show();
@@ -50,6 +50,7 @@ $(document).ready(function () {
     function clearFormErrors($form) {
         $form.find('.form-group').removeClass('has-error');
         $form.find('.invalid-feedback').hide();
+        $form.find('.warning-feedback').hide();
     }
 
     function showCampainErrorMsg(resp) {
@@ -67,6 +68,22 @@ $(document).ready(function () {
             } else {
                 invalidFeedback.hide();
                 invalidFeedback.html(resp.mainErrorMsg);
+            }
+        });
+    }
+
+    function showCampaginWarningMsg(resp) {
+        var warningCampaigns = resp.warningCampaigns;
+        var warningCampaignsMap = {};
+        $.each(warningCampaigns, function (_, obj) {
+            warningCampaignsMap[obj.campaignId] = obj.msg;
+        });
+        $('.campaign-list .campaign').each(function () {
+            var currentCampainId = $(this).find('input#campaignId').val();
+            var warningFeedback = $(this).find('.warning-feedback');
+            if (currentCampainId in warningCampaignsMap && warningCampaignsMap[currentCampainId]) {
+                warningFeedback.html(warningCampaignsMap[currentCampainId]);
+                warningFeedback.show();
             }
         });
     }
@@ -217,8 +234,8 @@ $(document).ready(function () {
 
     $('#saveCampaignNotificationSettings').on('click', function (e) {
         e.preventDefault();
+        $('.suggestion-list').empty();
         var $form = $('form.content-notification');
-        let campaignIdFlag = true;
         var recipientEmails = [];
         $form.find('.list-item').each(function () {
             recipientEmails.push($(this).find('.value').text());
@@ -229,8 +246,7 @@ $(document).ready(function () {
             campaignRecord.campaignId = $(this).find('input#campaignId').val();
             if ($.trim($(this).find('input[name="days"]').val()) !== '' || $.trim($(this).find('input[name="hours"]').val()) !== '' || $.trim($(this).find('input[name="minutes"]').val()) !== '') {
                 if (campaignRecord.campaignId === '') {
-                    campaignIdFlag = false;
-                    $(this).find('.invalid-feedback').show();
+                    $(this).remove();
                     return;
                 }
             }
@@ -244,33 +260,34 @@ $(document).ready(function () {
         if (!validateRecipientEmails($form, recipientEmails)) return;
 
 
-        if (campaignIdFlag) {
-            var data = {
-                recipientEmails: recipientEmails,
-                campaignRecords: campaignRecords
-            };
+        var data = {
+            recipientEmails: recipientEmails,
+            campaignRecords: campaignRecords
+        };
 
-            clearFormErrors($form);
-            $form.spinner().start();
-            $.ajax({
-                url: $form.attr('action'),
-                data: { data: JSON.stringify(data) },
-                type: 'post',
-                success: function (resp) {
-                    if (resp && resp.success) {
-                        $('.campaign-error-msg').html('');
-                    } else if (resp.faultyCampaigns) {
-                        showCampainErrorMsg(resp);
-                        var toastError;
-                        if (resp.errorMsg) {
-                            toastError = resp.errorMsg;
-                        }
-                        toast.show(toast.TYPES.ERROR, toastError);
+        clearFormErrors($form);
+        $form.spinner().start();
+        $.ajax({
+            url: $form.attr('action'),
+            data: { data: JSON.stringify(data) },
+            type: 'post',
+            success: function (resp) {
+                if (resp && resp.success) {
+                    $('.campaign-error-msg').html('');
+                    if (resp.warningCampaigns) {
+                        showCampaginWarningMsg(resp);
                     }
-                    $form.spinner().stop();
+                } else if (resp.faultyCampaigns) {
+                    showCampainErrorMsg(resp);
+                    var toastError;
+                    if (resp.errorMsg) {
+                        toastError = resp.errorMsg;
+                    }
+                    toast.show(toast.TYPES.ERROR, toastError);
                 }
-            });
-        }
+                $form.spinner().stop();
+            }
+        });
     });
 
     $('body').on('change', '.automatic-notification-toggle input', function () {
@@ -438,15 +455,20 @@ $(document).ready(function () {
     function displaySuggestions(suggestionList, suggestions) {
         suggestionList.empty();
         suggestions.forEach(function (suggestion) {
-            suggestionList.append('<li class="suggestion-list-item p-3" data-suggestion-id="' + suggestion.campaignId + '"><div class="campaign-id">' + suggestion.campaignId + '</div><div class="expire-date">expires at ' + suggestion.campaignEndDate + '</div></li>');
+            suggestionList.append('<li class="suggestion-list-item p-3" data-suggestion-id="' + suggestion.campaignId + '"><div class="campaign-id">' + suggestion.campaignId + '</div><div class="expire-date">' + suggestionList.data('expiry-date-prefix') + ' ' + suggestion.campaignEndDate + '</div></li>');
         });
     }
 
-    $('body').on('click', '.suggestion-list li', function () {
+    $('body').on('mousedown', '.suggestion-list li', function () {
         const inputValue = $(this).data('suggestion-id');
         const correspondingInput = $(this).parents('.content-notification-campaign').find('input');
         correspondingInput.val(inputValue);
         $(this).parent().empty();
+    });
+
+    $('body').on('focusout', 'input[name="campaignId"]', function () {
+        const suggestionList = $(this).parent().find('.suggestion-list');
+        suggestionList.empty();
     });
 
     $('body').on('input', 'input[name="campaignId"]', function () {

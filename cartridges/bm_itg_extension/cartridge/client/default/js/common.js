@@ -19,6 +19,13 @@ $(document).ready(function () {
         $(this).trigger('blur');
     });
 
+    $(document).on('keypress', 'input[type=number]', function (e) {
+        const char = String.fromCharCode(e.which);
+        if (!/^[0-9]$/.test(char)) {
+            e.preventDefault();
+        }
+    });
+
     $(document).on('input', 'input[name="minutes"]', function () {
         handleInputMinMax($(this), 0, 59);
     });

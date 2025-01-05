@@ -18,6 +18,7 @@ function execute() {
     var Status = require('dw/system/Status');
     var Calendar = require('dw/util/Calendar');
     var OrderMgr = require('dw/order/OrderMgr');
+    var Order = require('dw/order/Order');
     var CustomObjectMgr = require('dw/object/CustomObjectMgr');
     var Transaction = require('dw/system/Transaction');
     var StringUtils = require('dw/util/StringUtils');
@@ -26,6 +27,7 @@ function execute() {
     var automaticNotificationHelper = require('~/cartridge/scripts/helpers/automaticNotificationHelper');
     var constants = require('~/cartridge/scripts/helpers/constants');
     var jobResources = require('~/cartridge/scripts/util/jobResources');
+    var currentSite = require('dw/system/Site').getCurrent();
 
     var orderIntervalAlertObj = automaticNotificationHelper.getOrderIntervalAlertSettings();
 
@@ -49,35 +51,38 @@ function execute() {
                 dateAfter.add(Calendar.DAY_OF_MONTH, -parseInt(orderIntervalAlertObj.interval.days, 10));
                 dateAfter.add(Calendar.HOUR_OF_DAY, -parseInt(orderIntervalAlertObj.interval.hours, 10));
                 dateAfter.add(Calendar.MINUTE, -parseInt(orderIntervalAlertObj.interval.minutes, 10));
-                var queryString = 'creationDate >= {0}';
-                OrderMgr.processOrders(processOrder, queryString, dateAfter.getTime());
+                var queryString = 'creationDate >= {0} AND status != {1} AND status != {2}';
+                OrderMgr.processOrders(processOrder, queryString, dateAfter.getTime(), Order.ORDER_STATUS_CREATED, Order.ORDER_STATUS_FAILED);
             } catch (e) {
                 Logger.error('Error Message: {0}\n{1}', e.message, e.stack);
             }
             if (ordersCount === 0) {
                 var interval = '';
-                if (orderIntervalAlertObj.interval.days !== 0) {
-                    interval += StringUtils.format(jobResources['order.alert.interval.days'], orderIntervalAlertObj.interval.days);
+                if (orderIntervalAlertObj.interval.days.length > 0 && orderIntervalAlertObj.interval.days !== '0') {
+                    var formattedDays = StringUtils.format(jobResources['order.alert.interval.days'], orderIntervalAlertObj.interval.days);
+                    interval += automaticNotificationHelper.setPlurality(formattedDays, parseInt(orderIntervalAlertObj.interval.days, 10));
                 }
-                if (orderIntervalAlertObj.interval.hours !== 0) {
+                if (orderIntervalAlertObj.interval.hours.length > 0 && orderIntervalAlertObj.interval.hours !== '0') {
+                    var formattedHours = StringUtils.format(jobResources['order.alert.interval.hours'], orderIntervalAlertObj.interval.hours);
                     if (interval) {
-                        interval += (orderIntervalAlertObj.interval.minutes !== 0 ? ', ' : jobResources['common.and']) + StringUtils.format(jobResources['order.alert.interval.hours'], orderIntervalAlertObj.interval.hours);
+                        interval += (orderIntervalAlertObj.interval.minutes.length > 0 && orderIntervalAlertObj.interval.minutes !== '0' ? ', ' : jobResources['common.and']) + automaticNotificationHelper.setPlurality(formattedHours, parseInt(orderIntervalAlertObj.interval.hours, 10));
                     } else {
-                        interval += StringUtils.format(jobResources['order.alert.interval.hours'], orderIntervalAlertObj.interval.hours);
+                        interval += automaticNotificationHelper.setPlurality(formattedHours, parseInt(orderIntervalAlertObj.interval.hours, 10));
                     }
                 }
-                if (orderIntervalAlertObj.interval.minutes !== 0) {
-                    interval += (interval ? jobResources['common.and'] : '') + StringUtils.format(jobResources['order.alert.interval.minutes'], orderIntervalAlertObj.interval.minutes);
+                if (orderIntervalAlertObj.interval.minutes.length > 0 && orderIntervalAlertObj.interval.minutes !== '0') {
+                    var formattedMinutes = StringUtils.format(jobResources['order.alert.interval.minutes'], orderIntervalAlertObj.interval.minutes);
+                    interval += (interval ? jobResources['common.and'] : '') + automaticNotificationHelper.setPlurality(formattedMinutes, parseInt(orderIntervalAlertObj.interval.minutes, 10));
                 }
                 var renderedTemplate = renderTemplateHelper.buildHtmlEmailTemplate({
-                    messageHeader: StringUtils.format(jobResources['order.alert.message.header'], interval),
+                    messageHeader: StringUtils.format(jobResources['order.alert.message.header'], currentSite.getName() || currentSite.getID(), interval),
                     messageFooter: jobResources['order.alert.message.footer']
                 });
                 var senderEmail = orderIntervalAlertObj.senderEmail;
                 emailHelper.sendMail({
                     from: senderEmail,
                     recipient: orderIntervalAlertObj.recipientEmails,
-                    subject: StringUtils.format(jobResources['order.alert.subject'], dw.system.Site.getCurrent().getID(), interval),
+                    subject: StringUtils.format(jobResources['order.alert.subject'], currentSite.getName() || currentSite.getID()),
                     content: renderedTemplate
                 });
                 orderIntervalAlertObj.lastNotification = new Date();

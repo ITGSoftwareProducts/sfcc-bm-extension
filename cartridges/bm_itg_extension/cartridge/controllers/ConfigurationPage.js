@@ -6,6 +6,7 @@
 var URLUtils = require('dw/web/URLUtils');
 var StringUtils = require('dw/util/StringUtils');
 var Resource = require('dw/web/Resource');
+var Calendar = require('dw/util/Calendar');
 var configurationHelper = require('*/cartridge/scripts/helpers/configurationHelper');
 var preferences = require('~/cartridge/config/preferences');
 var response = require('*/cartridge/scripts/util/responseUtil');
@@ -14,6 +15,7 @@ var ISML = require('dw/template/ISML');
 var Logger = require('dw/system/Logger').getLogger('BM-Extension');
 var guard = require('~/cartridge/scripts/util/guard');
 var ociInventoryHelper = require('~/cartridge/scripts/helpers/ociInventoryHelper.js');
+var dateUtil = require('~/cartridge/scripts/util/dateUtil');
 
 /**
  * Show the main page
@@ -40,7 +42,13 @@ function start() {
         var ociConfigs = {};
         ociConfigs.isOciInventoryIntegrationMode = configurationHelper.isOciInventoryIntegrationMode();
         if (ociConfigs.isOciInventoryIntegrationMode) {
-            ociConfigs.locationsDownloadTime = ociInventoryHelper.getGroupsAndLocations().downloadTime;
+            var ociDownloadTime = ociInventoryHelper.getGroupsAndLocations().downloadTime;
+            ociDownloadTime = dateUtil.convertUTCToSiteTimezone(ociDownloadTime);
+
+            var calendar = new Calendar(ociDownloadTime);
+            var ociDownloadFormattedDate = StringUtils.formatCalendar(calendar, request.locale, Calendar.INPUT_DATE_PATTERN);
+            var ociDownloadFormattedTime = StringUtils.formatCalendar(calendar, request.locale, Calendar.TIME_PATTERN);
+            ociConfigs.locationsDownloadTime = ociDownloadFormattedDate + ' ' + ociDownloadFormattedTime;
             ociConfigs.syncOciLocationsUrl = URLUtils.https('ConfigurationPage-DownloadOciLocations');
         }
 

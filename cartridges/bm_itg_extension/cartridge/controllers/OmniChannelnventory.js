@@ -212,7 +212,8 @@ function getRecordDetails() {
     var responseObj;
     if (!empty(records)) {
         var renderedTemplate = renderTemplateHelper.getRenderedHtml({
-            record: records ? records[0] : null
+            record: records ? records[0] : null,
+            isGroupInventory: ociResult.isGroup
         }, resultTemplate);
 
         responseObj = {

@@ -12,6 +12,10 @@ input[type="number"] {
     -moz-appearance: textfield;
 }
 
+.customModule-card {
+    background-color: $slate-2 !important;
+}
+
 .main {
     background-color: $slate-2;
 
@@ -144,8 +148,26 @@ input[type="number"] {
     height: $unit-xlg;
     background-size: $unit-xlg $unit-xlg;
     vertical-align: middle;
+
+    &.date-tooltip {
+        width: $unit-lg;
+        height: $unit-lg;
+        background-size: $unit-lg $unit-lg;
+        align-self: center;
+    }
 }
 
 .vdrag-icon {
     cursor: pointer;
+}
+
+// Fix whitespace issue in modern theme
+.customModule-wrapper {
+    .customModule-main {
+        flex: 1 0 calc(100% - 240px);
+    }
+
+    .customModule-leftside {
+        flex: 1 0 240px;
+    }
 }

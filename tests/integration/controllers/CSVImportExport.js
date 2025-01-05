@@ -88,7 +88,7 @@ describe('CSVImportExport', function () {
     describe('#Start', function () {
         it('should render the main csvImportExport page with correct data and breadcrumbs for product menu', () => {
             AppUtil.getRequestFormOrParams.returns({
-                SelectedMenuItem: 'prod-cat'
+                CurrentMenuItemId: 'prod-cat'
             });
 
             jobServicesHelper.getRecentProcessList.returns({
@@ -106,7 +106,7 @@ describe('CSVImportExport', function () {
         });
         it('should render the errorpage in case of failed getRecentProcessList response for customers', () => {
             AppUtil.getRequestFormOrParams.returns({
-                SelectedMenuItem: 'customers'
+                CurrentMenuItemId: 'customers'
             });
 
             jobServicesHelper.getRecentProcessList.returns({
@@ -126,7 +126,7 @@ describe('CSVImportExport', function () {
         });
         it('should return  an error and render error template on failure', () => {
             AppUtil.getRequestFormOrParams.returns({
-                SelectedMenuItem: 'marketing'
+                CurrentMenuItemId: 'marketing'
             });
             jobServicesHelper.getRecentProcessList.throws(new Error('An error occurred'));
 

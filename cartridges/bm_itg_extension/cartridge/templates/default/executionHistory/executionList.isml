@@ -1,12 +1,12 @@
 <isinclude template="/common/util/modules"/>
-<div id="execution_history" class="mt-6" data-running-process-error="${Resource.msg('process.running.error.message', 'common', null)}" data-export-details-url="${pdict.exportDetailsURL}" data-job-logs-url="${URLUtils.url('ViewOperationsImpex-Monitor')}" data-show-download-file="${pdict.showDownloadFile}" data-download-file-type="${pdict.downloadFileType}" data-impex-path="${pdict.impexPath}">
+<div id="execution_history" class="mt-6" data-running-process-error="${Resource.msg('process.running.error.message', 'common', null)}" data-job-logs-url="${URLUtils.url('ViewOperationsImpex-Monitor')}" data-execution-list-data="${JSON.stringify(pdict.executionListData)}">
     <div class="invalid-feedback d-block text-sm mt-2"></div>
     <div class="table-responsive">
         <table width="100%" class="table fixed custom-table table-striped table-hover caption-top">
             <div class="d-flex align-items-center mb-4">
-                <isif condition="${pdict.serviceType ===  Resource.msg('service.type', 'couponReplicator', null)}">
+                <isif condition="${pdict.executionListData.serviceType ===  Resource.msg('service.type', 'couponReplicator', null)}">
                     <span class="table-caption me-5"><isprint value="${Resource.msg('coupon.replications.caption', 'couponReplicator', null)}" /></span>
-                <iselseif condition="${pdict.serviceType ===  Resource.msg('service.type', 'pageDesignerExport', null)}" />
+                <iselseif condition="${pdict.executionListData.serviceType ===  Resource.msg('service.type', 'pageDesignerExport', null)}" />
                     <span class="table-caption me-5"><isprint value="${Resource.msg('pagedesigner.export.caption', 'pageDesignerExport', null)}" /></span>
                 <iselse/>
                     <span class="table-caption me-5"><isprint value="${Resource.msg('execution.list.caption', 'common', null)}" /></span>

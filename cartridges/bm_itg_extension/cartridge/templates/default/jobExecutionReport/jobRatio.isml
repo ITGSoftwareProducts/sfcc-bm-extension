@@ -18,8 +18,8 @@
                     <button class="btn btn-primary check-jobs-ratio mt-4" data-job-ratio-url="${pdict.jobRatioUrl}">${Resource.msg('job.execution.check.ratio.button', 'jobExecutionReport', null)}</button>
                 </div>
                 <div class="result-section d-none">
-                    <p class="ratio-description text-lg font-inter-medium"><isprint value="${Resource.msg('job.execution.ratio.result.message', 'jobExecutionReport', null)}" /></p>
-                    <span class="t-h3 ratio-value font-inter-tight"></span>
+                    <p class="ratio-description mb-1 text-lg font-inter-medium mb-2"><isprint value="${Resource.msg('job.execution.ratio.result.message', 'jobExecutionReport', null)}" /></p>
+                    <div class="t-h3 ratio-value font-inter-tight mb-2"></div>
                     <div class="result-message warning-message yellow-11 d-none p-2 align-items-center gap-1 font-inter-medium rounded-1">
                         <span class="icon"><issvgimg name="${'errors'}" color="${'#946800'}" /></span>
                         <span><isprint value="${Resource.msg('job.execution.warning.message', 'jobExecutionReport', null)}" /></span>

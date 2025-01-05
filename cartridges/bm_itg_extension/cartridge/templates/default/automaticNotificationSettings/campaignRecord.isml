@@ -2,16 +2,22 @@
 <isinclude template="/common/util/modules"/>
 <isset name="validationResult" scope="page" value="${pdict.validationresult}" />
 <isset name="isInvalid" scope="page" value="${validationResult && validationResult.valid === false && !empty(validationResult.faultyCampaigns) && !empty(validationResult.faultyCampaigns[pdict.campaignobj.campaignId])}" />
+<isset name="hasWarnings" scope="page" value="${validationResult && !empty(validationResult.warningCampaigns) && !empty(validationResult.warningCampaigns[pdict.campaignobj.campaignId])}" />
 <div class="campaign position-relative d-flex justify-content-between mt-2">
     <div class="d-flex">
         <div class="content-notification-campaign position-relative">
             <input type="text" id="campaignId" aria-required="true" class="form-control inputfield_en not_disabled" name="campaignId" required value="${pdict.campaignobj ? pdict.campaignobj.campaignId : ''}" ${settingObj.enabled ? '' : 'disabled'}/>
-            <ul class="suggestion-list  bg-surface-white  position-absolute rounded-3 p-0"></ul>
+            <ul class="suggestion-list  bg-surface-white  position-absolute rounded-3 p-0" data-expiry-date-prefix="${Resource.msg('field.campaignid.expirydate.prefix', 'automaticNotifications', null)}"></ul>
             <div class="invalid-feedback text-sm ${isInvalid ? 'display-error-msg' : ''}">
                 <isif condition="${isInvalid}">
                     <isprint value="${validationResult.faultyCampaigns[pdict.campaignobj.campaignId]}" />
                 <iselse/>
                     <isprint value="${Resource.msg('field.campaignid.missing.error', 'automaticNotifications', null)}" />
+                </isif>
+            </div>
+            <div class="warning-feedback text-sm ${hasWarnings ? 'display-error-msg' : ''}">
+                <isif condition="${hasWarnings}">
+                    <isprint value="${validationResult.warningCampaigns[pdict.campaignobj.campaignId]}" />
                 </isif>
             </div>
         </div>
