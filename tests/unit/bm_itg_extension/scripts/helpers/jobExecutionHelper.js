@@ -49,7 +49,6 @@ describe('JobExecutionHelper', function () {
 
             assert.deepEqual(result, {
                 total: 2,
-                timeZone: DW.system.System.getInstanceTimeZone(),
                 jobExecutionObj: {
                     job1: [
                         {

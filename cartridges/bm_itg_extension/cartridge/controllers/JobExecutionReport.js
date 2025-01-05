@@ -14,6 +14,7 @@ var Resource = require('dw/web/Resource');
 var Logger = require('dw/system/Logger').getLogger('BM-Extension');
 var guard = require('~/cartridge/scripts/util/guard');
 var System = require('dw/system/System');
+var dateUtil = require('~/cartridge/scripts/util/dateUtil');
 
 /**
  * Show the main page
@@ -56,8 +57,8 @@ function start() {
  */
 function getJobReport() {
     var params = app.getRequestFormOrParams();
-    var startTime = params.startTime;
-    var endTime = params.endTime;
+    var startTime = dateUtil.convertInstanceTimezoneToUTC(params.startTime);
+    var endTime = dateUtil.convertInstanceTimezoneToUTC(params.endTime);
     var startIndex = params.startIndex;
     var isLastFourHours = params.lastFourHours;
     var jobExecutionObj;
@@ -71,7 +72,7 @@ function getJobReport() {
  */
 function getJobRatio() {
     var params = app.getRequestFormOrParams();
-    var ratioDate = params.ratioDate;
+    var ratioDate = dateUtil.convertInstanceTimezoneToUTC(params.ratioDate);
 
     var startOfDay = new Date(ratioDate);
 

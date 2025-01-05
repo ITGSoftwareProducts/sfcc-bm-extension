@@ -52,7 +52,6 @@ var exportPage = function () {
                             }
                             dataTable.find('tbody').prepend(renderedTemplate);
                             executionList.checkProcessStatus();
-                            executionList.refreshExecutionList();
                         } else if (response.serverErrors && response.serverErrors.length) {
                             $.each(response.serverErrors, function (index, element) {
                                 toast.show(toast.TYPES.ERROR, element);

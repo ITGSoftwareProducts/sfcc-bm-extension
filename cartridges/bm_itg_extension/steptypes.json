@@ -422,6 +422,48 @@
                         }
                     ]
                 }
+            },
+            {
+                "@type-id": "custom.FileCleaner",
+                "description": "This job step removes old files under the specified path.",
+                "@supports-parallel-execution": false,
+                "@supports-site-context": false,
+                "@supports-organization-context": true,
+                "module": "bm_itg_extension/cartridge/scripts/jobsteps/fileCleaner.js",
+                "function": "execute",
+                "parameters": {
+                    "parameters": [
+                        {
+                            "@name": "WorkingFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true"
+                        },
+                        {
+                            "@name": "AllowedFilesCountPerFolder",
+                            "@type": "long",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": "12"
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "WARN",
+                            "description": "Used when small, but acceptable problems occurred."
+                        }
+                    ]
+                }
             }
         ]
     }

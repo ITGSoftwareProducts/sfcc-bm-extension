@@ -3,7 +3,7 @@
 var StringUtils = require('dw/util/StringUtils');
 var Calendar = require('dw/util/Calendar');
 var ProductMgr = require('dw/catalog/ProductMgr');
-var Site = require('dw/system/Site');
+var dateUtil = require('~/cartridge/scripts/util/dateUtil');
 
 /**
  * update date format
@@ -11,19 +11,25 @@ var Site = require('dw/system/Site');
  * @returns {string} updatedDate
  */
 function updateFormat(date) {
-    var updatedDate = date.replace(':00Z', ':00.000Z');
+    var updatedDate = date.replace('Z', '.000Z');
     return updatedDate;
 }
 
 /**
- * convert from UTC timezone to site timezone
- * @param {Date} date - date.
- * @returns {Date} date
+ * convert the date from UTC timezone to site timezone, and sets the locale format
+ * @param {Date} datetime - date to localize.
+ * @param {boolean} isGroupInventory - true if this record is fetched from a location group
+ * @param {boolean} isFutureDate - true if the passed datetime is an inventory record's future quantity date
+ * @returns {string} localized as a string date
  */
-function convertToSiteTimeZone(date) {
-    var timeZoneOffset = Site.getCurrent().getTimezoneOffset();
-    date.setTime(date.getTime() + timeZoneOffset);
-    return date;
+function localizeDateTime(datetime, isGroupInventory, isFutureDate) {
+    var calendar = new Calendar(dateUtil.convertUTCToSiteTimezone(datetime));
+    var formattedDate = StringUtils.formatCalendar(calendar, request.locale, Calendar.INPUT_DATE_PATTERN);
+    if (isGroupInventory && isFutureDate) {
+        return formattedDate;
+    }
+    var formattedTime = StringUtils.formatCalendar(calendar, request.locale, Calendar.TIME_PATTERN);
+    return formattedDate + ' ' + formattedTime;
 }
 
 /**
@@ -31,7 +37,6 @@ function convertToSiteTimeZone(date) {
  * @constructor
  */
 function OciRecordModel(ociRecord) {
-    var dateFormat = 'MM/dd/yyyy hh:mm:ss a';
     this.sku = ociRecord.sku;
     this.productName = '';
     if (ociRecord.sku) {
@@ -44,9 +49,11 @@ function OciRecordModel(ociRecord) {
     this.reserved = Number(ociRecord.reserved || 0).toFixed(2);
     this.ato = Number(ociRecord.ato || 0).toFixed(2);
     this.atf = Number(ociRecord.atf || 0).toFixed(2);
-    var effectiveDate = new Date(updateFormat(ociRecord.effectiveDate || ''));
-    effectiveDate = new Calendar(convertToSiteTimeZone(effectiveDate));
-    effectiveDate = StringUtils.formatCalendar(effectiveDate, dateFormat);
+    var effectiveDate = '';
+    if (ociRecord.effectiveDate) {
+        effectiveDate = new Date(updateFormat(ociRecord.effectiveDate));
+        effectiveDate = localizeDateTime(effectiveDate, ociRecord.isGroupInventory, false);
+    }
     this.effectiveDate = effectiveDate;
 
     var futureExpectations = 0;
@@ -66,9 +73,8 @@ function OciRecordModel(ociRecord) {
                 nearestFutureDate = expectedDate;
                 nearestFutureQty = ociRecord.futures[j].quantity;
             }
-            var futureExpectedDate = new Calendar(convertToSiteTimeZone(expectedDate));
 
-            futures[j].expectedDate = StringUtils.formatCalendar(futureExpectedDate, dateFormat);
+            futures[j].expectedDate = localizeDateTime(expectedDate, ociRecord.isGroupInventory, true);
         }
     }
 
@@ -76,7 +82,7 @@ function OciRecordModel(ociRecord) {
     this.futureExpectations = futureExpectations;
     this.future = '';
     if (nearestFutureDate && nearestFutureQty) {
-        nearestFutureDate = StringUtils.formatCalendar(new Calendar(nearestFutureDate), dateFormat);
+        nearestFutureDate = localizeDateTime(nearestFutureDate, ociRecord.isGroupInventory, true);
         this.future = StringUtils.format('{0} ({1})', Number(nearestFutureQty).toFixed(2), nearestFutureDate);
     }
 }

@@ -9,12 +9,14 @@ function execute() {
     var Status = require('dw/system/Status');
     var ProductMgr = require('dw/catalog/ProductMgr');
     var Transaction = require('dw/system/Transaction');
+    var StringUtils = require('dw/util/StringUtils');
     var CustomObjectMgr = require('dw/object/CustomObjectMgr');
     var emailHelper = require('~/cartridge/scripts/helpers/emailHelper');
     var automaticNotificationHelper = require('~/cartridge/scripts/helpers/automaticNotificationHelper');
     var renderTemplateHelper = require('~/cartridge/scripts/renderTemplateHelper');
     var constants = require('~/cartridge/scripts/helpers/constants');
     var jobResources = require('~/cartridge/scripts/util/jobResources');
+    var currentSite = require('dw/system/Site').getCurrent();
 
     var outOfStockNotificationsObj = automaticNotificationHelper.getOOSNotificationSettings();
     if (outOfStockNotificationsObj.enabled && !outOfStockNotificationsObj.notSetup && !empty(outOfStockNotificationsObj.productArray)) {
@@ -26,14 +28,14 @@ function execute() {
             var product = ProductMgr.getProduct(productID);
             var avm = product ? product.getAvailabilityModel() : null;
             try {
-                if (product && !empty(avm) && avm.inventoryRecord) {
+                if (product && !empty(avm)) {
                     if (outOfStockNotificationsObj.products[product.ID] === constants.AUTOMATED_NOTIFICATION_SYSTEM.PRODUCT_STATUS.NOT_NOTIFIED) {
-                        if (avm.inventoryRecord.ATS.value === 0 && !avm.inventoryRecord.isPerpetual()) {
+                        if (!avm.inventoryRecord || (avm.inventoryRecord.ATS.value === 0 && !avm.inventoryRecord.isPerpetual())) {
                             Logger.info('Product {0} is out of stock', product.ID);
                             outOfStockNotificationsObj.products[product.ID] = constants.AUTOMATED_NOTIFICATION_SYSTEM.PRODUCT_STATUS.NOTIFIED;
                             productIds.push(product.ID);
                         }
-                    } else if (avm.inventoryRecord.ATS.value > 0) {
+                    } else if (avm.inventoryRecord && avm.inventoryRecord.ATS.value > 0) {
                         Logger.info('Product {0} is back in stock', product.ID);
                         outOfStockNotificationsObj.products[product.ID] = constants.AUTOMATED_NOTIFICATION_SYSTEM.PRODUCT_STATUS.NOT_NOTIFIED;
                     }
@@ -45,8 +47,9 @@ function execute() {
 
         if (!empty(productIds)) {
             var dataColumns = [jobResources['oos.email.column1']];
+            var formattedHeader = StringUtils.format(jobResources['oos.email.message.header'], currentSite.getName() || currentSite.getID());
             var renderedTemplate = renderTemplateHelper.buildHtmlEmailTemplate({
-                messageHeader: jobResources['oos.email.message.header'],
+                messageHeader: automaticNotificationHelper.setPlurality(formattedHeader, productIds.length),
                 messageFooter: jobResources['oos.email.message.footer'],
                 columns: dataColumns,
                 list: productIds
@@ -55,7 +58,7 @@ function execute() {
             emailHelper.sendMail({
                 recipient: outOfStockNotificationsObj.recipientEmails,
                 from: senderEmail,
-                subject: jobResources['oos.email.subject'],
+                subject: StringUtils.format(jobResources['oos.email.subject'], currentSite.getName() || currentSite.getID()),
                 content: renderedTemplate
             });
 

@@ -3,15 +3,25 @@ var sinon = require('sinon');
 var StringUtils = require('../../../mock/dw/util/StringUtils');
 var proxyquire = require('proxyquire').noCallThru().noPreserveCache();
 var Site = require('../../../mock/dw/system/Site');
+const DW = require('../../../mock/dw');
 describe('OciRecordModel', () => {
     const ProductMgr = { getProduct: sinon.stub() };
     const Calendar = sinon.stub();
+    const dateUtil = proxyquire('../../../../cartridges/bm_itg_extension/cartridge/scripts/util/dateUtil.js', {
+        'dw/system/Site': Site,
+        'dw/system/System': DW.system.System,
+        'dw/util/StringUtils': StringUtils
+    });
     const OciRecordModelClass = proxyquire('../../../../cartridges/bm_itg_extension/cartridge/models/ociRecordModel', {
         'dw/util/StringUtils': StringUtils,
         'dw/catalog/ProductMgr': ProductMgr,
         'dw/util/Calendar': Calendar,
-        'dw/system/Site': Site
+        '~/cartridge/scripts/util/dateUtil': dateUtil
     });
+    const request = {
+        httpQueryString: ''
+    };
+    global.request = request;
 
     it('should create an instance of OciRecordModel with valid input', () => {
         const ociRecord = {
@@ -43,7 +53,7 @@ describe('OciRecordModel', () => {
         assert.equal(ociRecordModelInstance.reserved, '2.00');
         assert.equal(ociRecordModelInstance.ato, '3.00');
         assert.equal(ociRecordModelInstance.atf, '4.00');
-        assert.equal(ociRecordModelInstance.effectiveDate, 'formattedCalendar');
+        assert.equal(ociRecordModelInstance.effectiveDate, 'formattedCalendar formattedCalendar');
         assert.equal(ociRecordModelInstance.futures.length, 2);
         assert.equal(ociRecordModelInstance.futureExpectations, 8);
     });

@@ -39,6 +39,8 @@ function buildXML(parameters) {
     var fileReader = new FileReader(readFile);
     var line;
 
+    var couponDescription = unescape(parameters.Description);
+
     try {
         xmlStreamWriter.writeStartDocument('UTF-8', '1.0');
         xmlStreamWriter.writeStartElement('coupons');
@@ -48,7 +50,7 @@ function buildXML(parameters) {
         xmlStreamWriter.writeAttribute('coupon-id', parameters.CouponID);
 
         xmlStreamWriter.writeStartElement('description');
-        xmlStreamWriter.writeCharacters(parameters.Description);
+        xmlStreamWriter.writeCharacters(couponDescription !== '""' ? couponDescription : '');
         xmlStreamWriter.writeEndElement();
 
         xmlStreamWriter.writeStartElement('enabled-flag');
@@ -96,7 +98,7 @@ function buildXML(parameters) {
     }
     var jobExecutionObj = couponReplicatorHelper.runCouponReplicatorJob2(parameters.SitesScope, parameters.SiteID);
     if (jobExecutionObj.error) {
-        resultStatus = new Status(Status.ERROR, 'ERROR', jobExecutionObj.errorMessage);
+        resultStatus = new Status(Status.ERROR, 'ERROR', jobExecutionObj.data.errorMessage);
     } else if (jobExecutionObj.id) {
         resultStatus = new Status(Status.OK, 'OK', jobExecutionObj.id);
     }

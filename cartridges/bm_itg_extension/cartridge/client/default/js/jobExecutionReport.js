@@ -60,15 +60,6 @@ function changeTimezone(date, instanceTimeZone) {
     return new Date(date.getTime() - diff);
 }
 
-function convertUTCToInstanceTimeZone(date, instanceTimeZone) {
-    var invdate = new Date(date.toLocaleString('en-US', {
-        timeZone: instanceTimeZone
-    }));
-    var diff = date.getTime() - invdate.getTime();
-
-    return new Date(date.getTime() - diff);
-}
-
 /**
  * Fetches all job execution data recursively until no more data is available.
  *
@@ -98,11 +89,12 @@ function fetchAllData(url, index, startTime, endTime, lastFourHours) {
                 var jobExecutionObj = response;
 
                 if (jobExecutionObj) {
+                    var instanceTimezone = getInstanceTimeZone();
                     if (jobExecutionObj.total === 0 && startTime !== null && endTime !== null) {
-                        var instanceTimeZone = getInstanceTimeZone();
-                        jobExecutionObj.startTime = convertUTCToInstanceTimeZone(new Date(startTime), instanceTimeZone);
-                        jobExecutionObj.endTime = convertUTCToInstanceTimeZone(new Date(endTime), instanceTimeZone);
+                        jobExecutionObj.startTime = changeTimezone(new Date(startTime), instanceTimezone);
+                        jobExecutionObj.endTime = changeTimezone(new Date(endTime), instanceTimezone);
                     }
+                    jobExecutionObj.timeZone = instanceTimezone;
                     var mappedData = chart.mapChartData(jobExecutionObj);
                     chart.updateChart(mappedData);
                 }
@@ -269,7 +261,6 @@ $(document).ready(function () {
         e.preventDefault();
         var container = $('.job-execution-buttons');
         var url = container.data('job-report-url');
-        var instanceTimeZone = getInstanceTimeZone();
         $('.custom-time-frame-btn').addClass('selected');
         $('.job-execution-wrapper').spinner().start();
         var timeValue = $('.time-value').text();
@@ -277,8 +268,8 @@ $(document).ready(function () {
         let endDate;
         if (timeValue) {
             var timeValues = timeValue.split('-');
-            startDate = changeTimezone(new Date(timeValues[0].trim()), instanceTimeZone);
-            endDate = changeTimezone(new Date(timeValues[1].trim()), instanceTimeZone);
+            startDate = timeValues[0].trim();
+            endDate = timeValues[1].trim();
         }
         chart.checkChart();
         fetchAllData(url, 0, startDate, endDate, false).then(() => {
@@ -299,10 +290,9 @@ $(document).ready(function () {
         let $modal = $('#jobRatioModal .modal-dialog');
         let $errorMessage = $modal.find('.error-message');
         let $ratioValue = $modal.find('.ratio-value');
-        var instanceTimeZone = getInstanceTimeZone();
 
         let inputValue = $('#datepicker').val();
-        var ratioDate = changeTimezone(new Date($('.job-ratio-date').val()), instanceTimeZone);
+        var ratioDate = $('.job-ratio-date').val();
         var url = $(this).data('job-ratio-url');
         var data = {
             ratioDate
@@ -343,10 +333,15 @@ $(document).ready(function () {
                         $modal.spinner().stop();
                     }
                 } else {
-                    $('.result-section').removeClass('d-none');
-                    $ratioValue.hide();
-                    $('.safe-message').addClass('d-none');
-                    $errorMessage.show();
+                    if (response.error && response.data && response.data.errorMessage) {
+                        $('.result-section').addClass('d-none');
+                        toast.show(toast.TYPES.ERROR, response.data.errorMessage);
+                    } else {
+                        $('.result-section').removeClass('d-none');
+                        $ratioValue.hide();
+                        $('.safe-message').addClass('d-none');
+                        $errorMessage.show();
+                    }
                     $modal.spinner().stop();
                 }
             }

@@ -3,7 +3,6 @@
 
 var orderList = [];
 var Calendar = require('dw/util/Calendar');
-var Site = require('dw/system/Site');
 var StringUtils = require('dw/util/StringUtils');
 
 /**
@@ -11,10 +10,11 @@ var StringUtils = require('dw/util/StringUtils');
  * @param {dw.order.Order} order - Order
 */
 function processOrder(order) {
-    var calendar = new Calendar(new Date(order.creationDate));
-    calendar.setTimeZone(Site.current.getTimezone());
-    var orderCreationDate = StringUtils.formatCalendar(calendar, 'EEE, dd MMM yyyy HH:mm:ss z');
-    orderList.push([order.orderNo, orderCreationDate]);
+    var dateUtil = require('~/cartridge/scripts/util/dateUtil');
+    var calendar = new Calendar(dateUtil.convertUTCToSiteTimezone(order.creationDate));
+    var orderCreationDate = StringUtils.formatCalendar(calendar, request.locale, Calendar.INPUT_DATE_PATTERN);
+    var orderCreationTime = StringUtils.formatCalendar(calendar, request.locale, Calendar.TIME_PATTERN).toUpperCase();
+    orderList.push([order.orderNo, orderCreationDate + ' ' + orderCreationTime]);
 }
 
 /**
@@ -33,6 +33,7 @@ function execute() {
     var constants = require('~/cartridge/scripts/helpers/constants');
     var jobResources = require('~/cartridge/scripts/util/jobResources');
     var emailHelper = require('~/cartridge/scripts/helpers/emailHelper');
+    var currentSite = require('dw/system/Site').getCurrent();
 
     var failedOrderAlertObj = automaticNotificationHelper.getFailedOrderAlertSettings();
     if (failedOrderAlertObj.enabled && !failedOrderAlertObj.notSetup) {
@@ -62,27 +63,13 @@ function execute() {
             }
             if (orderList && orderList.length >= failedOrderAlertObj.countThreshold) {
                 Logger.info('There are {0} failing orders in latest specific interval.', orderList.length);
-                var interval = '';
-                if (failedOrderAlertObj.interval.days !== 0) {
-                    interval += StringUtils.format(jobResources['order.alert.interval.days'], failedOrderAlertObj.interval.days);
-                }
-                if (failedOrderAlertObj.interval.hours !== 0) {
-                    if (interval) {
-                        interval += (failedOrderAlertObj.interval.minutes !== 0 ? ', ' : jobResources['common.and']) + StringUtils.format(jobResources['order.alert.interval.hours'], failedOrderAlertObj.interval.hours);
-                    } else {
-                        interval += StringUtils.format(jobResources['order.alert.interval.hours'], failedOrderAlertObj.interval.hours);
-                    }
-                }
-                if (failedOrderAlertObj.interval.minutes !== 0) {
-                    interval += (interval ? jobResources['common.and'] : '') + StringUtils.format(jobResources['order.alert.interval.minutes'], failedOrderAlertObj.interval.minutes);
-                }
                 if (!empty(orderList)) {
                     var dataColumns = [
                         jobResources['failedorder.email.column1'],
                         jobResources['failedorder.email.column2']
                     ];
                     var renderedTemplate = renderTemplateHelper.buildHtmlEmailTemplate({
-                        messageHeader: jobResources['failedorder.email.message.header'],
+                        messageHeader: StringUtils.format(jobResources['failedorder.email.message.header'], currentSite.getName() || currentSite.getID()),
                         messageFooter: jobResources['failedorder.email.message.footer'],
                         columns: dataColumns,
                         list: orderList
@@ -91,7 +78,7 @@ function execute() {
                     emailHelper.sendMail({
                         recipient: failedOrderAlertObj.recipientEmails,
                         from: senderEmail,
-                        subject: jobResources['failedorder.email.subject'],
+                        subject: StringUtils.format(jobResources['failedorder.email.subject'], currentSite.getName() || currentSite.getID()),
                         content: renderedTemplate
                     });
                     failedOrderAlertObj.lastNotification = new Date();
@@ -99,7 +86,7 @@ function execute() {
                     Transaction.wrap(function () {
                         failedOrderAlert.custom.configuration = JSON.stringify(failedOrderAlertObj);
                     });
-                    Logger.info('Notification Email has been sent for {0} failing orders in the last {1}.', orderList.length, interval);
+                    Logger.info('Notification Email has been sent for {0} failing orders.', orderList.length);
                 }
             }
         }

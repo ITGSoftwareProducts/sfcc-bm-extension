@@ -1,11 +1,13 @@
 'use strict';
+const Calendar = require('./util/Calendar');
 
 module.exports = {
     system: {
         Response: require('../util/Response'),
         System: {
             getInstanceHostname: () => 'localhost',
-            getInstanceTimeZone: () => 'UTC'
+            getInstanceTimeZone: () => 'UTC',
+            getCalendar: () => new Calendar()
         }
     },
     svc: {

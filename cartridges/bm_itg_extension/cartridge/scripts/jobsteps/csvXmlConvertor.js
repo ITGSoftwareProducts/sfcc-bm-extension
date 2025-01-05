@@ -40,8 +40,6 @@ function processFile(file, params) {
             Logger.info('start converting exported priceBook XML to CSV.', params.ObjectID);
             mainElementName = 'price-table';
             schema = require('~/cartridge/scripts/schemas/pricebookSchema.json');
-            var priceBookAttributes = require('~/cartridge/scripts/schemas/priceBookAttributes.json');
-            schema = csvImportExportHelper.addCustomAttributes(schema, true, priceBookAttributes);
             break;
         case 'inventory_list':
             Logger.info('start converting exported inventory XML to CSV.', params.ObjectID);
@@ -264,21 +262,20 @@ function convertCsvToXml(params) {
 /**
  * Converts XML to CSV.
  * @param {Object} params - Job params.
+ * @returns {dw.system.Status} status
 */
 function execute(params) {
     var ProcessType = params.ProcessType;
     switch (ProcessType) {
         case 'Export':
-            convertXmlToCsv(params);
-            break;
+            return convertXmlToCsv(params);
         case 'Import':
-            convertCsvToXml(params);
-            break;
+            return convertCsvToXml(params);
         default:
             break;
     }
 
-    return;
+    return new Status(Status.OK);
 }
 
 exports.execute = execute;

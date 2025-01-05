@@ -5,48 +5,55 @@ var checkProcessStatus = function () {
     var isAjaxInProgress = false;
     var isTableEmpty = false;
     var executionHistory = $('#execution_history');
-    var checkProcessStatusURL = executionHistory.data('export-details-url');
-    var downloadExportFile = executionHistory.data('show-download-file');
-    var downloadFileType = executionHistory.data('download-file-type');
-    var impexPath = executionHistory.data('impex-path');
-    var pendingProcess = executionHistory.find('[data-job-status="PENDING"], [data-job-status="RUNNING"]');
-    var interval = setInterval(function () {
-        if (isAjaxInProgress || isTableEmpty) {
-            return;
-        }
-        if (pendingProcess.length > 0) {
-            isAjaxInProgress = true;
-            $.ajax(checkProcessStatusURL, {
-                data: {
-                    executionId: pendingProcess.data('execution-id'),
-                    jobIds: pendingProcess.data('execution-obj').jobIds,
-                    serviceType: pendingProcess.data('service-type'),
-                    downloadExportFile: downloadExportFile,
-                    downloadFileType: downloadFileType,
-                    impexPath: impexPath
-                },
-                dataType: 'json',
-                method: 'GET',
-                success: function (res) {
-                    if (res.success) {
-                        var updatedProcess = $(res.renderedTemplate);
-                        if (['PENDING', 'RUNNING'].indexOf(updatedProcess.data('job-status')) === -1) {
-                            updatedProcess.addClass('animate-slide-in-down');
-                            clearInterval(interval);
+    if (executionHistory.length > 0) {
+        var executionListData = executionHistory.data('execution-list-data');
+        var checkProcessStatusURL = executionListData.exportDetailsURL;
+        var downloadExportFile = executionListData.showDownloadFile;
+        var downloadFileType = executionListData.downloadFileType;
+        var jobIds = executionListData.jobIds;
+        var impexPath = executionListData.impexPath;
+        var pendingProcess;
+        var interval = setInterval(function () {
+            if (isAjaxInProgress || isTableEmpty) {
+                return;
+            }
+            pendingProcess = executionHistory.find('[data-job-status="PENDING"], [data-job-status="RUNNING"]');
+            if (pendingProcess.length > 0) {
+                isAjaxInProgress = true;
+                $.ajax(checkProcessStatusURL, {
+                    data: {
+                        executionId: pendingProcess.data('execution-id'),
+                        jobIds: jobIds,
+                        serviceType: pendingProcess.data('service-type') ? pendingProcess.data('service-type') : executionListData.serviceType,
+                        downloadExportFile: downloadExportFile,
+                        downloadFileType: downloadFileType,
+                        impexPath: impexPath
+                    },
+                    dataType: 'json',
+                    method: 'GET',
+                    success: function (res) {
+                        if (res.success) {
+                            var updatedProcess = $(res.renderedTemplate);
+                            if (['PENDING', 'RUNNING'].indexOf(updatedProcess.data('job-status')) === -1) {
+                                updatedProcess.addClass('animate-slide-in-down');
+                                clearInterval(interval);
+                            }
+                            pendingProcess = executionHistory.find('[data-job-status="PENDING"], [data-job-status="RUNNING"]');
+                            pendingProcess.replaceWith(updatedProcess);
+                            setTimeout(function () { executionHistory.find('tr').removeClass('animate-slide-in-down'); }, 1000);
+                        } else if (res.serverErrors && res.serverErrors.length > 0) {
+                            toast.show(toast.TYPES.ERROR, res.serverErrors[0]);
                         }
-                        pendingProcess = executionHistory.find('[data-job-status="PENDING"], [data-job-status="RUNNING"]');
-                        pendingProcess.replaceWith(updatedProcess);
-                        setTimeout(function () { executionHistory.find('tr').removeClass('animate-slide-in-down'); }, 1000);
+                    },
+                    complete: function () {
+                        isAjaxInProgress = false;
                     }
-                },
-                complete: function () {
-                    isAjaxInProgress = false;
-                }
-            });
-        } else {
-            clearInterval(interval);
-        }
-    }, 30000);
+                });
+            } else {
+                clearInterval(interval);
+            }
+        }, 30000);
+    }
 };
 
 var handleProcessLink = function () {
@@ -83,19 +90,24 @@ var handleProcessLink = function () {
                         }
                         var statusText;
 
-                        switch (jobExecutionDetails.status) {
-                            case 'OK':
-                                statusText = 'Success';
-                                $modalDownloadSection.show();
-                                $modal.find('.download-section a')
-                                    .attr('href', jobExecutionDetails.exportURL);
+                        switch (jobExecutionDetails.executionStatus) {
+                            case 'finished':
+                                if (jobExecutionDetails.status === 'OK') {
+                                    statusText = 'Success';
+                                    $modalDownloadSection.show();
+                                    $modal.find('.download-section a')
+                                        .attr('href', jobExecutionDetails.exportURL);
+                                } else {
+                                    statusText = 'Error';
+                                    $modalDownloadSection.hide();
+                                }
                                 break;
-                            case 'PENDING':
-                                statusText = 'In-progress';
+                            case 'aborted':
+                                statusText = 'Error';
                                 $modalDownloadSection.hide();
                                 break;
                             default:
-                                statusText = 'Error';
+                                statusText = 'In-progress';
                                 $modalDownloadSection.hide();
                                 break;
                         }
@@ -113,7 +125,6 @@ var handleProcessLink = function () {
                         $modal.find('.status').empty().html(statusBadge);
                         $modal.find('.time-section .time-message').empty().html(jobExecutionDetails.timeStatusMessage);
                         $modal.find('.download-log').attr('href', jobExecutionDetails.logFileURL);
-                        $modal.find('.modal-title').text(jobExecutionDetails.modalTitle);
                         $modal.find('.modal-body').spinner().stop();
                     }
                 });
@@ -151,40 +162,41 @@ var refreshExecutionList = function () {
     $(document).on('click', '.refresh-execution-list', function (e) {
         e.preventDefault();
         var executionHistory = $('#execution_history');
-        var pendingProcess = executionHistory.find('[data-job-status="PENDING"], [data-job-status="RUNNING"]');
-        if (pendingProcess.length > 0) {
-            var checkProcessStatusURL = executionHistory.data('export-details-url');
-            var downloadExportFile = executionHistory.data('show-download-file');
-            var downloadFileType = executionHistory.data('download-file-type');
-            var impexPath = executionHistory.data('impex-path');
-            executionHistory.spinner().start();
-            $.ajax(checkProcessStatusURL, {
-                data: {
-                    executionId: pendingProcess.data('execution-id'),
-                    jobIds: pendingProcess.data('execution-obj').jobIds,
-                    serviceType: pendingProcess.data('service-type'),
-                    downloadExportFile: downloadExportFile,
-                    downloadFileType: downloadFileType,
-                    impexPath: impexPath
-                },
-                dataType: 'json',
-                method: 'get',
-                success: function (res) {
-                    if (res.success) {
-                        var updatedProcess = $(res.renderedTemplate);
-                        if (['PENDING', 'RUNNING'].indexOf(updatedProcess.data('job-status')) === -1) {
-                            updatedProcess.addClass('animate-slide-in-down');
-                        }
-                        pendingProcess.replaceWith(updatedProcess);
-                        setTimeout(function () { executionHistory.find('tr').removeClass('animate-slide-in-down'); }, 1000);
-                        executionHistory.spinner().stop();
+        var executionListData = executionHistory.data('execution-list-data');
+        var checkProcessStatusURL = executionListData.exportDetailsURL;
+        var downloadExportFile = executionListData.showDownloadFile;
+        var downloadFileType = executionListData.downloadFileType;
+        var jobIds = executionListData.jobIds;
+        var impexPath = executionListData.impexPath;
+        var maxProcessNumber = executionListData.maxProcessNumber;
+        executionHistory.spinner().start();
+        $.ajax(checkProcessStatusURL, {
+            data: {
+                jobIds: jobIds,
+                serviceType: executionListData.serviceType,
+                downloadExportFile: downloadExportFile,
+                downloadFileType: downloadFileType,
+                impexPath: impexPath,
+                maxProcessNumber: maxProcessNumber
+            },
+            dataType: 'json',
+            method: 'get',
+            success: function (res) {
+                if (res.success) {
+                    $('.execution-list').html(res.renderedTemplate);
+                    if ($('.execution-list').find('tr[data-job-status=RUNNING], tr[data-job-status=PENDING]')) {
+                        checkProcessStatus();
                     }
-                },
-                complete: function () {
-                    $('.refresh-execution-list').blur();
+                    executionHistory.spinner().stop();
+                } else if (res.serverErrors && res.serverErrors.length > 0) {
+                    toast.show(toast.TYPES.ERROR, res.serverErrors[0]);
+                    executionHistory.spinner().stop();
                 }
-            });
-        }
+            },
+            complete: function () {
+                $('.refresh-execution-list').blur();
+            }
+        });
         $('.refresh-execution-list').blur();
     });
 };

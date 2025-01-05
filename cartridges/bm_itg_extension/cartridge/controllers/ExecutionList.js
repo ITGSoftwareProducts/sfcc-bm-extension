@@ -14,6 +14,7 @@ var Site = require('dw/system/Site');
 var commonHelper = require('~/cartridge/scripts/helpers/commonFileHelper');
 var File = require('dw/io/File');
 var guard = require('~/cartridge/scripts/util/guard');
+var URLUtils = require('dw/web/URLUtils');
 
 
 /**
@@ -25,38 +26,86 @@ function getExecutionDetails() {
     var jobIds = params.jobIds;
     if (typeof jobIds === 'string') {
         jobIds = [jobIds];
+    } else {
+        jobIds = jobIds instanceof Array ? jobIds : jobIds.toArray();
     }
     var serviceType = params.serviceType;
     var downloadExportedFile = params.downloadExportFile;
     var downloadFileType = params.downloadFileType;
     var impexPath = params.impexPath;
+    var maxProcessNumber = params.maxProcessNumber && !isNaN(params.maxProcessNumber) ? parseInt(params.maxProcessNumber, 10) : null;
 
     var responseObj = {
         success: false,
         serverErrors: [Resource.msg('error.technical', 'common', null)]
     };
 
-    if (!empty(jobIds) && !empty(executionId) && !empty(serviceType)) {
-        var jobResponse = jobServicesHelper.getJobExecutionDetails(jobIds, executionId, downloadExportedFile, downloadFileType, impexPath);
-        if (jobResponse && !jobResponse.error) {
-            var resultContext = {
-                serviceType: serviceType,
-                executionDetails: jobResponse
-            };
-            var resultTemplate = 'executionHistory/executionRow';
-            var renderedTemplate = renderTemplateHelper.getRenderedHtml(
-                resultContext,
-                resultTemplate
-            );
-            responseObj = {
-                success: true,
-                renderedTemplate: renderedTemplate
-            };
-        } else if (jobResponse && jobResponse.data && jobResponse.data.errorMessage) {
-            responseObj = {
-                success: false,
-                serverErrors: [jobResponse.data.errorMessage]
-            };
+    var resultTemplate;
+    var resultContext;
+    var renderedTemplate;
+
+    if (!empty(jobIds) && !empty(serviceType)) {
+        if (!empty(executionId)) {
+            var jobResponse = jobServicesHelper.getJobExecutionDetails(jobIds, executionId, downloadExportedFile, downloadFileType, impexPath);
+            resultTemplate = 'executionHistory/executionRow';
+            if (jobResponse && !jobResponse.error) {
+                resultContext = {
+                    executionListData: {
+                        serviceType: serviceType
+                    },
+                    executionDetails: jobResponse
+                };
+                renderedTemplate = renderTemplateHelper.getRenderedHtml(
+                    resultContext,
+                    resultTemplate
+                );
+                responseObj = {
+                    success: true,
+                    renderedTemplate: renderedTemplate
+                };
+            } else if (jobResponse && jobResponse.data && jobResponse.data.errorMessage) {
+                responseObj = {
+                    success: false,
+                    serverErrors: [jobResponse.data.errorMessage]
+                };
+            }
+        } else if (!empty(maxProcessNumber)) {
+            var executionListResult = jobServicesHelper.getRecentProcessList(jobIds, maxProcessNumber, downloadExportedFile, downloadFileType, impexPath);
+            resultTemplate = 'executionHistory/executionList';
+            if (executionListResult && executionListResult.success) {
+                resultContext = {
+                    executionList: executionListResult.executionList,
+                    executionListData: {
+                        exportDetailsURL: URLUtils.https('ExecutionList-GetExecutionDetails').toString(),
+                        showDownloadFile: downloadExportedFile,
+                        downloadFileType: downloadFileType,
+                        impexPath: impexPath,
+                        maxProcessNumber: maxProcessNumber,
+                        serviceType: serviceType,
+                        jobIds: jobIds
+                    }
+                };
+                renderedTemplate = renderTemplateHelper.getRenderedHtml(
+                    resultContext,
+                    resultTemplate
+                );
+                responseObj = {
+                    success: true,
+                    renderedTemplate: renderedTemplate
+                };
+            } else if (executionListResult && executionListResult.errorMessage) {
+                if (executionListResult.errorMessage) {
+                    responseObj = {
+                        success: false,
+                        serverErrors: [executionListResult.errorMessage]
+                    };
+                } else {
+                    responseObj = {
+                        success: false,
+                        serverErrors: Resource.msg('error.technical', 'common', null)
+                    };
+                }
+            }
         }
     }
 

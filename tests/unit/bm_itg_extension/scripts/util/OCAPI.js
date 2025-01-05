@@ -46,7 +46,9 @@ describe('OCAPI Util', () => {
         }
     };
     const OcapiRequest = require('../../../../../cartridges/bm_itg_extension/cartridge/scripts/util/ocapiUtils/ocapiRequest');
-    const OcapiResponse = require('../../../../../cartridges/bm_itg_extension/cartridge/scripts/util/ocapiUtils/ocapiResponse');
+    const OcapiResponse = proxyquire('../../../../../cartridges/bm_itg_extension/cartridge/scripts/util/ocapiUtils/ocapiResponse', {
+        'dw/web/Resource': Resource
+    });
     const ocapiServiceHelper = proxyquire('../../../../../cartridges/bm_itg_extension/cartridge/scripts/util/ocapiUtils/ocapiServiceHelper', {
         'dw/svc/Result': {
             SERVICE_UNAVAILABLE: 'SERVICE_UNAVAILABLE'
@@ -76,10 +78,13 @@ describe('OCAPI Util', () => {
         '~/cartridge/scripts/util/ocapiUtils/ocapiServiceHelper': ocapiServiceHelper
     });
 
+    const ocapiHelper = require('../../../../../cartridges/bm_itg_extension/cartridge/scripts/util/ocapiUtils/ocapiHelper');
+
     var ocapiUtil = proxyquire('../../../../../cartridges/bm_itg_extension/cartridge/scripts/util/ocapi', {
         '~/cartridge/scripts/util/ocapiUtils/ocapiBatchRequestBuilder': ocapiBatchRequestBuilder,
         '~/cartridge/scripts/util/ocapiUtils/ocapiEnums': ocapiEnums,
-        '~/cartridge/scripts/util/ocapiUtils/ocapiRequestBuilder': ocapiRequestBuilder
+        '~/cartridge/scripts/util/ocapiUtils/ocapiRequestBuilder': ocapiRequestBuilder,
+        '~/cartridge/scripts/util/ocapiUtils/ocapiHelper': ocapiHelper
     });
 
     beforeEach(() => {
@@ -161,7 +166,9 @@ describe('OCAPI Util', () => {
                 error: true,
                 errorCode: '500',
                 errorType: 'SERVER_ERROR',
-                errorMessage: 'server error'
+                data: {
+                    errorMessage: 'error.ocapi.message'
+                }
             });
         });
         it('should return service unavailable error message', () => {
@@ -198,7 +205,7 @@ describe('OCAPI Util', () => {
             assert.deepEqual(result, {
                 error: true,
                 serviceError: true,
-                data: { errorMessage: Resource.msg('error.ocapi.token.missing', 'common', null) }
+                data: { errorMessage: Resource.msgf('error.ocapi.message', 'common', null) }
             });
         });
 
@@ -229,7 +236,7 @@ describe('OCAPI Util', () => {
             assert.deepEqual(result, {
                 error: true,
                 serviceError: true,
-                data: { errorMessage: Resource.msg('error.ocapi.token.missing', 'common', null) }
+                data: { errorMessage: Resource.msgf('error.ocapi.message', 'common', null) }
             });
         });
 

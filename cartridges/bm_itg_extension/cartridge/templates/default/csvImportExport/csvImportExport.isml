@@ -6,7 +6,7 @@
         assets.addJs('/js/dataMappingConfig.js');
     </isscript>
     <isset name="constants" value="${require('*/cartridge/scripts/helpers/constants')}" scope="page" />
-    <div data-select-menu-item="${pdict.selectedMenuItem}"  data-object-attributes="${pdict.systemAttribute}"
+    <div data-select-menu-item="${pdict.currentMenuItem}"  data-object-attributes="${pdict.systemAttribute}"
         data-auth-token-url="${pdict.getAuthTokenURL}" class="import-export-container">
         <div id="ImportExportGroup" class="import-export-wrapper">
             <div class="section__wrapper">
@@ -97,7 +97,7 @@
         <div class="bottom-section status">
         </div>
 
-        <div class="section__wrapper mt-2 pt-8">
+        <div class="section__wrapper mt-2 pt-8 execution-list">
             <isinclude template="executionHistory/executionList" />
         </div>
         <isinclude template="/csvImportExport/csvImportExportModals" />

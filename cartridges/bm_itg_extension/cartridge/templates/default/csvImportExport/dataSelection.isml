@@ -1,6 +1,6 @@
 <div class="data-selection d-flex align-items-baseline gap-6 justify-content-start">
     <div class="data-select-wrapper">
-        <isif condition="${pdict.selectedMenuItem === 'customers'}">
+        <isif condition="${pdict.currentMenuItem === 'customers'}">
             <div class="form-label">${Resource.msg('import.export.data.type', 'csvImportExport', null)}</div>
             <select class="data-type-select form-select" name="dataType">
                 <option value="" disabled selected hidden>
@@ -10,7 +10,7 @@
                 <option value="customer">${Resource.msg('import.export.customer', 'csvImportExport', null)}</option>
                 <option value="customerGroup">${Resource.msg('import.export.customer.group', 'csvImportExport', null)}</option>
             </select>
-        <iselseif condition="${pdict.selectedMenuItem === 'prod-cat'}"/>
+        <iselseif condition="${pdict.currentMenuItem === 'prod-cat'}"/>
             <div class="form-label">${Resource.msg('import.export.data.type', 'csvImportExport', null)}</div>
             <select class="data-type-select form-select" name="dataType">
                 <option value="" disabled selected hidden>

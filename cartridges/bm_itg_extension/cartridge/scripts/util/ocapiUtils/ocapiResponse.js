@@ -1,5 +1,7 @@
 'use strict';
 
+var Resource = require('dw/web/Resource');
+
 var ocapiResponse = function (data, code, responseId) {
     if (responseId) {
         this.setResponseId(responseId);
@@ -50,7 +52,7 @@ ocapiResponse.prototype.getObject = function () {
     } else if (this.isOk()) {
         return this.data;
     }
-    return this.data && this.data.fault ? { error: true, errorCode: this.code, errorType: this.data.fault.type, errorMessage: this.data.fault.message } : '';
+    return this.data && this.data.fault ? { error: true, errorCode: this.code, errorType: this.data.fault.type, data: { errorMessage: Resource.msgf('error.ocapi.message', 'common', null, this.data.fault.message) } } : '';
 };
 
 module.exports = ocapiResponse;

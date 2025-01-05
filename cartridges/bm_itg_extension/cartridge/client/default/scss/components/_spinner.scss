@@ -16,19 +16,30 @@
         opacity: 0.5;
         background-color: $surface-white;
     }
-}
 
-.spinner {
-    width: 64px;
-    height: 64px;
-    margin: 0 auto;
-    border-radius: 50%;
-    border: 6px solid $slate-11;
-    border-color: $slate-11 transparent $slate-11 transparent;
-    animation: spinner-loop 1.2s linear infinite;
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    transform: translateY(-50%);
+    .spinner-container {
+        max-width: 256px;
+        margin: 0 auto;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+
+        .spinner {
+            width: 25%;
+            height: 64px;
+            margin: 0 auto;
+            border-radius: 50%;
+            border: 6px solid $slate-11;
+            border-color: $slate-11 transparent $slate-11 transparent;
+            animation: spinner-loop 1.2s linear infinite;
+        }
+
+        .spinner-message {
+            width: 100%;
+            text-wrap: wrap;
+            font-size: $fs-xxxs + 1;
+        }
+    }
 }

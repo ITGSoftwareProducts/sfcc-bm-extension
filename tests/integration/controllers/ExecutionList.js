@@ -54,13 +54,20 @@ describe('ExecutionList', function () {
         'dw/system/Logger': Logger,
         'dw/web/Resource': Resource
     });
+
+    const dateUtil = proxyquire('../../../cartridges/bm_itg_extension/cartridge/scripts/util/dateUtil.js', {
+        'dw/system/Site': Site,
+        'dw/system/System': DW.system.System,
+        'dw/util/StringUtils': StringUtils
+    });
+
     const JobExecutionItem = proxyquire('../../../cartridges/bm_itg_extension/cartridge/models/jobExecutionItem', {
         'dw/util/StringUtils': StringUtils,
         'dw/util/Calendar': Calendar,
         'dw/web/URLUtils': URLUtils,
         'dw/web/Resource': Resource,
         '~/cartridge/scripts/helpers/constants': constants,
-        'dw/system/Site': Site
+        '~/cartridge/scripts/util/dateUtil': dateUtil
     });
     var jobServicesHelper = proxyquire('../../../cartridges/bm_itg_extension/cartridge/scripts/helpers/jobServicesHelper', {
         'dw/util/Calendar': sinon.stub(),
@@ -75,6 +82,7 @@ describe('ExecutionList', function () {
         DownloadExportFile: downloadExportFile
     } = proxyquire('../../../cartridges/bm_itg_extension/cartridge/controllers/ExecutionList', {
         'dw/web/Resource': Resource,
+        'dw/web/URLUtils': URLUtils,
         'dw/util/StringUtils': StringUtils,
         'dw/system/Site': Site,
         'dw/io/File': File,
@@ -131,7 +139,9 @@ describe('ExecutionList', function () {
 
             assert.isTrue(getRenderHtmlSpy.calledOnce);
             assert.isTrue(getRenderHtmlSpy.calledWith({
-                serviceType: 'someType',
+                executionListData: {
+                    serviceType: 'someType'
+                },
                 executionDetails: sinon.match.any
             }, 'executionHistory/executionRow'));
             assert.isTrue(resRenderJsonSpy.calledOnce);
@@ -203,7 +213,9 @@ describe('ExecutionList', function () {
 
             assert.isTrue(getRenderHtmlSpy.calledOnce);
             assert.isTrue(getRenderHtmlSpy.calledWith({
-                serviceType: 'someType',
+                executionListData: {
+                    serviceType: 'someType'
+                },
                 executionDetails: sinon.match.any
             }, 'executionHistory/executionRow'));
             assert.isTrue(resRenderJsonSpy.calledOnce);

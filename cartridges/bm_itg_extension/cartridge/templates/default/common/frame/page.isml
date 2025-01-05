@@ -13,6 +13,7 @@
             <div role="main" id="maincontent">
                 <isinclude template="/common/components/pageBreadcrumbs"/>
                 <isreplace/>
+                <isinclude template="/common/components/footer"/>
             </div>
             <isinclude url="${URLUtils.url('SiteNavigationBar-IncludeFrameBottom')}">
             <!--[if gt IE 9]><!-->
@@ -25,5 +26,4 @@
             <isinclude sf-toolkit="off" template="/common/frame/scripts" />
         <![endif]-->
     </body>
-    <isinclude template="/common/components/footer"/>
 </html>

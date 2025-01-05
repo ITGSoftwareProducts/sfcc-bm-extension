@@ -55,6 +55,15 @@ const OCAPI = {
         }
 
     },
+    utils: {
+        getBatchResponseError: function (batchResponse) {
+            var errorResult = null;
+            if (batchResponse.error) {
+                errorResult = batchResponse;
+            }
+            return errorResult;
+        }
+    },
     ENDPOINTS: {
         JOB_EXECUTION_SEARCH: {
             api: 'job_execution_search',

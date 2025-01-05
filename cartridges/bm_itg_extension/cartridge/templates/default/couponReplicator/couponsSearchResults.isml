@@ -23,7 +23,11 @@
                             <isprint value="${coupon.coupon_id}" /> &nbsp;
                         </td>
                         <td class="table_detail">
-                            <isprint value="${coupon.description}" /> &nbsp;
+                            <isif condition="${coupon.description && coupon.description.length > 25}">
+                                <isprint value="${Resource.msgf('coupon.description.withellipsis', 'couponReplicator', null, coupon.description.substring(0, 25))}" /> &nbsp;
+                            <iselse/>
+                                <isprint value="${coupon.description}" /> &nbsp;
+                            </isif>
                         </td>
                         <td class="table_detail">
                             <isif condition="${coupon.type === 'multiple_codes'}" >
