@@ -17,7 +17,7 @@ Users will now have access to highly productive, streamlined Business Manager ca
 
 ## Installation, Usage and Configuration
 
-Installation, Usage and Configuration is explained in the user guide [documentation](documentation/BM_Extension_User_Guide_Release-v1_1_0.pdf).
+Installation, Usage and Configuration is explained in the user guide [documentation](documentation/BM_Extension_User_Guide_Release-v1_1_1.pdf).
 
 ## Compatibility
 
