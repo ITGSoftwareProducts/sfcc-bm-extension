@@ -8,7 +8,7 @@ module.exports = {
         IMPEX_PATH: '/bm-extension/CouponReplicator/',
         FIRST_JOB_ID: 'BM Extension - Coupon Replicator: Producer',
         SECOND_JOB_ID: 'BM Extension - Coupon Replicator: Consumer',
-        CODES_FILENAME: 'coupon_codes.xml',
+        CODES_FILENAME: 'coupon_codes.*',
         EXPORTED_FILENAME: 'code_to_be_replicated.xml',
         RECENT_PROCESSES_NUMBER: 10,
         COUPON_TYPES: {
