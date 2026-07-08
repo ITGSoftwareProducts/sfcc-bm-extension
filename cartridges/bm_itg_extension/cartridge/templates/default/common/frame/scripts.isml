@@ -6,34 +6,29 @@
     </script>
 </isloop>
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const isModern = !!document.querySelector('.customModule-wrapper') || document.body.classList.contains('bm-cosmos');
+    document.addEventListener('DOMContentLoaded', function() {
+        let styleElements = [];
+        if (document.querySelector('.customModule-wrapper')) { // modern
+            styleElements = document.querySelectorAll('.page > link[rel="stylesheet"]:not([href*="slds-ccbm.css"]):not([href*="slds-ldsbm.css"])');
 
-        const excludedCss = [
-            'slds-ccbm.css',
-            ...(isModern
-                ? ['slds-ldsbm.css', 'slds+.css', 'sf_overrides.css']
-                : ['lock-screen.css'])
-        ];
-
-        const selector = `.page > link[rel="stylesheet"]${excludedCss
-            .map(css => `:not([href*="${css}"])`)
-            .join('')}`;
-
-        document
-            .querySelectorAll(selector)
-            .forEach(element => element.remove());
-
-        // Remove spacer images
-        document
-            .querySelectorAll('.page .top img[src*="space.gif"]')
-            .forEach(element => element.remove());
+        } else {
+            styleElements = document.querySelectorAll('.page > link[rel="stylesheet"]:not([href*="slds-ccbm.css"]):not([href*="lock-screen.css"])');
+        }
+        if (styleElements && styleElements.length > 0) {
+            styleElements.forEach(function(styleElement) {
+                styleElement.parentNode.removeChild(styleElement); // Remove the stylesheet element
+            });
+        }
+        // Remove img elements with src containing "space.gif"
+        var emptyElements = document.querySelectorAll('.page .top img[src*="space.gif"]');
+        emptyElements.forEach(function(emptyElement) {
+            emptyElement.parentNode.removeChild(emptyElement);
+        });
 
         // Move the login modal to the correct parent
-        const loginPopup = document.getElementById('login');
-        if (loginPopup) {
-            document.body.append(loginPopup);
-        }
+        var bmLoginPopup = document.getElementById('login');
+        document.body.append(bmLoginPopup);
     });
+
 </script>
 <script defer src="${URLUtils.staticURL('/js/thirdparty/bootstrap.bundle.min.js')}"></script>

@@ -1,7 +1,5 @@
 (() => {
-    let removedScriptCount = 0;
-    let customModuleWrapped = false;
-    let nonHeaderClassesAdded = false;
+    let changeCount = 0;
 
     const observerTimeout = 15000;
     const observerLoadGracePeriod = 3000;
@@ -116,30 +114,20 @@
     const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
             mutation.addedNodes.forEach((node) => {
-                removeBlockedScripts(node);
-                wrapCustomModuleIn(node);
-                addNonHeaderClassesIn(node);
+                if (node.tagName === 'SCRIPT' && (node.src.includes('/prototype.js') || node.src.includes('/prototype_window/window.js'))) {
+                    node.parentNode.removeChild(node);
+                    changeCount++;
+                }
+
+                if (changeCount === 2) {
+                    scriptObserver.disconnect();
+                }
             });
         });
-
-        if (isComplete()) {
-            observer.disconnect();
-        }
     });
 
-    const disconnectObserver = () => {
-        observer.disconnect();
-    };
+    const targetNode = document.documentElement;
+    const config = { childList: true, subtree: true };
 
-    removeBlockedScripts(document);
-    wrapCustomModuleIn(document);
-    addNonHeaderClassesIn(document);
-
-    if (!isComplete()) {
-        observer.observe(targetNode, observerConfig);
-        window.setTimeout(disconnectObserver, observerTimeout);
-        window.addEventListener('load', () => {
-            window.setTimeout(disconnectObserver, observerLoadGracePeriod);
-        }, { once: true });
-    }
+    scriptObserver.observe(targetNode, config);
 })();
