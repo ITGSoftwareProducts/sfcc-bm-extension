@@ -8,7 +8,7 @@
                     </h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body text-left">
+                <div class="modal-body left text-left">
                     <div class="top-section pt-8">
                         <div class="product-info d-flex align-items-center">
                             <img src="${URLUtils.staticURL('/images/product.png')}" class="img-fluid" alt="product" />
