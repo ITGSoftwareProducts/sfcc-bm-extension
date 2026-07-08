@@ -1,6 +1,6 @@
 <div id="ociRecordModal" class="modal oci-modal oci-record-modal right fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
-        <div class="modal-content left text-left">
+        <div class="modal-content text-left">
             <div class="modal-header border-0 position-fixed top-0 z-2">
                 <h1 class="modal-title text-sm" id="recipientEmailsModalLabel">
                     <isprint value="${Resource.msg('inventory.product.details', 'oci', null)}" />

@@ -14,10 +14,6 @@
       "at-rule-no-unknown": [ true, {
           "ignoreAtRules": ["extend", "at-root", "debug", "warn", "error", "if", "else", "for", "each", "while", "mixin", "include", "content", "return", "function"]
       }],
-      "block-closing-brace-newline-after": [ "always", { "ignoreAtRules": ["if", "else"] } ],
-      "font-family-no-missing-generic-family-keyword": null,
-      "no-descending-specificity": null,
-      "no-duplicate-selectors": null,
-      "selector-type-no-unknown": [true, { "ignoreTypes": ["ccbm"] }]
+      "block-closing-brace-newline-after": [ "always", { "ignoreAtRules": ["if", "else"] } ]
   }
 }
