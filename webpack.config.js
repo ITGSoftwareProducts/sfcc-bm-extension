@@ -1,5 +1,7 @@
 var path = require('path');
-var ExtractTextPlugin = require('sgmf-scripts')['extract-text-webpack-plugin'];
+var MiniCssExtractPlugin = require('mini-css-extract-plugin');
+var CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+var RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
 var sgmfScripts = require('sgmf-scripts');
 
 module.exports = [{
@@ -15,32 +17,50 @@ module.exports = [{
     name: 'scss',
     entry: sgmfScripts.createScssPath(),
     output: {
-        path: path.resolve('./cartridges/bm_itg_extension/cartridge/static'),
-        filename: '[name].css'
+        path: path.resolve('./cartridges/bm_itg_extension/cartridge/static')
     },
+    plugins: [
+        new RemoveEmptyScriptsPlugin(),
+        new MiniCssExtractPlugin({
+            filename: '[name].css',
+            chunkFilename: '[name].css'
+        })
+    ],
     module: {
         rules: [{
             test: /\.scss$/,
-            use: ExtractTextPlugin.extract({
-                use: [{
-                    loader: 'css-loader',
-                    options: {
-                        url: false
+            use: [{
+                loader: MiniCssExtractPlugin.loader,
+                options: {
+                    esModule: false
+                }
+            }, {
+                loader: 'css-loader',
+                options: {
+                    url: false
+                }
+            }, {
+                loader: 'postcss-loader',
+                options: {
+                    postcssOptions: {
+                        plugins: [require('autoprefixer')]
                     }
-                }, {
-                    loader: 'postcss-loader',
-                    options: {
-                        plugins: [
-                            require('autoprefixer')()
+                }
+            }, {
+                loader: 'sass-loader',
+                options: {
+                    implementation: require('sass'),
+                    sassOptions: {
+                        includePaths: [
+                            path.resolve('node_modules'),
+                            path.resolve('node_modules/flag-icon-css/sass')
                         ]
                     }
-                }, {
-                    loader: 'sass-loader'
-                }]
-            })
+                }
+            }]
         }]
     },
-    plugins: [
-        new ExtractTextPlugin({ filename: '[name].css' })
-    ]
+    optimization: {
+        minimizer: ['...', new CssMinimizerPlugin()]
+    }
 }];

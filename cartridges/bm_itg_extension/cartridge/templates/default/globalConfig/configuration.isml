@@ -15,9 +15,9 @@
                                 <button class="btn btn-primary" type="submit" disabled>${Resource.msg('save.button.text', 'configuration', null)}</button>
                             </div>
                             <isif condition="${pdict.preferences.orderIntervalAlertEnabled !== null}">
-                                <div class="preference-item row align-items-center justify-content-between">
-                                    <label class="col-6">${Resource.msg('field.intervalalert.enabled.label', 'configuration', null)}</label>
-                                    <select class="preferences-data form-select col-4" name="bmExtOrderIntervalAlertEnabled">
+                                <div class="preference-item row w-100 align-items-center justify-content-between">
+                                    <label class="px-0" for="bmExtOrderIntervalAlertEnabled">${Resource.msg('field.intervalalert.enabled.label', 'configuration', null)}</label>
+                                    <select id="bmExtOrderIntervalAlertEnabled" class="preferences-data form-select col-4" name="bmExtOrderIntervalAlertEnabled">
                                         <option value="true" ${pdict.preferences.orderIntervalAlertEnabled ? 'selected' : ''}>
                                             ${Resource.msg('literal.yes', 'configuration', null)}</option>
                                         <option value="false" ${pdict.preferences.orderIntervalAlertEnabled ? '' : 'selected'}>
@@ -26,9 +26,9 @@
                                 </div>
                             </isif>
                             <isif condition="${pdict.preferences.oosNotificationEnabled !== null}">
-                                <div class="preference-item row align-items-center justify-content-between">
-                                    <label class="col-6">${Resource.msg('field.oos.enabled.label', 'configuration', null)}</label>
-                                    <select class="preferences-data form-select col-4" name="bmExtOOSNotificationEnabled">
+                                <div class="preference-item row w-100 align-items-center justify-content-between">
+                                    <label class="px-0" for="bmExtOOSNotificationEnabled">${Resource.msg('field.oos.enabled.label', 'configuration', null)}</label>
+                                    <select id="bmExtOOSNotificationEnabled" class="preferences-data form-select col-4" name="bmExtOOSNotificationEnabled">
                                         <option value="true" ${pdict.preferences.oosNotificationEnabled ? 'selected' : ''}>
                                             ${Resource.msg('literal.yes', 'configuration', null)}</option>
                                         <option value="false" ${pdict.preferences.oosNotificationEnabled ? '' : 'selected'}>
@@ -37,9 +37,9 @@
                                 </div>
                             </isif>
                             <isif condition="${pdict.preferences.campaignNotificationEnabled !== null}">
-                                <div class="preference-item row align-items-center justify-content-between">
-                                    <label class="col-6">${Resource.msg('field.campaign.enabled.label', 'configuration', null)}</label>
-                                    <select class="preferences-data form-select col-4" name="bmExtCampaignNotificationEnabled">
+                                <div class="preference-item row w-100 align-items-center justify-content-between">
+                                    <label class="px-0" for="bmExtCampaignNotificationEnabled">${Resource.msg('field.campaign.enabled.label', 'configuration', null)}</label>
+                                    <select id="bmExtCampaignNotificationEnabled" class="preferences-data form-select col-4" name="bmExtCampaignNotificationEnabled">
                                         <option value="true" ${pdict.preferences.campaignNotificationEnabled ? 'selected' : ''}>
                                             ${Resource.msg('literal.yes', 'configuration', null)}</option>
                                         <option value="false" ${pdict.preferences.campaignNotificationEnabled ? '' : 'selected'}>
@@ -48,9 +48,9 @@
                                 </div>
                             </isif>
                             <isif condition="${pdict.preferences.failedOrderAlertEnabled !== null}">
-                                <div class="preference-item row align-items-center justify-content-between">
-                                    <label class="col-6">${Resource.msg('field.ordering.failed.enabled.label', 'configuration', null)}</label>
-                                    <select class="preferences-data form-select col-4" name="bmExtFailedOrderAlertEnabled">
+                                <div class="preference-item row w-100 align-items-center justify-content-between">
+                                    <label class="px-0" for="bmExtFailedOrderAlertEnabled">${Resource.msg('field.ordering.failed.enabled.label', 'configuration', null)}</label>
+                                    <select id="bmExtFailedOrderAlertEnabled" class="preferences-data form-select col-4" name="bmExtFailedOrderAlertEnabled">
                                         <option value="true" ${pdict.preferences.failedOrderAlertEnabled ? 'selected' : ''}>
                                             ${Resource.msg('literal.yes', 'configuration', null)}</option>
                                         <option value="false" ${pdict.preferences.failedOrderAlertEnabled ? '' : 'selected'}>
@@ -59,27 +59,27 @@
                                 </div>
                             </isif>
                             <isif condition="${pdict.preferences.realmId !== null}">
-                                <div class="preference-item row align-items-center justify-content-between">
-                                    <label class="col-6">${Resource.msg('field.realmid.label', 'configuration', null)}</label>
-                                    <input type="text" id="realm-id" name="bmExtRealmId" class="preferences-data col-4 form-control" value="${pdict.preferences.realmId || ''}" />
+                                <div class="preference-item row w-100 align-items-center justify-content-between">
+                                    <label class="px-0" for="bmExtRealmId">${Resource.msg('field.realmid.label', 'configuration', null)}</label>
+                                    <input id="bmExtRealmId" type="text" id="realm-id" name="bmExtRealmId" class="preferences-data col-4 form-control" value="${pdict.preferences.realmId || ''}" />
                                 </div>
                             </isif>
                             <isif condition="${pdict.preferences.instanceId !== null}">
-                                <div class="preference-item row align-items-center justify-content-between">
-                                    <label class="col-6">${Resource.msg('field.instanceid.label', 'configuration', null)}</label>
-                                    <input type="text" name="bmExtInstanceId" class="preferences-data col-4 form-control" value="${pdict.preferences.instanceId || ''}" />
+                                <div class="preference-item row w-100 align-items-center justify-content-between">
+                                    <label class="px-0" for="bmExtInstanceId">${Resource.msg('field.instanceid.label', 'configuration', null)}</label>
+                                    <input id="bmExtInstanceId" type="text" name="bmExtInstanceId" class="preferences-data col-4 form-control" value="${pdict.preferences.instanceId || ''}" />
                                 </div>
                             </isif>
                             <isif condition="${pdict.preferences.organizationId !== null}">
-                                <div class="preference-item row align-items-center justify-content-between">
-                                    <label class="col-6">${Resource.msg('field.organizationid.label', 'configuration', null)}</label>
-                                    <input type="text" name="bmExtOrganizationId" class="preferences-data col-4 form-control" value="${pdict.preferences.organizationId || ''}" />
+                                <div class="preference-item row w-100 align-items-center justify-content-between">
+                                    <label class="px-0" for="bmExtOrganizationId">${Resource.msg('field.organizationid.label', 'configuration', null)}</label>
+                                    <input id="bmExtOrganizationId" type="text" name="bmExtOrganizationId" class="preferences-data col-4 form-control" value="${pdict.preferences.organizationId || ''}" />
                                 </div>
                             </isif>
                             <isif condition="${pdict.preferences.shortCode !== null}">
-                                <div class="preference-item row align-items-center justify-content-between">
-                                    <label class="col-6">${Resource.msg('field.shortcode.label', 'configuration', null)}</label>
-                                    <input type="text" name="bmExtShortCode" class="preferences-data col-4 form-control" value="${pdict.preferences.shortCode || ''}" />
+                                <div class="preference-item row w-100 align-items-center justify-content-between">
+                                    <label class="px-0" for="bmExtShortCode">${Resource.msg('field.shortcode.label', 'configuration', null)}</label>
+                                    <input id="bmExtShortCode" type="text" name="bmExtShortCode" class="preferences-data col-4 form-control" value="${pdict.preferences.shortCode || ''}" />
                                 </div>
                             </isif>
                         </div>
