@@ -28,11 +28,19 @@ function buildXML(parameters) {
     var couponReplicatorHelper = require('~/cartridge/scripts/helpers/couponReplicatorHelper');
     var constants = require('~/cartridge/scripts/helpers/constants');
     var resultStatus = new Status(Status.OK);
-    var couponCodesPath = StringUtils.format('/src{0}{1}/{2}', constants.COUPON_REPLICATOR.IMPEX_PATH, parameters.SiteID, constants.COUPON_REPLICATOR.CODES_FILENAME);
+    var couponCodesPath = StringUtils.format('/src{0}{1}/', constants.COUPON_REPLICATOR.IMPEX_PATH, parameters.SiteID);
+    var filePattern = new RegExp(constants.COUPON_REPLICATOR.CODES_FILENAME);
+    var theDir = new File(File.IMPEX + couponCodesPath);
+    var fileList = theDir.listFiles(function (file) {
+        if (!empty(filePattern)) {
+            return filePattern.test(file.name);
+        }
+        return true;
+    });
 
     var couponXmlPath = StringUtils.format('/src{0}{1}/{2}', constants.COUPON_REPLICATOR.IMPEX_PATH, parameters.SiteID, constants.COUPON_REPLICATOR.EXPORTED_FILENAME);
+    var readFile = fileList[0];
     var couponXML = new File(File.IMPEX + couponXmlPath);
-    var readFile = new File(File.IMPEX + couponCodesPath);
     var fileWriter = new FileWriter(couponXML, 'UTF-8');
 
     var xmlStreamWriter = new XMLIndentingStreamWriter(fileWriter);

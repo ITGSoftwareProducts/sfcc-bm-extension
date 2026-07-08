@@ -60,11 +60,12 @@ ocapiBatchRequestBuilder.prototype.addRequest = function (req, requestId) {
 };
 
 ocapiBatchRequestBuilder.prototype.build = function () {
+    var Site = require('dw/system/Site');
     var System = require('dw/system/System');
 
     var ocapiRequestObj = new OcapiRequest();
 
-    ocapiRequestObj.setOcapiEndpointUrl(StringUtils.format('https://{0}/s/-/dw/batch', System.getInstanceHostname()));
+    ocapiRequestObj.setOcapiEndpointUrl(StringUtils.format('https://{0}/s/-/dw/batch', Site.getCurrent() ? Site.getCurrent().getHttpsHostName() : System.getInstanceHostname()));
     ocapiRequestObj.setHttpMethod(ocapiEnums.HTTP_METHODS.POST);
     ocapiRequestObj.setBody(connectSubRequests(this.ocapiRequestList));
     ocapiRequestObj.setHeaders({ 'x-dw-http-method': 'POST' }, { 'x-dw-resource-path': '/' }, { 'Content-Type': 'multipart/mixed; boundary=#separator$_@' });

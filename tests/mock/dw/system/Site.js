@@ -9,7 +9,8 @@ function getCurrent() {
         setCustomPreferenceValue: function () {
         },
         getTimezone: () => 'America/New_York',
-        getTimezoneOffset: () => -5 * 60 * 60 * 1000
+        getTimezoneOffset: () => -5 * 60 * 60 * 1000,
+        getHttpsHostName: () => 'localhost'
     };
 }
 function getAllSites() {

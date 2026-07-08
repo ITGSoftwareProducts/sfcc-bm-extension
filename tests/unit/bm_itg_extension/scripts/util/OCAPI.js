@@ -64,6 +64,7 @@ describe('OCAPI Util', () => {
     const ocapiBatchRequestBuilder = proxyquire('../../../../../cartridges/bm_itg_extension/cartridge/scripts/util/ocapiUtils/ocapiBatchRequestBuilder', {
         'dw/util/StringUtils': StringUtils,
         'dw/system/System': DW.system.System,
+        'dw/system/Site': Site,
         '~/cartridge/scripts/util/ocapiUtils/ocapiEnums': ocapiEnums,
         '~/cartridge/scripts/util/ocapiUtils/ocapiRequest': OcapiRequest,
         '~/cartridge/scripts/util/ocapiUtils/ocapiServiceHelper': ocapiServiceHelper
