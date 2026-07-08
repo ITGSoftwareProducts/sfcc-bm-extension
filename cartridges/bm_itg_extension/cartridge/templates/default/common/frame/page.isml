@@ -8,7 +8,7 @@
     </head>
     <body>
 
-        <div class="bmext-page" data-action="${pdict.action}" data-querystring="${pdict.queryString}" >
+        <div class="page" data-action="${pdict.action}" data-querystring="${pdict.queryString}" >
             <isinclude url="${URLUtils.url('SiteNavigationBar-IncludeFrameTop','SelectedMenuItem',pdict.SelectedMenuItem,'CurrentMenuItemId',pdict.CurrentMenuItemId)}">
             <div role="main" id="maincontent">
                 <isinclude template="/common/components/pageBreadcrumbs"/>
