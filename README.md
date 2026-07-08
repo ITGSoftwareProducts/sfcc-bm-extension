@@ -17,7 +17,7 @@ Users will now have access to highly productive, streamlined Business Manager ca
 
 ## Installation, Usage and Configuration
 
-Installation, Usage and Configuration is explained in the user guide [documentation](documentation/BM_Extension_User_Guide_Release-v1_1_0.pdf).
+Installation, Usage and Configuration is explained in the user guide [documentation](documentation/BM_Extension_User_Guide_Release-v1_1_2.pdf).
 
 ## Compatibility
 
@@ -25,7 +25,7 @@ The cartridge is designed for Salesforce Commerce Cloud Business Manager with Co
 
 ## Compiling the Client-Side Files
 
-1. Run `npm install` to install all of the local dependencies (This has been tested with v12.21.0 and is recommended).
+1. Run `npm install` to install all of the local dependencies (This has been tested with v25.6.1 and is recommended).
 2. Run `npm run compile:js` from the command line that would compile all client-side JS files.
 3. Run `npm run compile:scss` that would do the same for CSS.
 

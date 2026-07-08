@@ -1,6 +1,6 @@
 {
   "name": "bm_itg_extension",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "SFCC BM Extension cartridge",
   "main": "index.js",
   "scripts": {
@@ -20,8 +20,10 @@
     "cover": "sgmf-scripts --cover  'tests/**/*.js'"
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.16",
     "chai": "^3.5.0",
-    "css-loader": "^0.28.11",
+    "css-minimizer-webpack-plugin": "^5.0.1",
+    "css-loader": "^6.0.0",
     "eslint": "^3.19.0",
     "eslint-config-airbnb-base": "^5.0.3",
     "eslint-plugin-import": "^1.16.0",
@@ -29,21 +31,27 @@
     "husky": "^4.2.5",
     "isml-linter": "^5.26.4",
     "istanbul": "^0.4.4",
-    "mocha": "^5.2.0",
-    "node-sass": "^4.9.0",
-    "postcss-loader": "^2.1.5",
+    "mocha": "^11.7.6",
+    "mini-css-extract-plugin": "^2.7.6",
+    "postcss-loader": "^7.0.0",
+    "postcss-scss": "^2.1.1",
     "proxyquire": "1.7.4",
-    "sass-loader": "^7.0.3",
-    "sgmf-scripts": "^2.4.2",
+    "sass": "1.69.7",
+    "sass-loader": "^13.3.2",
+    "sgmf-scripts": "^4.0.0",
     "sinon": "^6.1.0",
     "stylelint": "^13.13.1",
-    "stylelint-config-standard": "^17.0.0",
-    "stylelint-scss": "^2.5.0"
+    "stylelint-config-standard": "^22.0.0",
+    "stylelint-scss": "^3.21.0",
+    "webpack-remove-empty-scripts": "^1.0.4"
   },
   "browserslist": [
     "last 2 versions",
     "ie >= 10"
   ],
+  "overrides": {
+    "shelljs": "0.8.5"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "npm run lint"
